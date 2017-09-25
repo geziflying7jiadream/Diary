@@ -82,4 +82,102 @@ endGame($request):
             
 
 disbandRoom：玩家解散房间 就是清除房间，等于清除游戏，清除麻将数据，清除操作数据
-                                    
+
+gameMessage：？？？
+/**
+ * 玩家像游戏房间发送消息：当向玩家推送消息时，就会出现cmd = 'gameMessage'
+ */
+    public function gameMessage($request){
+        if(!isset($request['tag'])) return;
+        $tag = $request['tag'];
+        if(method_exists($this,$tag)){
+            $this->$tag($request);
+        }
+    }
+    
+ 
+ ready:
+    this中的发送者，this中的房间号，
+    获取缓存中的游戏数据，判断缓存数据中的游戏是否开始，
+    变更发送者ready[$uid]信息：一个发送者准备好 状态判断
+    ----
+    获取游戏逻辑中所有发送者准备好：isAllReady
+            --------------------------
+            |isAllReady($room,$game):|
+            --------------------------
+                  房间中玩家数量不等于4 ，还有人没有进入房间；
+                  游戏中ready信息，循环时，如果有某个ready[$uid]不存在，
+                  说明不是所有人准备好，还有人需要$game->ready[$uid] = 1
+                  return false;
+                  return true;
+    ---------              
+    |准备好：|
+    ---------
+    每个玩家麻将手牌开始值：null，
+          不是游戏第一局：
+                  删除玩家房间中缓存麻将数据，
+                  删除游戏中操作缓存数据；
+          确定第一局：
+                  当前局数等于1，是第一局，那么，初始化分数：
+                  房间中玩家，如果总分数为空时，游戏中总分数为空数组；
+                  每个玩家总分数为0；
+                  向平台发送消息：
+                        sendGameStart(): 'c'=>'gameStart'
+                        sendUseCard():  'c'=>'useCard'
+                        消耗房卡,一般在第一轮游戏完成之后就调用
+         获取游戏数据和手牌数据：
+                ------------------------------------------
+                |MjGameConstant::startGame($room,$game)：|
+                ------------------------------------------
+                        初始化游戏数据，
+                        MaJiangConstant::faMj($room,$game)：返回结果
+                            ———————————————————————————————————————————
+                            |faMj:前3手每人4张，最后一手 庄家2张 闲家1张 |
+                            ____________________________________________________________________________
+                            上代码：
+                            $zhuang = $game->zhuang;
+                            $players = $room->player;
+                            $totalMoCount = 4;//摸牌次数
+                            $majiangList = array();
+                            if($totalMoCount>0){
+                              for($i=0; $i<=4;$i++){
+                                $uid = $players[$i];
+                                $playerMaJiang = isset($majiangList[$uid]) ? $majiangList[$uid]:array();
+                                if($totalMoCount>1){
+                                  for($j=0;$j<=4;$j++){
+                                    array_push($palyerMaJiang, $game->mjList[$game->currentMj]);
+                                    $game->currentMj++;
+                                  }
+                                }else{
+                                  if($uid == $zhuang){
+                                    array_push($palyerMaJiang, $game->mjList[$game->currentMj]);
+                                    $game->currentMj++;
+                                    array_push($palyerMaJiang, $game->mjList[$game->currentMj]);
+                                    $game->currentMj++;
+                                  }else{
+                                    array_push($palyerMaJiang, $game->mjList[$game->currentMj]);
+                                    $game->currentMj++;
+                                  }
+                                }
+                                sort($playerMaJiang);
+                                $majiangList[$uid] = $palyerMaJiang;
+                              }
+                              $totalMoCount--;//大于1 前3手 等于1 最后一手
+                            }
+                            $game->currentMj2 = 0;//杠后，倒着摸牌的麻将索引
+                        ____________________________________________________________________________________
+                        --------------------------------------------------   
+                返回值：
+                [0]:$game,更新游戏缓存数据
+                [1]:$mjLists 更新玩家麻将缓存数据
+    -----------
+    |没准备好：一个一个开始准备，变更准备数据；
+    -----------
+    
+    更新游戏缓存数据;=======[0]:$game,更新游戏缓存数据，放在这里更新！！！！
+    
+    向房间中所有人推送:发送者准备好了；
+    
+    所有人准备好的话，向玩家推送消息：'tag'=>'startGame' 'mjList' 'game'
+    
+ 
