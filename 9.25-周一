@@ -50,5 +50,36 @@ getGameSendMsg：克隆游戏，删除mjList,删除新牌newMj,return游戏game
       缓存麻将游戏
       向发送者推送消息，
       向平台发送游戏创建成功消息：'c'=>'gameCreate'
-      
-      
+ 
+ joinRoom():加入房间
+     缓存发送者信息，从缓存中获取麻将游戏，
+     向发送者推送游戏信息
+     
+leaveRoom：
+
+endGame($request):
+    缓存中获取游戏数据，
+    检测游戏结束：
+      ----------------------------------
+      |checkOver($game,$over = false): |
+      ----------------------------------
+            强制结束游戏，$over = true,主要记录log，
+            结束游戏的房间roomId，
+            游戏结束的时间：DateUtil::makeTime();
+            log的info信息：角色名称，角色id，角色总分数，
+            向平台发送信息：
+                  保存战绩：logScore 'c'=>'logScore'
+                  发送游戏结束：sendGameOver 'c'=>'gameOver'
+            删除缓存中的麻将游戏数据：delMajiangGame
+            删除房间中的玩家麻将数据：delPlayerMajiangByRoom  
+                                    ->del("mjChiMsg:$uid")包括删除麻将吃牌数据信息
+            删除操作，操作并发数记录：clearOperating
+    向房间所有人推送'tag'=>'endGame'结束游戏：  
+            ---------------------------------------------------------
+            |RoomConstant::pushMsgToRoom(null,$msg,$this->room,true)|
+            ---------------------------------------------------------
+                  所有人：true相关，默认false
+            
+
+disbandRoom：玩家解散房间 就是清除房间，等于清除游戏，清除麻将数据，清除操作数据
+                                    
