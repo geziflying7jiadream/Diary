@@ -2,7 +2,7 @@
 今天任务：
 首要解决杠的海底摞问题!!
 MaJiangGameConstant::getgangdi()、putgangdi()两个方法；
-
+--------------------------------------------------------------------------------------------------------------------------------------------------
 $mjList = [4,14,29,28,23,17,13,17,12,6,34,25,11,22,31,4,8,9,14,3,22,22,32,24,34,3,32,7,17,14,33,3,30,15,11,13,21,29,16,2,30,33,19,1,8,32,18,9,2,29,26,21,23,7,18,4,21,27,12,25,23,1,20,26,27,9,16,22,10,20,13,27,6,9,28,18,18,33,20,26,32,5,24,24,5,23,12,34,20,17,2,16,19,4,11,28,30,6,33,31,11,31,16,10,14,10,26,5,7,21,3,15,1,28,10,19,25,34,15,31,29,30,7,6,5,8,19,1,27,25,12,2,24,8,15,13];
 
 $start = 135;
@@ -33,3 +33,66 @@ for($i = $ii/2; $i < $luoshu/2 ; $i++){
 }
 echo "<pre>";
 var_dump($haidiluo);
+---------------------------------------------------------------------------------------------------------------------------------------
+
+获取新牌的时候：判断杠时，摞数变化
+getNewMj(&$game,$opVal,$num=[0,0],$gType=null):
+
+if($opVal == 3){
+            if($num[0] != 0){//杠后 选择掷筛子
+                $jiluo = $num[0];
+                $shangxia = $num[1];
+                $haidiluo = $game->haidiluo;
+                $zhi = null;
+                $haidiluo = array_reverse($haidiluo);//反转数组，倒着数摞数
+                while($jiluo>0){//剩余摞数小于筛子摞数，循环
+                
+                    foreach($haidiluo as $index => $v){
+                        if($v[0]>0 && $v[1]>0){
+                            $jiluo--;
+                            if($jiluo==0){
+                                $zhi = $v;
+                                $haidiluo[$index] = [-1,-1];
+                                break;
+                            }
+                        }
+
+                    }
+                }
+                $haidiluo = array_reverse($haidiluo);
+                $game->haidiluo = $haidiluo;
+
+                $newMj = $zhi[$shangxia];
+                $other = $shangxia==0 ? 1 : 0;//上下另一个放进牌池
+                array_push($game->chupaiList[$game->currentUid],$zhi[$other]);
+
+            }else{//杠后 不掷筛子
+                $haidiluo = $game->haidiluo;
+                $zhi = null;
+                $haidiluo = array_reverse($haidiluo);
+                echo json_encode($game->haidiluo).'摞数';
+                foreach($haidiluo as $index => $v){
+                    if($v[0] > 0){
+                        $zhi = $v[0];
+                        $haidiluo[$index][0] = -1;
+                        break;
+                    }
+                    elseif($v[1] > 0){
+                        $zhi = $v[1];
+                        $haidiluo[$index][1] = -1;
+                        break;
+                    }
+                }
+                $haidiluo = array_reverse($haidiluo);
+                $game->haidiluo = $haidiluo;
+                echo json_encode($game->haidiluo).'新摞数';
+                $newMj = $zhi;
+            }
+            //暗杠+2摞 其他杠+1摞
+            if($gType == 3){
+                MjGameConstant::putGangDi($game,2);
+            }else{
+                MjGameConstant::putGangDi($game,1);
+            }
+}
+————————————————————————————————————————————————————————————————————————————————————————————————————
