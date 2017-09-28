@@ -1,0 +1,35 @@
+每天进步一点点，未来前进一大步：
+今天任务：
+首要解决杠的海底摞问题!!
+MaJiangGameConstant::getgangdi()、putgangdi()两个方法；
+
+$mjList = [4,14,29,28,23,17,13,17,12,6,34,25,11,22,31,4,8,9,14,3,22,22,32,24,34,3,32,7,17,14,33,3,30,15,11,13,21,29,16,2,30,33,19,1,8,32,18,9,2,29,26,21,23,7,18,4,21,27,12,25,23,1,20,26,27,9,16,22,10,20,13,27,6,9,28,18,18,33,20,26,32,5,24,24,5,23,12,34,20,17,2,16,19,4,11,28,30,6,33,31,11,31,16,10,14,10,26,5,7,21,3,15,1,28,10,19,25,34,15,31,29,30,7,6,5,8,19,1,27,25,12,2,24,8,15,13];
+
+$start = 135;
+$haidiluo = array();
+$luoshu = 14;
+for($i = 0; $i < 14/2 ; $i++){
+    $arr = array();
+    for($j = 0; $j < 2 ; $j++){
+        $arr[$j] = $mjList[$start];
+        $start--;
+    }
+    array_unshift($haidiluo,$arr);
+}
+echo "<pre>";
+var_dump($haidiluo);
+
+$ii = $luoshu;
+$luoshu += 1*2;
+$start = 136 -$ii-1;
+var_dump($mjList[$start]);
+for($i = $ii/2; $i < $luoshu/2 ; $i++){
+    $arr = array();
+    for($j = 0; $j < 2 ; $j++){
+        $arr[$j] = $mjList[$start];
+        $start--;
+    }
+    array_unshift($haidiluo,$arr);
+}
+echo "<pre>";
+var_dump($haidiluo);
