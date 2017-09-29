@@ -1,0 +1,3 @@
+每天进步一点点，未来前进一大步：
+淄博麻将：胡分翻倍时，特殊情况：一般情况下，没有流局的话$liujufanbei = 1,上家流局$bixiahu *= 2,因为初始化时，$liujufanbei = $bixiahu ;
+本家胡局算分：$hufan *= $liujufanbei;
