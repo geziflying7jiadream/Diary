@@ -1,3 +1,117 @@
 每天进步一点点，未来前进一大步：
-淄博麻将：胡分翻倍时，特殊情况：一般情况下，没有流局的话$liujufanbei = 1,上家流局$bixiahu *= 2,因为初始化时，$liujufanbei = $bixiahu ;
+淄博麻将：
+不能吃什么打什么：假如手里有 123条  不能吃了上家3条 再打出3条
+if(!$game->canChi){
+  $game->preChiMj[$opUid] = $game->lastMj;
+}
+胡分翻倍时，特殊情况：一般情况下，没有流局的话$liujufanbei = 1,上家流局$bixiahu *= 2,因为初始化时，$liujufanbei = $bixiahu ;
 本家胡局算分：$hufan *= $liujufanbei;
+前端发送过来掷筛子：
+    操作的时候，4个人都要存一遍，所以是存的时候要有对应的id；$shaizi[$uid] = $request['shaizi'];
+    下面获取新麻将的时候，才能找到对应哪个人掷的筛子getNewMj($game,$opval,$shaizi[$game->currentUid],);
+
+可杠黄庄：在操作中 点杠：判断是否是还有不到四张牌，并且当前操作时杠，当前操作者获得一个新牌之后，就结束游戏，流局出来。
+                 碰杠：
+___________________________________________________________
+test.php 自测淄博麻将；
+_________
+$game = new vo_MajiangGame();
+$game->mjList = MaJiangConstant::refreshMajiang();
+$game->totalMj = count($game->mjList);
+$game = MjGameConstant::getGangDi($game);
+$haidiluo = $game->haidiluo;
+$luoshu  = $game->luoshu;
+echo "<pre>";
+var_dump($luoshu);
+
+echo "<hr/>";
+
+$game = MjGameConstant::putGangDi($game,60);
+$haidiluo = $game->haidiluo;
+$luoshu  = $game->luoshu;
+echo "<pre>";
+var_dump($luoshu);
+$game->currentMj = 1;
+if(MjGameConstant::hasMj($game)){
+//    echo $game->totalMj - $game->luoshu - $game->currentMj;
+    $game->bixiahu = 2;
+    $game = MjGameConstant::stopGame(1,$game,null);
+    $luoshu  = $game->luoshu;
+    $haidiluo = $game->haidiluo;
+    $bixiahu = $game->bixiahu;
+    echo "<pre>";
+    var_dump($luoshu);
+    var_dump($haidiluo);
+    var_dump($bixiahu);
+}
+//下一局
+$game->bixiahuFanbei = $game->bixiahu;
+
+echo "<pre>";
+var_dump($game->bixiahuFanbei);
+
+$mjList = [1,1,2,2,3,3,4,4,5,5,7,7,7,7];//七小队
+$type = 1;//1自摸 点炮0
+//$game = SuanFanConstant::hu(2,$mjList,$game,1,$type);
+$score = 1;//胡牌得分
+$hufan = $score;// 不翻杠底
+$hufan *= $game->bixiahuFanbei;//以上局流局翻倍，胡局翻倍;默认1
+
+var_dump($hufan);
+echo "<hr/>";
+
+$winScore = 0;
+
+$dahus = array(new QingYise(),new JinGouDiao(),new QiXiaoDui());
+foreach($dahus as $index => $hu){
+    /* @var $hu BaseHu*/
+    $add = $hu->checkType($mjList,$chiList,$pengList,$gangList,$angangList);//豪华七小对 返回值4
+    if($add == 2){
+        $hufan *= 2;
+    }elseif($add == 4){
+        $hufan *= 2;
+        $hufan *= 2;//豪华七小对 *2*2
+    }
+}
+var_dump($hufan);
+
+$game->fanData = array(
+    '11' => 1,
+    '22' => 5,
+    '33' => 7,
+    '44' => 0
+);
+$fanData = $game->fanData;
+$countData = null;
+if(!isset($game->countData[$huUid])){
+    $countData = array();
+}else{
+    $countData = $game->countData[$huUid];
+}
+$type = 0;
+$players = array(
+    '1' => 11,
+    '2' => 22,
+    '3' => 33,
+    '4' => 44
+);
+$huUid = 11;
+$game->pao = 22;
+if($type == 1){//自摸
+    foreach($players as $index=>$uid){
+        if($uid == $huUid){
+            continue;
+        }else{
+            $winScore += $hufan;
+            $fanData[$huUid] += $hufan;
+            $fanData[$uid] -= $hufan;
+        }
+    }
+}else{//放炮
+    $winScore += $hufan;
+    $fanData[$huUid] += $hufan;
+    $fanData[$game->pao] -= $hufan;
+}
+echo "<pre>";
+var_dump($fanData);
+_______________________________________________
