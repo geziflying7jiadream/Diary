@@ -1,0 +1,17 @@
+为了在前端控制：牌数是否更新变化
+在oprating中：
+//向操作者和下一个出牌的人以外的人发送操作消息
+$num = $opVal==3 && $getNewMj==true ? 2 : 0;
+$pushMsg = array('tag'=>'updateCurrentUid','newMj'=>$getNewMj,'opUid'=>$opUid,'opVal'=>$opVal,
+'luoshu'=>$num,
+'game'=>MjGameConstant::getGameSendMsg($game));
+
+其他杠中：控制操作luoshu
+暗杠：
+$pushMsg = array('tag'=>'updateCurrentUid','newMj'=>$getNewMj,'opUid'=>$uid,'opVal'=>3,
+'luoshu'=>0,
+'game'=>MjGameConstant::getGameSendMsg($game));
+明杠：
+$pushMsg = array('tag'=>'updateCurrentUid','newMj'=>true,'opUid'=>$uid,'opVal'=>3,
+'luoshu'=>0,
+'game'=>MjGameConstant::getGameSendMsg($game),'minggang'=>1,'gangMjVal'=>$mjVal);
