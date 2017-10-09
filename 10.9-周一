@@ -1,0 +1,48 @@
+国庆节后余生，努力吧，小菇凉；
+每天进步一点点，未来前进一大步：
+今天找到了，现在使用的phpstrom 9.0.0.0版本 的注册码，好兴奋：http://www.cnblogs.com/xiaomingzaixian/p/4759237.html
+淄博麻将 因为与枣庄麻将多了一个，胡的操作类型，所以在MaJiangConstant中需要添加$opratngTypes = array(,4,);胡：4；
+这样，在程序运行的时候，不会出现
+//没有这个操作类型
+if(!MaJiangConstant::hasOperating($operatingType)) return;
+
+注意：
+在ArrayUtil中存在，
+                数组（对象）排序方法、sortOn($array,$key,$desc=true,$valueIsObject=false) 根据key的值大小排序
+                对象转化数组方法、
+                查询数组中需要的字段并返回新的数组、
+                包含某个值判断方法、
+                查询字符串在数组中出现的位置、
+                删除数组中的某个值、
+                复制一个数组；
+            
+在牌型中，计算飘倍方法：
+      piaoBei：$uid,$mj,$mjlist,...,$game
+      {
+            //主要是为了判断是不是自摸麻将。自摸麻将只能就在手牌中，
+            //不是自摸$mj !=-1的话，麻将不在手牌中，push进手牌中
+        $tempMjList = arrayClone($mjList);
+        if($mj !=  -1) array_push($tmpMjList,$mj);
+        
+        //游戏开始时，没有飘，每一个都是-1,之后进入游戏飘循环
+        $piaoBei = $game->piaoBei[$uid] != -1 ? $piaoBei[$uid] : 1;//第一次漂，初始值1，2倍递增
+        $piaoBei *= 2;//飘 递增
+        //还要考虑 牌型*飘倍，牌型初始值：普通牌型初始值1 特殊牌型需要计算
+        $paixing = 1;
+        //特殊牌型
+        .....
+        .....
+        .....$paixing *= 2;
+        ......
+        ....
+        $piaoBei *= $paixing;
+        $game->piaoBei[$uid] = $piaoBei;
+        //判断飘倍是否是最大的，赋值最大的飘
+        if($piaoBei > $game->piaoMax){
+          $game->piaoMax = $piaoBei;
+        }
+        //返回值：游戏中变更新的数据
+        return $game;
+      }
+      
+      
