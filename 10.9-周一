@@ -51,7 +51,10 @@ if(!MaJiangConstant::hasOperating($operatingType)) return;
      。。。。。
      
      
+     starlingSwf是Egret原生自动生成的,自动生成的库文件
+     在客户端项目的外文件夹
      
+     调试时，只能打开一个窗口？？怎么解决呢
      
      
      
