@@ -47,9 +47,10 @@
 使用Egretwing时，看白鹭的开发者文档，里面有关于白露的视觉方法属性：
 视觉编程：
       DisplayObject
-            Bitmap
-            Shape
-            TextField
-            BitmapText
-            DisplayObjectContainer
-                  Sprite、Stage
+            Bitmap                    位图，用来显示图片
+            Shape                     用来显示矢量图，可以使用其中的方法绘制矢量图形          
+            TextField                 文本类
+            BitmapText                位图文本类
+            DisplayObjectContainer    显示对象容器接口，所有显示对象容器均实现此接口  
+                  --Sprite  带有矢量绘制功能的显示容器    
+                  --Stage   舞台类
