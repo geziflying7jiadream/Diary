@@ -44,3 +44,12 @@
 
 
 2、egretwing的学习使用：
+使用Egretwing时，看白鹭的开发者文档，里面有关于白露的视觉方法属性：
+视觉编程：
+      DisplayObject
+            Bitmap
+            Shape
+            TextField
+            BitmapText
+            DisplayObjectContainer
+                  Sprite、Stage
