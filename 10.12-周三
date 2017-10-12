@@ -1,0 +1,30 @@
+每天进步一点点，未来前进一大步：
+今天的主要任务就是要代码中的client的一个添加方式过程给搞清楚。——一机在手天下我有，哈哈哈。
+今天上午测试了一下，做牌进行的算法：
+杠开、海底捞、抢杠胡都不是问题了，
+另外看了一下client端的筛子按钮的添加，以及算法的监听实现，觉得还是好一点了。
+现在已经是下午时间了，让我们开始进行正式的开发client端吧：
+    所有的资源都来自于麻将资产：MjGameAsset
+        -----------------------------------------------------
+          public static get mainSwf():starlingswf.Swf{
+            return RES.getRes("mj_main_swf");
+          }
+
+          public static get mjSwf():starlingswf.Swf{
+            return RES.getRes("mj_swf");
+          }
+
+          public static get effSwf():starlingswf.Swf{
+            return RES.getRes("eff_swf");
+          }
+          其中的RES是框架自带的处理数据的方法
+       ------------------------------------------------------
+       
+       src:用来存放我们的代码，我们编写的代码都放在src目录下面
+       bin-debug:编译和运行bin-debug目录，我们一般不修改此目录下面的内容
+       libs:这里面存放我们的库文件。当然包括Egeret核心库文件和其他扩展库文件，甚至以后第三方开发的扩展库也在这里
+       resoures:这里用来放置我们的资源，这里有一个default.res.json的资源配置文件，用来配置资源
+       template:这是项目调试过程中的目录。我们一般也不需要修改它
+       egretProperties.json的项目配置文件，需要用到里面的moudles字段来配置项目里的模块，具体参考 http://developer.egret.com/cn/2d/projectConfig/configFile
+       index.html项目的入口文件，我们可以在这里配置项目的旋转缩放模式以及背景颜色等，具体配置参考入口文件说明：http://developer.egret.com/cn/2d/projectConfig/indexFile
+       favicon.ico 一个ico
