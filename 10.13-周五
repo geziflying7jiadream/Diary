@@ -1,0 +1,59 @@
+每天进步一点点，未来前进一大步：
+首先测试一下淄博麻将，杠牌自摸 杠出牌点炮翻倍。
+
+
+1、EgretWing使用
+http://edn.egret.com/cn/index.php?g=&m=article&a=index&id=217&terms1_id=20&terms2_id=24
+
+入口函数
+    文档类的构造函数，即为Egret程序的入口函数，可以观察到入口函数内有一行代码
+
+    this.addEventListener(egret.Event.ADDEDTOSTAGE, this.onAddToStage, this);
+
+    现在，我们不需要具体分析这行代码，只需要知道，
+    这行代码保证了onAddToStage方法执行时，文档类实例已经被添加到舞台中。
+    并且在onAddToStage方法内，this.stage属性已经有效，其指向舞台对象。
+绘制一个单色背景
+    通常游戏的画面都需要一个背景，让我们就从这最基本的显示开始着手！ 
+    背景可以是一张图片，这需要将图片作为资源载入，
+    后边我们会学习这种方式。
+
+MjListPanel.ts
+    mjListContainer:        还没有出手拍的容器
+    gpcListContainer:       杠碰吃的容器
+    chupaiListContainer:    已经打出去的容器
+    flowerListContainer:    打出花牌的容器
+    uid:                    当前这个人的uid
+    opEventList:            操作按钮的数据
+    opEventNo:              操作按钮的编号
+    opValMcX,opValMcY:      别人的操作 显示位置
+    currentMjDisplay:egret.DisplayObject 最新麻将
+    currentBigMjDisplay:starlingSwf.SwfSprite 当前出牌的大的显示对象
+    currentBigMjShowTime:number 
+    currentMjTag:           当前麻将的标记
+    
+    gamePanel:游戏控制台
+    gamePanel:GamePanel;
+    
+
+
+constructor(gamePanel:GamePanel):
+    super():当前使用的方法调用的是当前类的父类的方法。
+            比如：addChild() 可以直接使用this.addChild()
+    this.gamePanel = gamePanel;
+    this.mjListConatiner = new egret.DisplayObjectContainer();
+    this.gpcListContainer = new egret.DisplayobjectContainer();
+    this.chupaiListContainer = new egret.DisplayObjectContainer();
+    this.flowerListContainer = new egret.DisplayObjectContainer();
+    this.addChild(this.flowerListContainer);
+    this.addChild(this.chupaiListContainer);
+    this.addChlid(this.mjListContainer);
+    this.addChild(this.gpclistContainer);
+    
+    this.currentbigMjDisplay = MjGameAsset.mjSwf.createSprite("spr_mj_1_copy");
+    
+    
+
+
+
+
