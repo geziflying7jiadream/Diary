@@ -1,2 +1,58 @@
 每天进步一点点，未来前进一大步：
 测试淄博麻将，推送上线。
+无法打开淄博麻将，服务器开始。
+无法打开麻将，由于是在服务器端没有开启，断掉线路。之后开启之后，重新登录就好了。
+roomIdText:egret.TextField
+des:egret.TextField
+beidText:egret.TextField
+readyBtn:starlingSwf.SwfButton
+mjCountText:egret.TextField
+gameCountText:egret.TextField
+yaoqingBtn:starlingSwf.SwfButton
+fanhuiwxBtn:starlingSwf.SwfSprite
+haidi:egret.TextField
+huaspr:starlingSwf.SwfSprite
+flowerListContainer:egret.DisplayObjectContainer
+
+leaveBtn:starlingSwf.SwfButton
+leaveBtn2:starlingSwf.SwfButton
+settingBtn:starlingSwf.SwfButton
+
+timerDown:TimerDown
+roleHeads:any
+mhListContainer:any
+//public gangdi51:egret.Bitmap
+
+dataParse:GameDataParse
+lastChupaiIndex:number //上一次被标记为出牌人的位置
+
+voiceBtn:starlingSwf.SwfButton
+chatBtn:starlingSwf.SwfButton
+
+public constructor(){
+  super();
+}
+
+init():void
+  this.dataParse = new GameDataParse(this);
+  this.lastChupaiIndex =-1;
+  
+  var game:MajiangGame = MajiangGameData.getCurrentGame();
+  var room:Room = RoomData.getCurrentRoom();
+  this.roomidText.Text = `${room.id}`
+  this.des.text = "乱将、"+(game.canchi ?"可以出吃牌":"不可出吃牌");
+  this.beiText.text = "倍数:"+game.bixiahuFanbei;
+  this.initHeads();
+  this.initMjListContainer();
+  this.mjCountText = this.chupaiTips.getTextField("mjCountText");
+  this.gameCountText = new TimerDown(this.chupaiTips.getChildbyName;
+  
+  
+  我只有看到一定程度，才能其义自见。这就是读书多遍，其义自见。
+  
+  
+  
+  
+  
+  
+  
