@@ -1,0 +1,49 @@
+每天进步一点点，未来前进一大步：
+有事淄博麻将，说好的最后一天。
+
+
+一炮多响玩家：排序
+
+/**
+     * 排序一炮多响玩家
+     * @param $room vo_Room
+     * @return string
+     */
+    public static function getSortUid($uid,$uids,$room){
+        $index = self::getPlayerIndexInRoom($room,$uid);
+        $reUid = array();
+
+        echo "一炮多响排序前：".json_encode($uids)."\n";
+        foreach($uids as $key => $val){
+            $i = self::getPlayerIndexInRoom($room,$val);
+            if($i < $index){
+                $i += 4;
+            }
+            if(count($reUid) == 0) array_push($reUid,$val);
+            else
+            {
+                $a = self::getPlayerIndexInRoom($room,$reUid[0]);
+                if($a < $index){
+                    $a += 4;
+                }
+                $b = self::getPlayerIndexInRoom($room,$reUid[count($reUid)-1]);
+                if($b < $index){
+                    $b += 4;
+                }
+                echo $i."  ".$a."  ".$b."\n";
+                if($a>$i) array_unshift($reUid,$val);
+                else if($b<$i) array_push($reUid,$val);
+                else array_splice($reUid,1,0,$val);
+            }
+        }
+        echo "一炮多响排序后：".json_encode($reUid)."\n";
+        return $reUid;
+    }
+    
+    
+    
+    
+  在一炮多响牌排序之后，还是得到胡家顺序，并没有什们作用？
+  原来一炮多响并不是排序的最后一次操作者，而是出牌的人（点炮的人），以及抢杠胡最后一个操作者（刚自己的那个人是最终的点炮人）
+  
+  
