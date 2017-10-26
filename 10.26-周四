@@ -1,0 +1,25 @@
+每天进步一点点，未来前进一大步：
+金乡麻将，杠，幺九，算分，蹲庄；
+//不蹲庄
+                    if($type == 1){//自摸
+                        $score *= $hufan;
+                        foreach($players as $index=>$uid){
+                            if($uid == $huUid){
+                                $fanData[$uid] += $score * 3;
+                                $fanInfos[$uid][0] += $score*3;
+                                $fanInfos[$uid][1] += $gangFen*3;
+                            }else{
+                                $winScore += $score;
+                                $fanData[$huUid] += $score;
+                                $fanInfos[$huUid][0] += $score;
+                                $fanData[$uid] -= $score;
+                                $fanInfos[$uid][0] -= $score;
+                            }
+                        }
+                    }else{//放炮
+                        $winScore += $score;
+                        $fanData[$huUid] += $score;
+                        $fanInfos[$huUid][0] += $score;
+                        $fanData[$game->pao] -= $score;
+                        $fanInfos[$game->pao][0] -= $score;
+                    }
