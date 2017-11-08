@@ -1,0 +1,165 @@
+每天进步一点点，未来前进一大步：
+象棋规则：
+----------------------------
+象棋谱式 
+将军不离九宫内，士止相随不出宫。
+象飞四方营四角，马行一步一尖冲。
+炮须隔子打一子，车行直路任西东。
+唯卒只能行一步，过河横进退无踪。
+----------------------------
+宜用心机 
+象棋易学最难精，妙着神机自巧生。
+得势舍车方有益，失先弃子必无成。
+他强己弱须兼守，彼弱吾强可横行。
+更熟此书胸臆内，管教到处有芳名
+---------------------------
+中炮局 
+起炮在中宫，观棋气象雄。
+马常守中卒，士上将防空。
+象要车相附，卒宜左右攻。
+居将炮车敌，马出渡河容。
+---------------------------
+士相局势 
+炮向士角安，车行两路前。
+过河车炮上，炮在后为先。
+集车拿士相，仍教炮向前。
+敌人轻不守，捉将不为难。
+---------------------------
+飞炮局势 
+炮车边塞上，临阵势如飞。
+虚隙井图象，冲前敌势危。
+绝敌寻先子，无语自沉吟。
+车将车破敌，变化少人知。
+---------------------------
+象局势 
+象局势能安，行车出两边。
+车先河上立，马在后遮拦。
+炮急常行动，上士必相圆。
+象眼深防塞，中心卒莫行。
+势成方动炮，攻敌两河边。
+劝君依此诀，捉将有何难。
+---------------------------
+破车势 
+一车在中营，鸳鸯马上攻。
+一车河上立，中卒向前冲。
+引车塞象眼，炮在后相从。
+---------------------------
+胜宜得先
+得子得先名得胜，得子失先却是输。
+车前马后须相应，进退应须要付车。
+
+
+
+前端：splice()会直接对数组进行修改
+TuiDaoHu
+    findTing:
+        一张将牌没有，不能听牌；
+        for循环移除麻将，修改数组，记录移除麻将；
+        修改后的数组进行zhaoPuPai(),返回找铺排后的结果
+        zhaoPuPai(tempMjList,true,true,true):
+                      克隆麻将:
+                      array_count_values(tempMjList)
+                      找出对牌：是否有对牌，对子数目，
+                      是否有三张牌，
+                      for(var mj in tempMjList)找到每个麻将个数：
+                                如果count数  == 2 || == 3，表示有对牌
+                                    如果 ==2 ，对牌数++；
+                                    如果 ==3 ，有三张牌true；
+                      检测麻将是否三个一连：
+                          对牌是否跳过检测，continueDuipai:bool = hasDuipai;
+                          while(index < whileCount):
+                              var num1:number = countVals[num1];
+                              var num1Count:number = countVals[num1];
+                              if((num1Count == 2 || num1Count ==3) && continueDuipai){
+                                  inde += num1Count;
+                                  if(index >= whileCount){
+                                      index = 0;
+                                      whileCount = mjList.length;
+                                      continueDuipai = false;
+                                  }
+                                  continue;
+                              }
+                              //只有一个将牌，需要跳过
+                              if(num1Count == 2 && duiPaiCount ==1){
+                                  index++;
+                                  continue;
+                              }
+                              seArr = MajingConstant.findMajiangStartEnd(num1);
+                              if(seArr[0] == -1){
+                                  index++;
+                                  continue;
+                              }
+                              var num2:number = posArrow ? num1 +1 :num1 -1;
+                              var num3:number = posArrow ? num1 +2 :num1 -2;
+                              var index2:number = mjList.indexOf(num2);
+                              var index3:number = mjList.indexOf(num3);
+                              if(num2 >= seArr[0]  && num2 <= seArr[1] && num3 >= seArr[0] && num3 <= seArr[1]){
+                                    _continue = false;
+                                    if(index == -1 || index3 ==-1){
+                                        _continue = true;
+                                    }
+                                    
+                              }
+                            
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+昨天安排计划，发过来枣庄麻将规则，但最终不知道是否安排？纠结，我的纠结症又开始了
