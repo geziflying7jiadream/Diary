@@ -1,0 +1,31 @@
+每天进步一点点，未来前进一大步：
+学习就是为自己增加气质和能量的渠道，不要停滞不前，前进吧！
+----------------------------------------------------------
+js->ts学习：
+ES6-》typeScript
+常见类型：boolean number string Array Any Viod Null Undefined Never
+申明类型|常量
+function 函数名（参数：参数类型）：返回类型{}
+function(参数：参数类型)：返回值类型{}
+箭头函数:(参数：参数类型)：返回类型=>{}
+
+类成员的申明：
+class Point{
+  private _x:number;
+  private _y:number;
+  //构造函数
+  constructor(x:number,y:number){
+    this._x = x;
+    this._y = y;
+  }
+  public x():number{return this._x;}
+}
+
+类成员需要声明，局部变量可以不声明
+------------------------------------------第一节结束------------------------------
+
+添加typescript配置文件tsConfig.json  类、模块、接口：
+改写webpack.config.js 使其转译.ts文件
+使用Webpack2
+
+
