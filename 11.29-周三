@@ -2,5 +2,63 @@
 生活中的点点滴滴，并不是一蹴而就，一切的得失成败，都在每天的得与失中轮回。
 只有你付出了，才有可能得到一些回报，没有无言无故的挫折和困难，相信自己，你一定能做到。
 --------------------------------------------------------------------------------
+任正非在《华为的冬天》里有一句话颇让人警醒：
+十多年来，我经常在思考关于失败的问题，对成功视而不见，也没有什么荣誉感、自豪感，而是只有危机感。
+也许只有这样才存活了十年。
+
+左传有云：居安思危，思则有备，有备无患。
+
+永远记住：这个世界唯一不变的就是变化！
+--------------------------------------------------------------------------------
 上午：淄博麻将，单吊将牌报听，打了听牌，撤听了
       已解决：主要是因为，服务器端报听时，ting()中将中发白报听限制了，删掉之后就可以了。
+      
+      
+下午：Egret开发学习前端
+      首先创建项目，项目结构，项目存储路径，扩展库选择
+      1、创建项目：舞台宽度、舞台高度、引擎版本、舞台背景色、缩放模式showAll、旋转模式auto；
+                 缩放模式：showAll、noScale、noBorder、exactFit、fixedWidth、fixedHeight、fixedNarrow、fixedWide
+                 旋转模式：
+                 缩放模式一样的效果，都是在index。html中可以修改，
+                 还可以在项目代码中随时修改：this.stage.scaleMode = egret.StageSclaeMode.SHOW_ALL;
+                 this.stage.scaleMode = egret.StageScaleMode.SHOW_ALL;
+                 
+                 旋转模式：可以index,html中修改，可以项目代码中随时修改
+                 this.satge.orientation = egret.OrientationMode.AUTO;
+                 
+      2、项目结构：
+                 bin-debug:项目调试时，所产生的文件；
+                 libs:包括egret核心库和其他扩展库；
+                 promise:promise支持库文件
+                 resource:项目资源文件；
+                 src:项目代码文件；
+                 template:项目模板文件；
+                 egretProperties.json:项目配置文件  两种环境变量：EGRET_DEFAULT、EGRET_APP_DATA
+                 tsConfig.json:Typescript配置文件；
+                 WingProperties.json:Egret Wing项目配置文件;
+                 index.html:项目入口文件，用于加载js文件和项目配置信息;
+                              加载js文件：项目所需的JS文件的存放路径在根目录的manifest.json文件中；
+                              index.html:根据manifest.json文件，加载JavaScript文件；-----------注意：自动生成，不要修改
+                              
+                              
+                                    manifest.json:
+                                                "initail":库文件列表，包括Egret核心库和其他扩展库;
+                                                "game":项目代码文件列表;
+                                    ----------------------------  
+                                    data-entry-class：文件类名称。
+                                    data-orientation：旋转模式。
+                                    data-scale-mode：适配模式。
+                                    data-frame-rate：帧频数。
+                                    data-content-width：游戏内stage宽。
+                                    data-content-height：游戏内stage高。
+                                    data-show-pain-rect：是否显示脏矩形区域。
+                                    data-multi-fingered：多指最大数量。
+                                    data-show-fps：是否显示fps。
+                                    data-show-log：是否显示egret.log的输出信息。
+                                    data-show-fps-style：fps面板的样式。支持5种属性，x:0, y:0, size:30, textColor:0xffffff, bgAlpha:0.9
+                                    
+                                    
+                                            
+                 
+                 
+            
