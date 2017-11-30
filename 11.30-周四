@@ -79,7 +79,26 @@
                 this.addChild(img);
                 ————————————————————image：表示各种常见的图片类型，包括PNG和JPG格式，载入后将解析为egret.Texture对象
                 
+ 晚上：         
+                1、由于在default.res.json中修改了groups{name：preload}名字===》groups{name:heros}
+                2、加载资源：Main.ts中有 有大量的RES开头的代码，------------------------------RES：专门加载资源的类
+                ——————————————————————注意：在onConfigComplete的最后，有一行加载资源组的代码：RES.loadGroup("preload");
+                                      很显然，RES.loadGroup()就是用来加载资源组，将其命名为：heros
+                                                                    --------对应上面的default.res.json中的groups的name
+               3、在完成这些之后，我们需要判断，加载的资源是来自哪个资源组：onResourceLoadComplete中的preload修改为heros
+               
+               
+               4、程序将会加载heros资源组，并且当程序执行到createGameScene时，资源已经加载完成：
+                                                      这是在createGameScene最后添加代码console.log("createGameScene",RES.getRes("资源名称"));
+                编译---执行--打开浏览器开发者工具，在console会看到该行代码的输出。  testure纹理集出现，说明图片是加载成功的。
                 
+  
+  
+      加载资源的代码分析：
+              再进一步显示图片前，了解资源加载的代码：
+                  回头看加载资源的代码分析：
+                  加载资源的过程整体分为两个部分：第一步首先加载资源配置清单，第二部加载资源
+                  onAddToStage：加载进度页面
                 
                 
         
