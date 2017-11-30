@@ -1,0 +1,89 @@
+每天进步一点点，未来前进一大步：
+也许你不知道，生活中有很多美好，只带你自己慢慢发现，前进的路上，你会勇往直前。
+----------------------------------------------------------------------
+2 day      deadline:12.12
+------------
+上午：
+  Egret学习：
+  回顾：昨天对于Egret进行到新建项目，项目结构的认识，以及一些基本配置文件的存储；
+  
+  starting：
+        命令行：egret info ------查看版本，egretEngine安装路径
+               egret  upgrate -----------升级版本 输入完成之后，egret build -e 升级到该版本的引擎
+                     还可以使用：项目 升级引擎----来升级版本，升级之后，使用：项目 编译引擎----就完成了项目升级版本
+                     
+               命令行手册：
+                    用法：egret command [-v]
+                     egret create project_name [--type empty|game|gui|eui]：创建新项目 -------------------------------?gui和eui区别？
+                     egret create_lib lib_name:创建新的第三方库
+                     egret craete_app app_name -f h5_game_path -t template_path:从h5游戏生成app
+                     egret build [project_name] [-e] [--runtime native]:构建指定项目
+                     egret publish [project_name] [--version [version]] [--runtime html5|native] [--passWorld]:发布项目
+                     egret startserver [project_name] [--port 3000] [-ip] [-serveronly]：启动httpServer，并在默认游览器中打开指定项目
+                     egret clean [project_name]:重置项目中的引擎代码
+                     egret upgrade [project_name]：升级项目代码
+                     egret make：编译引擎源码
+                     egret apitest [project_name]:版本升级后，检测api是否已经被替换
+                     egret info：获取egret 信息
+                     ——————————————————————————————————————
+                     egret help command：了解command各个细节
+                     ——————————————————————————————————————
+        ---------------------------------------------------------------------------------------------
+        
+        resource:资源配置default.res.json----------------------------这个是值得注意的一个重要资源文件（src）
+        egretProperties.json:包括模块和第三方库的配置
+        
+        --调试项目：编写第一行代码
+        项目的入口类：在src/Main.ts文件中添加：class Main extends egret.DisplayObjectContainer{} 如果修改之后，需要在index.html中，修改入口类名字
+        egret规定入口的文档类必须继承来自显示的容器DisplayObjectContainer或者子类；---------------------------------留下悬念？？显示对象？？？？
+        
+        Egret使用类似ActionScript3的显示列表结构。所有的显示内容均处于一个称为舞台的根容器里
+                                        ----所有的显示内容，都存在一个叫做stage(舞台)的根容器中，
+                                           开发中，根据需要将不同的显示对象添加到stage舞台为基础根的显示树列表上；
+                                           在这个树上，有容纳其他显示对象的部分叫做显示容器
+                Egret显示树结构：灵活组织层级结构
+                this.addEventListener(egret.Event.ADDEDTOSTAGE,this.onAddToStage,this);入口文档类加入这句话，就表示入口文档类已经加入到stage中
+                并且在onAddToStage方法中，this.stage属性已经生效，指向的是stage 舞台对象
+                
+                
+                首先绘制图形 egret.Shape绘制图形功能，绘制背景用Shape
+                
+                -------代码练习----
+                var bg:egret.Shape = new egret.Shape;//绘制图形背景
+                bg.graphics.beginFill(0x336699);//绘制开始
+                bg.graphics.drawRect(0,0,this.stage.stageWidth,this.stage.stageHeight);//绘制矩形，起始点坐标x,y，宽，高
+                bg.graphics.endFill();//绘制结束
+                
+                ----------注意：注意这两组坐标，由于我们绘制的背景要刚好覆盖整个舞台区域，所以起点坐标为(0,0)，终点坐标为舞台的宽度和舞台的高度。
+                
+                //绘制好了之后，需要添加到显示结构中，才能显示出来
+                this.addChild(bg);//将显示对象，添加到某个显示容器上
+                ————————运行瞅瞅，就出现一个蓝色的背景图
+                
+                添加监听事件:（什么事件，什么逻辑方法，this）
+                
+                加载资源：egret的资源（图片）都是动态加载的
+                        egret的资源加载方式，是有一个资源加载清单为基础的
+                              -------------egret使用json格式作为资源加载配置文件的格式
+                                           加载配置文件，在resource中default.res.json文件中（设计 | 源码）
+                //响应用户操作
+                tx.touchEnabled = true;
+                tx.addEventListener(egret.TouchEvent.TOUCH_TAP,this.touchHandler,this);   
+                
+                //加载动态资源        
+                var img:egret.Bitmap = new egret.Bitmap();//创建图形区域（相当于html中img标签）
+                var imgTexture:egret.Texture = RES.getRes("egret_icon_png");//加载图形纹理集
+                img.x = 40;
+                img.y = 250;
+                img.texture = imgTexture;
+                this.addChild(img);
+                ————————————————————image：表示各种常见的图片类型，包括PNG和JPG格式，载入后将解析为egret.Texture对象
+                
+                
+                
+                
+        
+        
+          
+    
+  
