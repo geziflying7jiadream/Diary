@@ -1,0 +1,16 @@
+每天进步一点点，未来前进一大步：
+学习自主与不断获取自己所不知道的东西，那才是美好的。
+-----------------------------------------------------
+egret学习： 
+3 day deadline:12.12 
+
+----------------------
+MjGameRoot 继承 ExtGame:
+
+/**
+ * 游戏主体
+ */
+ExtGame:初始化房间（onInit）、有玩家加入房间(onJoinRoom)、玩家返回游戏(onReturnGame)、有玩家离开房间（onLeaveRoom）、玩家离线(onLeaveGame)、
+解散房间（onDisbandRoom）、收到游戏消息（onGameMessage）、当界面大小变化，触发重新布局操作(layout)、销毁游戏（dispose）
+
+
