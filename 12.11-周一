@@ -1,0 +1,30 @@
+每天进步一点点，未来前进一大步：
+--------------------
+egret:
+5 day deadline:12.12
+--------------------
+上午：
+    游戏中的starlingSwf.js中的各个类，以及类的属性、方法
+    -----
+    开始：
+    -----
+    SwfSprite已经熟悉了；
+    Swf:Swf文档类
+    SwfUpdateManager:动画更新管理器
+    SwfBlendMode:
+下午：    
+    游戏中lzm的类
+    lzm:
+        BasePanel:addToStage、removeFromStage、gotoPanel、dispose、
+    starlingSwf:
+        SwfButton:
+        SwfMovieClip:动画效果/播放、更新、停止、设置、是否再播放、总共有多少帧、返回当前播放的哪一个标签、获取所有标签
+    lzm:
+        Alert:弹框 init（initBackGround方法）、container、width、height(舞台宽、高)
+                        initBackGround:new egret.Shape() alpha touchEnable=true graphics(图标算法：制图法)
+        HttpClient:请求url send/getRequestPars方法
+        JSONWebSocketClient:json格式的websocket客户端（host,port）
+                            stringify:用在将一个对象中解析出字符串
+                    connect/sendData/onSocketOpen/onRecieveMessage/onSocketClose/onSocketIOError/dispose
+    
+        
