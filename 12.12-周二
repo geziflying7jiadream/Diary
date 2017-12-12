@@ -16,4 +16,7 @@ egret学习：数据data、发送游戏操作、接收游戏操作、处理游�
     
     
     11:00-12:00：尝试五子棋数据交互
+    初始化时，主面板里面的头像元件，使用starlingSwf.SwfSprite来定义
+    定义之后，获取其中的元件，就是用相同的方法，this.mainAsset.getSprite("head"+i);取出即可
+    
     
