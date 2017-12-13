@@ -185,8 +185,55 @@ morning / a.m / forenoon/ ante meridiem
       }
       
       
-      
-      
+   //初始化的时候棋盘，已经实例化了  
+   //更新GamePanel时，更新UI：updateUi,并updateUi是在gamePanel中初始化的最后调用的方法
+   
+   
+下午：   afternoon; p.m.; post meridiem (p. m.); arvo;
+    afternoon/p.m./post merdiem / arvo
+    
+    开始：
+    棋盘处理：
+    Qipan:
+         class Qipan {
+              public mainAsset:starlingSwf.SwfSprite;
+              public clickSpr:starlingSwf.SwfSprite;
+              public qiziSpr:starlingSwf.SwfSprite;
+              public chooseImg:egret.Bitmap;
+              
+              public selfUid:string;
+              public ownerUid:string;
+              public imgdata:any = {"1":"img_r_c"};
+              public offX:number = 21;
+              public offY:number = 2;
+              public jiangeX:number = 57;
+              public jiangeY:number = 57;
+              public chooseQizi:egret.Bitmap;
+              public endArea:egret.Bitmap;
+              
+              public game:XiangqiGame;
+              public qipanData:number[][];
+              public qipanData2:number[][];
+              
+              public constructor(mainAsset:starlingswf.SwfSprite){
+                  this.mainAsset = mainAsset;
+                  this.selfUid = RoleData.getRole().uid;
+                  this.ownerUid = RoomData.getCurrentRoom().owner;
+                  InterfaceVariablesUtil.initVariables(this,this.mainAsset);//???????????????
+                  
+                  this.clickSpr = new starlingswf.SwfSprite();//自己定义的元件
+                  this.mainAsset.addChild(this.clickSpr);//加载到棋盘上
+                  this.qiziSpr = new starlingswf.SwfSprite();
+                  this.addChild(this.qiziSpr);
+                  this.chooseImg = MjGameAsset.mainSwf.createImage("img_r_box");
+                  this.mainAsset.addChild(this.chooseImg);
+                  this.chooseImg.visible = false;
+                  this.chooseQizi = null;
+                  this.initQipan();//初始化棋盘，在ui传递过来的棋盘上，创建2次棋盘（并且在上面创建点击区域）
+                  
+                  
+              }
+         }
       
       
       
