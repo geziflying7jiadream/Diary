@@ -1,0 +1,201 @@
+每天进步一点点，未来前进一大步：
+------------------------------
+注册知乎：Grace 15150484590
+egret:7 day deadline：12.12
+Yesterday is the last day,but beacause I did't complete my gole,I continue learning it.
+Come On ,Baby!
+Everything is possible.Trust yourself.
+--------------------------------------
+上午：morning; a.m.; forenoon; ante meridiem (a.m.); ante prandium;
+morning / a.m / forenoon/ ante meridiem
+
+   回顾：首先根据游戏中的创建面板CreatePanel中的按钮on_okBtn接口创建房间create()方法是平台已经封装好的
+         根据平台传递过来的创建房间的data，传递给后端服务器，服务器根据request请求数据，向前端发送楚书华游戏的tag
+         前端接收到游戏消息：通过MjGameRoot中的onGameMessage():
+         来处理后端发过来的信息response回应：
+         
+         如果后端发过来的tag==initGame初始化游戏的话：
+              1、自己的小游戏数据的缓存putCurrentGame(data);
+              2、从RAM中取出自己小游戏数据的缓存
+              3、创建游戏主面板：实例化游戏面板new GamePanel()
+              4、然后添加到舞台上this.addChild(this.gamePanel);
+              
+              游戏面板设计好了，处理房间的缓存数据：
+              5、RoomData中获取当前房间数据信息：RoomData.getCurrentRoom()
+              6、房间中AA支付房卡，根据房间中的字段room.aa来设置描述des += 
+              7、并且在微信中分享描述 des:WxUtils.customizeShareDesc(null,des,true);
+         否则，
+         如果游戏面板存在，并且不为空：
+              1、根据传递过来的tag找到使用的相应方法：var fun:FUnction = this.gamePanel.dataParse.tagEvents[tag];
+              2、如果找到的方法fun不为空null,吧相应数据苍术年底给这个接口中进行处理：fun.apply(this.gamePanel.dataParse,data);
+
+开始：
+      根据上面所叙述，gamePanel中的
+      //重写资源主面板
+      mainAssetName():string{
+        return "spr_main";
+      }
+      //资源assetSwf????????  --------------MjGameAsset?????????????????/
+      assetSwf():starling.Swf{
+       return MjGameAsset.mainSwf;
+       //其中，mainSwf是处理资源缓存RES.getRes("mj_main_swf");
+       //effSwf是处理特效，例如操作方式等"mc_eff"+opVal的特效
+      }
+      
+      //点击准备按钮
+      on_readyBtn(e:egret.Event):void{
+        //获取当前自己开发设置的的游戏缓存数据
+        var game:XiangqiGame = XiangqiGameData.getCurrentGame();
+        
+        //获取当前房间的缓存数据
+        var room:Room = RoomData.getCurrentRoom();
+                  如果房间中的房主 不等于角色中的获取的角色uid:
+        //那么进入自己游戏Api的准备接口
+        if(room.owener != RoleData.getRole().uid){
+          MjGameApi.ready();
+        }
+                  否则，等于房主：判断所有玩家，是否全部准备好：全部准备好，之后进入MjGameApi的准备阶段
+        else{
+           var playerCount:number = 0;
+           var readyCount:number = 0;
+           var players:any = room.players;//获取房间中所有玩家信息
+           var readys:any = XiangqiGameData.getCurrentGame().ready;//获取缓存中的当前游戏中准备字段信息
+           for(var index in players){
+              playerCount++;//记录加入房间中玩家数量
+              if(readys!= null && readys[players[index]]){
+                  //如果用户准备不为空，并且当前玩家准备好了，那么记录准备好的玩家数量
+                  readyCount++;
+              }
+           }
+           //ApiState:主面板中显示文字提示信息？？？？？？？？？？？？？？？？？？
+           if(playerCount != 2){//加入房间的玩家数量
+              ApiState.showText("必须2个人才能开始游戏");
+              return;
+           }
+           if(readyCount != 1){
+              ApiState.showText("必须所有人准备好才能开始游戏");
+              return;
+           }
+           MjGameApi.ready();//之后进入房主的准备接口（即开始接口）
+        }
+      }
+      
+      //点击设置按钮，进行设置ExtGameHelper.ShowSetting();
+      on_settingBtn(e:egret.Event):viod{
+          ExtGameHelper.showSetting();
+          //其中，ExtGameHelper中的getRAMData("currentGame"),
+          //还有一个保存缓存数据：saveRAMData("currentGame",game)
+      }
+      
+      //点击leaveBtn按钮，进行离开按钮操作
+      //返回微信按钮
+      on_leaveBtn(e:egret.Event){
+          //从缓存数据中，获取当前房间的缓存数据
+          var room:Room = RoomData.getCurrentRoom();
+          //根据是否是房主，进行解散房间操作，还是进行退出房间操作
+          if(room.owner == RoleData.getRole().uid){
+              ExtGameHelper.disbandRoom();//针对平台那边控制
+          }else{
+              ExtGameHelper.leaveRoom();
+          }
+      }
+      
+      //退出按钮
+      on_leaveBtn2(e:egret.Event){
+          this.on_leaveBtn(e);
+      }
+      
+      //客户端准备按钮，MjGameApi.ready()，经过平台ExtGameHelper.sendGameMessage(par),将准备发送到后端服务器端接收
+      //服务器端接收到准备tag = "ready":找到相应的后端接口方法进行处理数据逻辑
+      //服务器端ready之后，将发送给客户端tag => 'ready':客户端根据GameDataParse:找到相应的处理准备消息的接口onReady(
+      //如果：服务端ready中房主验证全部准备好了，发送客户端的就是tag => 'startGame':处理接口onStartGame(data)
+      
+     GameDataParse://处理服务端发送的数据信息
+     onReady(data:any){
+        var uid:string = data.uid;//发送过来的uid
+        //根据uid获取玩家头像
+        var head:RoleHead = this.gamePanel.getRoleHead(uid);
+        if(head) head.readyTag.visible = true;//后端发送过来，准备图标显示
+        if(uid == RoleData.getRole().uid){
+            //经过点击准备，后端处理发送过来，准备好了，将准备按钮隐藏
+            this.gamePanel.readyBtn.visible = false;
+        }
+        
+        //获取客户端缓存GameDataParse(GameData)游戏数据
+        var game:XiangqiGame = XiangqiGame.getCurrentGame();
+        //如果数据中，ready准备信息为空，定义game.ready
+        if(game.ready == null){
+            game.ready = {};
+        }
+        game.ready[uid] = true;//用户准备为真
+        
+        //获取房间中所有用户玩家
+        //遍历所有的玩家，更新玩家角色头像上的分数
+        var players = RoomData.getCurrentRoom().players;
+        for(var k in players){
+          head = this.gamePanel.getRoleHead(players[k]);
+          if(head){
+             head.updateTotalFan();//更新角色头像分数
+          }
+        }
+     }
+      
+     //------|更新角色头像分数|
+     updateTotalFan():void{
+        this.scoreText.text = XiangqiConstant.getCurrentFen(this.uid).toString();//自己的游戏中，当前分数，转换成字符串
+        /**
+        *XiangqiConstant
+        *public static getCurrentFen(uid:string):number{
+        *     var game:XiangqiGame = XiangqiGameData.getCurrentGame();
+        *     var score:number = 0;
+        *     if(game.totalFan != null && game.totalFan[uid] != null){
+        *         score = game.totalFan[uid];
+        *     }
+        *     return score;
+        *}
+        */
+     }
+      
+      
+      //服务器端发送全部准备好之后，startGamne
+      onStartGame(data:any){
+          XiangqiGameData.putCurrentGame(data.game);//开始游戏之前,存储服务端发送过来的游戏处理数据
+          
+          var game:xiangqiGame = data.game;//？？？？？？可能是因为：客户端处理数据先后问题，只能用发送过来的数据
+          
+          this.gamePanel.huiqiBtn.visible = true;
+          this.gamePanel.qiuheBtn.visible = true;
+          this.gamePanel.renshuBtn.visible = true;
+          this.gamePanel.qipanSpr.visible = true;
+          this.gamePanel.updateBtns();//更新一些按钮
+          this.gamePanel.qipan.updateQipan();//游戏开始更新棋盘
+          
+          var players = RoomData.getCurrentRoom().players;
+          var head:RoleHead;
+          for(var k in players){
+              head = this.gamePanel.getRoleHead(players[k]);
+              if(head){
+                  if(game.currentUid == head.uid) head.clockTb.visible = true;//传递过来数据currentUid等于头像上的uid 头像上的小时钟显示
+                  else head.clockTb.visible = false;
+                  head.readyTag.visible = false;
+                  head.kickBtn.visible = false;
+                  head.updateTotalFan();
+              }
+          }
+      }
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
