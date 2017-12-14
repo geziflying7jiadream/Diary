@@ -1,0 +1,23 @@
+每天进步一点点，未来前进一大步：
+生活还要继续，不要让那些根本不值得的人和事，困扰着自己的心；
+没有必要去照顾到每个人的心思，感情是两个人的事，其他的一切都只是杂质而已；
+不要让杂质融入到你的生活中，这样才能做到开心，因为你在别人眼里什么都不是，所以也不要让他们成为你生活中的绊脚石；
+---
+记住：
+    不能处理好工作和生活，这两件不能混为一谈的事情，这种人就是Loser；
+    --是思想一种不成熟的人的标志。
+    --切记，不要成为这种人
+------------------------------------------------------------------
+上午：fore medierm
+      回顾：昨天最重要的讲解就是学到两种创建资源容器的方法
+          1、系统中加载的资源，他们是继承了basePanel，
+             重写了basePanel中的两个方法，mainAssetName():string{return "spr_main"}
+             还有一个重写的方法：assetSwf():starlingswf.Swf这种方法的类型，对应的是MjGameAsset.mianSwf同一类型的数据
+             重点：basePanel继承自lzm.BasePanel：addToStage()、removeFromStage()、gotoPanel(panel:lzm.BasePanel)：将面板资源添加在舞台上
+             这样的话，BasePanel中的声明变量mainAsset就是spr_main了
+          2、没有继承BasePanel的类，使用mianAsset时，需要先声明变量mainAsset:starlingswf.SwfSprite，
+             然后再根据MjGameAsset.mainSWf.createSprite("spr_sprite");
+             然后加载this.addChild(this.mianAsset);
+             InterfaceVariablesUtil.initVariables(this,this.mainAsset);
+             将这个面板中的其他名字循环遍历定义到资源图相同name上面,因为空的name是没有定义变量上的
+             
