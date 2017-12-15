@@ -10,3 +10,85 @@
       开始：
           1、创建的两种方式：createSprite方式  ||  在资源中创建并导入，容器中命名，并程序中声明
           2、加载位置、宽高、监听方式、想要成为自己需要的类型，调试的时候：在其他面板上使用
+          
+          
+     注意：
+     发现新的问题： 
+            1、平台封装好的关于按钮的方法：
+               on_closeBtn(e:egret.Event):void;-----BasePanel extends lzm.BasePanel{}
+               on_jianBtn(e:egret.Event):void;------BuyCardFromProxy extends BasePanel{}
+               on_jiaBtn(e:egret.Event):void;-------BuyCardFromProxy extends BasePanel{}
+               on_buyBtn(e:egret.Event):void;-------BuyCardFromProxy extends BasePanel{}
+               on_ckBtn(e:egret.Event):void;--------ProxyPanel extends BasePanel{}
+               on_createRoomBtn(e:egret.Event):void;---加入游戏界面JoinGamePanel{}
+               on_joinRoomBtn(e:egret.Event):void;创建房间按钮、加入房间按钮、战绩按钮、关闭按钮
+               on_zhanjiBtn(e:egret.Event):void;
+               on_closeBtn(e:egret.Event):void;
+               -------
+               on_delBtn(e:egret.Event):void;------RoomNumberInputPanel{}
+               on_resetBtn(e:egret.Event):void;----房间号加入面板、重置按钮、加入按钮
+               on_joinBtn(e:egret.Event):void;
+               onNumBtn(e:egret.Event):void;按下房间号
+               on_closeBtn(e:egret.Event):void;
+               dipose();
+               -------
+               on_loginBtn(e:egret.Event):void;------登录界面
+               init():void;
+               layout():void;mainAssetName():string;
+               startGame():void;
+               ------
+               on_settingBtn(e:egret.Event):void;----MainPanel extends BasePanel{}主界面
+               on_meBtn(e:egret.Event):void;---？？？----主面板的设置、on_meBtn(啥意思)
+               on_plusFKBtn(e:egret.Event):void;---------点击加入房卡按钮
+               on_bbsBtn(e:egret.Event):void;------------点击客户按钮
+               --登录之后，检测是否在游戏中，
+               on_mainPageBtn(e:egret.Event):void;--？？--点击活动按钮
+               --------
+               on_agreeBtn(e:egret.Event):void;------VoteEndGamePanel extends BasePanel{}投票游戏结束
+               on_disagreeBtn(e:egret.Event):void;---不同意按钮
+               --------
+               on_posBtn(e:egret.Event):void;----RoleInfo extends BasePanel{}玩家详细信息
+               role:role;
+               headIamge:egret.Bitmap;
+               nameText:egret.TextField;
+               idText:egret.TextField;
+               ipText:egret.TextField;
+               constructor(role:Role,texture:egret.Texture);
+               on_posBtn(e:egret.Event):void;点击详细位置按钮
+               mainAssetName():string;
+               --------
+               on_cancelBtn(e:egret.Event):void;------TipPanel extends BasePanel{}创建房间时的文字提示面板
+               on_okBtn(e:egret.Event):void;----取消按钮、点击创建房间
+               mainAssetName():string;
+               tipText:egret.TextField;
+               eventThisObj:any;
+               eventOkFun:Function;
+               eventCancelFun:Function;
+               static create(text:string,eventThisObj:any,eventOkFun:Function,eventCancelFun?:Function,show?:boolean):TipPanel;平台封装的方法
+               ---------
+       好的！到这里on_xxxBtn按钮的使用已经解释过了；
+       用之前，按钮声明，之后使用
+       
+       
+               
+ 下午：post medierm/afternoon
+       gamePanel: 
+            roomIdText---
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
