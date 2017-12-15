@@ -73,10 +73,21 @@
                
  下午：post medierm/afternoon
        gamePanel: 
-            roomIdText---
-
-
-
+            roomIdText---this.roomTtext.text = ~${room.id}~;//？？？可能是个转换字符串
+            room:Room => RoomData(Room类型数据) extends CacheData
+            =>CacheData:getRAMData/saveRAMData/removeRAMData/clearRAMData
+            ——————————————————————————————————————————————————————————————
+       -----注意：js是平台封装库，找不到的就来这里呦！
+       
+            RoleData(Role)=>js平台中有关于缓存的封装，
+            ————————————————————————————————————————————————————————————
+       -----自己游戏中，缓存的用XxxGameData(XxxGame):这个类返回平台缓存数据
+            return ExtGameHelper.getRAMData("currentGame");
+            return ExtGameHelper.saveRAMData("currentGame",game);
+                  
+注意：查找不到的方法和应用，可能都是封装在平台js中，在平台JS中查找即可
+            
+            
 
 
 
