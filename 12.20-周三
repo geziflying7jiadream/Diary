@@ -1,0 +1,96 @@
+每天进步一点点，未来前进一大步：
+------------------
+生活总在继续，健康最重要，知冷知热，把握自己身体的每一个细胞，让健康的元素充满身体的每一寸肌肤。
+活得健康，才能活得漂亮！
+成为更好的自己吧！
+-------------------
+上午：fore medierm/morning
+    回顾：昨天金乡麻将出现bug，关于推到胡的问题；
+         推到胡，新的算法，今天上午，重新总结归纳。
+    -------------------------
+    开始：
+    TuiDaoHu.ts
+        胡牌：传入参数不一样，只有胡牌麻将(胡牌：必须有一对将牌)
+        麻将模型：4行10列的二维数组：饼、条、万、[中发白东南西北两花]
+        0位：该类型的麻将总数
+        1-9位;分别对应点数的总数
+     var jiangPos:number = -1;//将牌的类型 i:0-3 饼条万中发白凤花 
+     var yuShu:number = 0;//余数
+     var jiangExt:boolean = false;//s是否有将
+     //有且只有一组牌类型，能做将，数量余数必须为2
+     for(var i=0;i<4;i++){
+        if(mjListModel[i][0]>0&& mjListModel[i][0] % 3 == 1) return false;
+        if(mjListModel[i][0]>0&& mjListModel[i][0] % 3 == 2){
+            if(!jiangExt){
+                jiangPos = i;
+                jiangExt = true;
+            }else{
+                return false;
+            }
+        }
+     }
+     //没有将牌
+     if(jiangPos == -1){
+        return false;//胡牌中，没有将牌，不能胡
+     }
+     for(var i=0;i<4;i++){
+        if(i!=jiangPos){//不是将牌那一类
+            if(!this.zhaoPuPai(mjListModel[i],i==3)){//中发白东西南北花-------判断是否是第3行，不是第3行
+                egret.log("zhapPuPaiCount:"+this.zhaopupaiCount);
+                return false;
+            }
+        }
+     }
+     var success:boolean = false;
+     for(var i=1;i<10;i++){
+        var jiangMj:number = jiangPos*9 + i;//做将的麻将
+        if(mjListModel[jiangPos][i]>=2 && this.is258(jiangMj)){
+            //258做将
+            var _mjlistmodel:number[] = MajiangConstant.clone_array(mjListModel[jiangPos]);
+            _mjlistmodel[i] -= 2;//做将牌-2
+            _mjlistmodel[0] -= 2;//牌型总数-2
+            if(this,zhaoPuPai(_mjlistmodel,jiangPos==3)){//isWord==3个的判断true || false
+                success = true;
+            }
+            if(success){
+              break;
+            }
+            egret.log("zhaoPuPaiCount:"+this.zhaopupaiCount);
+            return success;
+        }
+     }
+     zhaoPuPai(mjListModel:number[],isWord:boolean):boelean{
+        this.zhaopupaiCount++;
+        if(miListModel[0] == 0){
+            return true;
+        }
+        var i:number = 1;
+        for(;i<10:i++){
+            if(mjListModel[i] != 0) break;
+        }
+        var result:boolean = false;
+        if(mjListModel[i]>=3){
+            var _mjlistmodel:number[] = MajiangConstant.clone_array(mjListModel);
+            _mjlistmodel[i] -= 3;
+            _mjlistmodel[0] -= 3;
+            result = this.zhaoPuPai(_mjlistmodel,isWord);
+            return result;//递归找铺牌
+        }
+        if(!isWord || (isWord && i ==1) && i<8 && (mjListModel[i+1]>0)&&(mjListModel[i+2])>0){
+        //不是风牌行 或者 第3行并且i=1表示红中开始，中发白成顺子，风不能成顺子，花也不能成顺子  顺子，顺序找的3个连
+            var _mjlistmodel:number[] = MajiangConstant.clone_array(mjListModel);
+            _mjlistmodel[i] -= 1;
+            _mjlistmodel[i+1] -= 1;
+            _mjlistmodel[i+2] -= 1;
+            _mjlistmodel[0] -= 3;
+            result = this.zhaoPuPai(_mjlistmodel,isWord);
+            return result;
+        }
+        return result;
+     }
+     findTing(mjList:number[]):any[]{
+        var mjListModel:number[][] = [
+                                      [0,0,0]
+                                      ];
+     }
+     
