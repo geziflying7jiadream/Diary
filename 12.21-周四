@@ -44,3 +44,21 @@ public static function getWannengCount(&$mjList,$game){
                   $len = count($_mjlist);
               }
           
+下午：post medierm/afternoon
+      开始：泗阳小花麻将技术开发版
+            1、流局改成剩14张，就流局
+            2、叫听、响听、不听
+            3、辣透（牌型分数》=40）：40
+            4、门清????
+            5、
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
