@@ -1,0 +1,46 @@
+每天进步一点点，未来前进一大步：
+----------------------------------
+还有两个月就接近2017的尾声，你还能在有限的时间中，
+抓住2017的尾巴，再一次拼搏！
+加油！
+----------------------------------
+上午：fore medierm/morning
+      回顾：
+          TuiDaoHu.ts前端的思路：
+              先找出做将哪一类牌
+              不是做将那几类牌，不满足%3==0（不是3个相同或者3个链子），不能胡
+              遍历不是做将的哪几类牌，找铺排（字或不是字）不成功，返回false（不能胡）
+              做将这类牌单独判断，找铺排：
+                  因为做将首先剔除2张将牌,再根据（字不是字）找铺排，
+                  找到最后返回true（可以胡），否则，不能胡。
+                  
+      开始：
+          万能牌，就是遍历每一类都能做将，找铺排能胡；
+          TuiDaoHu.php：
+              public $zhaopupaiCount;
+              public function hu($mjList,$chiList,$pengList,$gangList,$angangList){
+                  $mjListModel = array();//3行11列 0：牌型总数 | 1-9：牌个数 | 10：万能牌个数
+                  $_mjlist = ArrayUtil::cloneArray($mjList);//克隆手牌麻将
+                  if(count($_mjlist)%3 != 2) return false;//没有将牌（2个），不能胡
+                  //$wannengCount = 0;//金乡麻将，没有万能牌
+                  $wannengCount = MaJiangConstant::getWnnengCount($_mjlist,$this->game,$this->ispao);
+-----------------------------------------------------------------------------------------------------
+/**
+* 获取万能牌个数
+* @param $game vo_MajiangGame
+* @return int
+*/
+public static function getWannengCount(&$mjList,$game){
+  $wannengVal = $game->da2;
+  $wannengCount = 0;
+  $countVals = array_count_values($mjList);
+  if(isset($countVals[$wannengVal])){
+      $wannengCount = $countVals[$wannengVal];
+      array_splice($mjList,array_search($wannengVal,$mjList),$wannengCount);
+  }
+  return $wannengCount;
+}
+-----------------------------------------------------------------------------------------------------
+                  $len = count($_mjlist);
+              }
+          
