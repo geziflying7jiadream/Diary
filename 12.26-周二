@@ -25,5 +25,136 @@
 							
 			}
       ----------------------------------------------
-      2、tingMjs1:判断对处二维数组，
-            
+      2、tingMjs1:判断对处二维数组;
+      	var tingMjs1:number[][] = [];
+			//判断对处
+			if(tingMjs.length > 0){
+				
+				for(var k in tingMjs){
+					tingMjs1.push([]);
+					var result:number[] = tingMjs[k];
+					var countVals:any = MajiangConstant.array_values_count(result);
+					var isDuiChu:boolean = true;
+					for(var _k in countVals){
+						if(countVals[_k] == 3){
+							continue;
+						}else{
+							isDuiChu = false;
+						}
+					}
+					if((result.length == 6 || result.length == 3) && isDuiChu){
+						//对处
+						result.splice(0,result.length == 6?2:1);
+						for(var k in result){
+							tingMjs1[tingMjs1.length - 1].push(result[k]);
+						}
+					}else{
+						for(var k in result){
+							if(tingMjs1[tingMjs1.length - 1].indexOf(result[k]) == -1){
+								tingMjs1[tingMjs1.length - 1].push(result[k]);
+							}
+						}
+					}
+				}
+			}
+			tingMjs = tingMjs1;
+			//[听，出，胡]index一一对应
+			// return [tingMjs,chuMjs,huMjs];
+			var tingObjs:any[] = [];
+			for(var i = 0;i<tingMjs.length;i++){
+				var tingobj:any[] = [];
+				tingobj.push(tingMjs[i]);
+				tingobj.push(huMjs[i]);
+				tingobj.push(chuMjs[i]);
+				tingObjs.push(tingobj);
+			}
+			return tingObjs;
+	----------------------------------------------------------------------
+	3、根据胡牌，找出具体听哪些牌：------------------------------------------（当项目中，有文件改变时，注意清理，清理历史记录，浏览器缓存）
+		getTingVal(mjList:number[],huMj:number)：
+			1、将一维数组转换成二维数组，并且转换的时候，将huMj所在哪里类型行curCol记录下来：（这是重点）；
+			2、听牌是空数组，检测是否是做将的一门：[curCol][0]%3 == 2;
+			3、遍历做将，>=2,总数中减2，当前做将牌减2，听——找铺牌：
+			   --------------------------------------------------
+			   var result:any[] = this.ting_zhaoPuPai(_mjlistmodel,curCol,huMj);//听——找铺牌，返回值是数组[0]、[1]
+						if(result[0]){
+							tingObjs = result.length>1?result[1]:[];
+							//如果将牌是胡的那张牌，为对倒
+							if(jiangMj == huMj){
+								tingObjs.push(huMj);
+							}
+							break;
+						}
+			   --------------------------------------------------			
+			4、否则，不是做将的那一门找铺牌，直接返回听牌（不考虑将牌）
+    
+    	4、听——找铺牌：递归寻找和胡牌相关的铺牌
+		ting_zhaoPuPai(mjListModel:number[],col:number,huMj:number)：返回值是数组[0]:true/false,[1]:tingobjs
+		------------------------------------------------------------------------------------------------------
+		/** 
+		 * 递归寻找和胡牌相关的铺牌 
+		 * */
+		public ting_zhaoPuPai(mjListModel:number[],col:number,huMj:number):any[]{
+			if(mjListModel[0] == 0){
+				return [true];
+			}
+			var i:number=1;
+			for(;i<10;i++){
+				if(mjListModel[i] != 0){
+					break;
+				}
+			}
+			var curMj:number = col*9 + i;
+			var result:any[] = [false];
+			if(mjListModel[i]>=3){
+				var _mjlistmodel:number[] = MajiangConstant.clone_array(mjListModel);
+				_mjlistmodel[i] -= 3;
+				_mjlistmodel[0] -= 3;
+				result = this.ting_zhaoPuPai(_mjlistmodel,col,huMj);
+				if(result[0] && result.length == 1){
+					if(curMj == huMj){
+						result[1] = [huMj]
+					}
+				}
+				return result;
+			}
+			if((col != 3 || (col == 3 && i==1)) && i<8 &&(mjListModel[i+1] > 0) && (mjListModel[i+2] > 0)){
+				var _mjlistmodel:number[] = MajiangConstant.clone_array(mjListModel);
+				_mjlistmodel[i] -= 1;
+				_mjlistmodel[i+1] -= 1;
+				_mjlistmodel[i+2] -= 1;
+				_mjlistmodel[0] -= 3;
+				result = this.ting_zhaoPuPai(_mjlistmodel,col,huMj);
+				if(result[0] && result.length == 1){
+					var curMjs:number[] = [curMj,curMj+1,curMj+2];
+					if(curMjs.indexOf(huMj) != -1){
+						curMjs.splice(curMjs.indexOf(huMj),1);
+						result[1] = curMjs;
+					}
+				}
+				return result;
+			}
+			return result;
+		}
+	}
+	----------------------------------------------------------------------------------------------
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 下午：post medierm/afternoon
+ 	开始：五子棋
+	
+    
+    
