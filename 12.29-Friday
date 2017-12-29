@@ -2,9 +2,32 @@
 -------------------------------------------------
 没有什么能够阻挡，我前进的脚步。
 心灵所在的地方，总会看见自己的光芒，照亮自己前进的路。
+------------------------------------------------
+guoshaorui--egret入门教程分享:
+egret的教程：          http://bbs.egret.com/thread-248-1-1.html
+GitHub地址：           https://github.com/NeoGuo
 -------------------------------------------------
 上午：fore medierm/morning
       1、egret.sprite、egret.shape:
         俩个都有绘制功能：
         shape是显示对象，一般用于绘制图形；
         sprite是容器，在此基础上还可以添加子容器和显示对象，一般用于创建可承载内容的游戏层或者游戏对象。
+      2、项目遵循一个特定的结构，结构简单说明如下：
+            workspace    // 您的工作目录
+              |-- your_project  // 您的项目
+                    |-- src // 源码放在这里
+                         |--GameApp.ts // 作为游戏的入口类，实现游戏逻辑------------------------------------Main.ts
+                         |--LoadingUI.ts // 实现Loading效果-----------------------------------------------LoadingUI extends egret.Sprite
+                    |-- resource // 这里放资源，比如图片声音之类的
+                    |-- libs // egret库文件，也可以放其它的库
+                    |-- launcher // 入口
+                          |-- index.html 启动文件
+                          |-- release.html 使用publish命令后，用这个启动
+                    |-- bin-debug // 编译后的代码目录------------------------------------------------------编译后看，有些本地没有
+                    |-- egretProperties.json //文档类的配置-----------------------------------------------native，publich，egret_version，创建时的库文件（扩展库等）
+      3、egret.MainContext:------------------------------------------MainContext是游戏的核心跨平台接口，组合了多个功能Context，并是游戏启动的主入口
+            ————————————————————————————————————————————————————————————
+            var stage = egret.MainContext.instance.stage;//获取Stage引用
+            ————————————————————————————————————————————————————————————
+            Stage不许允许自行实例化：class Stage extends DisplayObjectContainer 
+            
