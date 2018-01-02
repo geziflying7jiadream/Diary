@@ -24,10 +24,10 @@ GitHub地址：           https://github.com/NeoGuo
                           |-- index.html 启动文件
                           |-- release.html 使用publish命令后，用这个启动
                     |-- bin-debug // 编译后的代码目录------------------------------------------------------编译后看，有些本地没有
-                    |-- egretProperties.json //文档类的配置-----------------------------------------------native，publich，egret_version，创建时的库文件（扩展库等）
+                    |-- egretProperties.json //文档类的配置-----------------------------------------------native，publish，egret_version，创建时的库文件（扩展库等）
       3、egret.MainContext:------------------------------------------MainContext是游戏的核心跨平台接口，组合了多个功能Context，并是游戏启动的主入口
             ————————————————————————————————————————————————————————————
             var stage = egret.MainContext.instance.stage;//获取Stage引用
             ————————————————————————————————————————————————————————————
-            Stage不许允许自行实例化：class Stage extends DisplayObjectContainer 
+            Stage不允许自行实例化：class Stage extends DisplayObjectContainer 
             
