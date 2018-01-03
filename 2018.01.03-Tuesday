@@ -7,4 +7,37 @@
      开始：
           1、五子棋开始下棋逻辑，输赢接口。
              判断斜方向只能上的自己的棋子的数目，循环遍历，查找？？？？？
-             
+          2、考虑加上游戏数据，以及游戏角色？？？？？
+          
+下午：post medierm/afternoon
+     开始：
+          1、  any 强转时，不会报错；
+               instanceof:判断类型；
+               数组：
+                    任意类型数组：var arr1:any[] = new Array();
+                    固定类型数组：var arr1:string[] = ['a','b','c'];
+               二维数组：
+                    var arr2:string[][] = [
+                         ['a','b','c'],
+                         ['d','e','f']
+                    ];
+                    或者:
+                    var arr2:string[][] = new Array();
+                    arr2.push(['a','b','c']);
+                    arr2.push(['d','e','f']);//可以将一个数组push进去，成为多维数组
+               定义接口：
+                    //定义输入输出都是字符串的函数的接口
+                    interface IStringFunction {
+                        (input: string) : string;
+                    }
+               可选参数加上：?问号
+                    可以设置默认值，也可以不设置默认值
+            
+            注意：declare var 为环境声明，用来告诉编译器已知的变量类型，例如浏览器定义的一些变量类型     
+          2、类相关的
+               module:
+                    class 类名{ }--->构造函数的函数名用constructor ，而不用类名
+                                 --->static方法： 只能调用static方法
+          3、TypeScript 允许多个类在同一个文件里，但如果类与类在不同的文件，需要继承类 extends
+               重写类(override):不需要些关键字，直接同名方法即可：super().xxx;   
+               
