@@ -6,6 +6,23 @@
 --------------------------------------------------------------
 上午：fore medierm/morning
     开始：
-        1、滕州麻将bug：有花牌？-----------------------------------线上版本上错了！提醒更新？？？
-        2、小花麻将需要改房卡，并且听牌之后杠，显示过提示？
-        3、
+        1、滕州麻将bug：有花牌？-----------------------------------线上版本上错了！提醒更新？？？n?
+        2、小花麻将需要改房卡，并且听牌之后杠，显示过提示？y
+        3、所有麻将都更新？y
+        4、哈希算法：hash()函数，
+        等待别人的认可，是一件很难办到的事情。所以在有限的时间生命中，掌握好自己生命的航向标，努力与收获并存，创造更好的属于自己的另一番天地。
+        加油吧，少年！相信世界不会等待那些停滞不前的loser，美好只属于那些不甘于现在，时刻准备着的勇敢者。
+        
+        
+下午：post medierm/afternoon
+        1、hash函数的存储，跟链表是有一定的相关性的，但是hash函数存储的时间O(1)--O(N)会大大减少存储的效率；
+            一个数据，通过hash()变成一个32位的存储地址；根据这个地址在hash表中的位置，可以通过操作，将目标地址存储起来，之后进行删增或者查找操作；
+            不同的hash()，它们产生的冲突，也是不同的。根据hash()自身的算法，来进行相应的处理办法。
+        2、按照优先级顺序，获取目标资源列表：get a list of targets for the resource   ,in order of precedence.；
+           hash资源如果不是一个位置就能解决的，那么就是返回目标位置，没有重复值的目标位置的数组；
+           hash resource to a position：散列资源到一个位置上：
+                        通过hash(resource)函数，获取资源所在位置；
+                        search values above the resourcePosition：查找在资源位置上的值；
+                        only collect the first instance of any target：只收集任何目标的第一个实例
+                        loop to start - search values below the resourcePosition：开始环搜索，值低于resourcePosition
+                        return when enough results, or list exhausted：当足够的结果或者列表耗尽的时候，返回results;
