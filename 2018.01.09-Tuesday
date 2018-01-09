@@ -121,7 +121,20 @@
                        }
                       ------------------------------------------------
                     str_putObject($key,$object,$expire=604800):缓存json对象————$redis->str_Set($key, json_encode($object),$expire);
-                    
+                    str_getObject($key,$class=null,$toArray=false):获取对象 
+                                   $data = $redis->str_Get($key):获取key值
+                                   判断$data是否是空：返回null
+                                   $class == null:返回 反json数据的是否是数组值
+                                      否则，反json数据，实例化这个类对象，使用parse（）：用来解析JSon字符串
+                    hash_putObject($hashName,$key,$value,$expire=604800)：缓存hash对象 缓存hash事，指定hash的$hashName =‘h’
+                    hash_getObject($hashName,$key,$class=null,$toArray=false):获取hash对象
+                                     $data = $redis->hash_hGet($hashName,$key);获取hash中值
+                                     判断$data数据是空：返回null
+                                     判断class类是空的：返回反json数据的数组($toArray)
+                                     判断Class不是空的类：反JSon数据，之后实例化这个类class()------parse($data):转换数据 
+                                                         返回转换数据的对象：基础类BaseVO.php
+                                             BaseVO.php: 
+                                                       对于redis数据进行处理的数据处理类            
                       
                     
                     
