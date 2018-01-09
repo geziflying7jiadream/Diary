@@ -134,12 +134,95 @@
                                      判断Class不是空的类：反JSon数据，之后实例化这个类class()------parse($data):转换数据 
                                                          返回转换数据的对象：基础类BaseVO.php
                                              BaseVO.php: 
-                                                       对于redis数据进行处理的数据处理类            
-                      
-                    
-                    
+                                                       对于redis数据进行处理的数据处理类     
+                                                       其中最重要的也就是转换数据parse():转换数据，首先要看到数据是否是数组
+                                                       ArrayUtil.php:
+                                                                 objectToArray($object):把对象转换成数组 
+                                                                                get_object_vars($object):返回由对象属性组成的关联数组
+                                                                                
+                    hash_getAllObjecy($hashName,$class=null,$toArray=false):获取hashmap中所有的值，这时候取出来的是array，所以循环转换成对象的数组
+                    -----顺序添加值????????????------------down--？？？？？？？？？？？？？？？？？？？？？？---------------
+                    sortedSet_zAdd($key,$score,$value)：
+                                        $redis->ZADD($key,$score,$value)：->zAdd()将指定分数的指定成员添加到存储在键上的排序集中。
+                    sortedSet_zRem($key,$value):
+                                        $redis->ZREM($key,$value):从有序集合中删除指定成员
+                    sortedSet_zRemRangeByScore($key,$start,$end):
+                                        $redis->zRemRangeByScore($key,$start,$end):删除存储在指定键中的排序集的元素，
+                                                                                   这些元素的范围（开始、结束）中有分数。
+                    sortedSet_zCard($key):
+                                        $redis->ZCARD($key):获取集内部数据的总条数
+                    sortedSet_zCount($key,$start,$end):
+                                        $redis->ZCOUNT($key,$start,$end):根据分数区间，获取集内部数据的总条数
+                    sortedSet_zIncrby($key,$score,$value)：
+                                        $redis->ZINCBY($key,$score,$value):为某个值，增加/减少 分数
+                    ---------------------------------------------------------------------------------------------------------
+                    ——————————————————————————————————————————————————————————
+                              /**
+                               * 
+                               * @param $params 可选 WITHSCORES 键值对 
+                               */
+                            public function sortedSet_zRange($key,$start,$end,$params = null){
+                                return $this->redis->ZRANGE($key,$start,$end,$params);
+                            }
+
+                            public function sortedSet_zRevRange($key,$start,$end, $params = null){
+                                return $this->redis->ZREVRANGE($key,$start,$end, $params);
+                            }
+
+                            public function sortedSet_zRangeByScore($key,$start,$end,$params = array()){
+                                return $this->redis->ZRANGEBYSCORE($key,$start,$end,$params);
+                            }
+
+                            public function sortedSet_zRevRangeByScore($key,$start,$end,$params = array()){
+                                return $this->redis->ZREVRANGEBYSCORE($key,$start,$end,$params);
+                            }
+
+                            public function sortedSet_zRank($key,$value){
+                                return $this->redis->ZRANK($key,$value);
+                            }
+
+                            public function sortedSet_zRevRank($key,$value){
+                                return $this->redis->ZREVRANK($key,$value);
+                            }
+
+                            public function sortedSet_zScore($key,$value){
+                                return $this->redis->ZSCORE($key,$value);
+                            }
+                    ————————————————————————————————————————————————————————————
+                    keys($key):$redis->keys($key):返回与某个模式匹配的键
+                    del($key):$redis->del($key):删除缓存
+                    close():$redis->close():断开与redis的实例，除非使用pconnect();
+                    ttl($key):$redis->ttl($key):获取key剩余生存时间
+                    type($key):$redis->type($key):返回key所存储值的类型 none:int(0) string:int(1) list:int(3) set:int(2) zset:int(4) hash:int(5)
+                    incr($key,$value = 1,$expire = 604800):计数器 自增
+                                   $data = $redis->incrBy($key,$value):递增一个键存储的数字，第二个参数用做增量值
+                                   $expire > 0:设置过期时间$redis->setTimeout($key);
+                    decr($key,$value = 1,$expire = 604800):
+                                   $data = $redis->decrBy($key,$value):递减一个键存储的数字，第二个参数用做递减值
+                                   $expire > 0:设置过期时间$redis->setTimeout($key);
+                    mget($keys):$redis->mget($keys): 一次获取多个keys值（哈希？？）      返回值：array
+                    getMultiple($keys):$redis->getMultiple($keys):取出多个keys值     ？？
+                    getLastError():$redis->getLastError():返回最后一个错误消息           $redis->eval()
                     
           RedisShardProxy.php
-                        
+                    大致都是实例化RedisUtil.php的方法
+                    
+     下午：post medierm/afternoon
+          生活的本质是在最简单重复的工作中发现最美好不平凡的事情。
+          做好每一件值得自己付出一切精力的劳动，没有无缘无故的付出，总会在适当的时候，让你感动。
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
                
         
