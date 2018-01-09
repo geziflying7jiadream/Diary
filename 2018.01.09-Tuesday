@@ -12,4 +12,121 @@
         RedisFlexihashHelper，用来对redis进行调用，在redis中使用hash算法，缓存数据
         最后在redis中调用getRedis();--------------根据redis的配置，来获取redis的主机、端口、dbIndex：进而找到redis缓存数据的存储地方
      2、实例化RedisUtil.php，之后连接connect($host,$port),判断：有没有密码权限auth(pwd),
+        之后根据redis进行对象查找select(dbIndex):$this->redis = new RedisUtil();
+        其中，对于$redis对象：其实就是封装在RedisUtil中的对象：$redis = new Redis();在那个类中，将redis对象的一些属性，以及方法进行连接connect()
+        有关于redis的一些设置：例如持续时间等的属性值参数，连接状态$redis->isConnect = false;
+        都是可以在连接redis对象的时候实现：
+                              如果有持续时间的话，pconnect()：连接一个redis实例或者是重用一个redis连接
+                              否则，持续时间不是真，那么，就相当于第一次连接：connect();
+     3、sessionManager.php：
+               此类就是对redis缓存数据添加，获取，删除，设置session标识，以及删除下线玩家数据；
+                    其中，设置值的时候，setValue()：会进行数据时间上的设置BaseDao::getRedis()->setTimeout(xxx,Values::时间参数)；
+                    Values.php:
+                           这个时候，Values中就是对于数据的一些固定参数的处理:
+                                             一年、一月、一天、一小时、一分钟；7天、15分钟.......
+                                             uniqid() 函数基于以微秒计的当前时间，生成一个唯一的 ID。----------当前时间
+                                             
+     4、继续进行RedisUtil.php：这是一个处理redis的基础类 -------------- 衍生出来的类：RedisShardProxy.php：逻辑上实现基础类的方法以及属性数据
+          RedisUtil.php:
+                    $redis:对象
+                    $isConnect:连接状态
+                    __construct():$this->redis=new Redis()  实例化redis对象
+                    connect($host,$post,$persistant = false): 连接redis(根据IP。端口，持续时间) 
+                    auth($pwd): $this->redis->auth(pwd);   根据redis代理传递过来pwd,是否授权(Redis.php)
+                    select($dbIndex):选择redis数据库
+                    flushDB():清空当前选择库  
+                    flushAll():清空所有库
+                    randomKey():随机返回key空间中的一个key ($key = $redis->randomKey(); 找到值：$value = $redis->get($key);)
+                    setTimeout($key,$expire):设定过期时间  expire():http://redis.io/commands/expire：需要设置过期时间的key,$expire:过期多少秒
+                    exists():判断某个key值是否存在
+                    str_Set($key,$value,$timeout = 604800):添加字符串  
+                                        $timeout <0 :$redis->set($key,$value) 
+                                        else : $redis->exset($keyy,$value,$timeout):参数中的字符串设置超时时间
+                    str_delete($key):$redis->del($key,...)  删除字符串
+                    str_Get($key):获取字符串 
+                    list_lPush($key,$value):在list左边头添加元素  （理解：正常添加顺序，之后的反转顺序）
+                    list_rPush($key,$value):在list右边头添加元素
+                    list_lPop($key):在list左边头删除元素 （右边添加，左边删除lpop()）
+                    list_rPop($key):在list右边头删除元素
+                    list_lSize($key):$redis->lLen($key) 获取list长度
+                    list_lSet($key,$index,$value):设置指定位置的值    $redis->lSet($key,$index,$value)
+                    list_lGet($key,$index):获取指定位置的值           $redis->lIndex($key,$index)
+                    
+                    ----------------------
+                    /**
+                        * 截取list
+                        * */
+                       public function list_lTrim($key,$start,$end){
+                           $this->redis->lTrim($key,$start,$end);
+                       }
+
+                       public function list_lRem($key,$value,$count){
+                           return $this->redis->lRem($key,$value,$count);
+                       }
+
+                       public function list_lRange($key,$start,$end){
+                           return $this->redis->lRange($key,$start,$end);
+                       }
+
+                         public function list_lIndex($key, $value){
+                              return $this->redis->lIndex($key, $value);
+                         }
+
+
+                       public function hash_hSet($hashName,$key,$value,$expire=604800){
+                           $this->redis->hSet($hashName,$key,$value);
+                           if($expire > 0){
+                               $this->setTimeout($hashName, $expire);
+                           }
+                       }
+
+                       public function hash_hGet($hashName,$key){
+                           return $this->redis->hGet($hashName,$key);
+                       }
+
+                       public function hash_hLen($hashName){
+                           return $this->redis->hLen($hashName);
+                       }
+
+                       public function hash_hDel($hashName,$key){
+                           $this->redis->hDel($hashName,$key);
+                       }
+
+                       public function hash_hKeys($hashName){
+                           return $this->redis->hKeys($hashName);
+                       }
+
+                       public function hash_hVals($hashName){
+                           return $this->redis->hVals($hashName);
+                       }
+
+                       public function hash_hGetAll($hashName){
+                         $array = $this->redis->hGetAll($hashName);
+                           return $array;
+                       }
+
+                       public function hash_hExists($hashName,$key){
+                           return $this->redis->hExists($hashName,$key);
+                       }
+
+                       public function hash_hMset($hashName,$values){
+                           $this->redis->hMset($hashName,$values);
+                       }
+
+                       public function hash_hMGet($hashName,$keys){
+                           foreach($keys as $index => $value){
+                               $keys[$index] = (string)$value;
+                           }
+                           return $this->redis->hmGet($hashName,$keys);
+                       }
+                      ------------------------------------------------
+                    str_putObject($key,$object,$expire=604800):缓存json对象————$redis->str_Set($key, json_encode($object),$expire);
+                    
+                      
+                    
+                    
+                    
+          RedisShardProxy.php
+                        
+               
         
