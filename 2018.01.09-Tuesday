@@ -9,4 +9,7 @@
 --------------------------------------------------------------------------
 上午：fore medierm/morning
      1、昨天的RedisShardProxy以及其他文件，redis处理哈希算法：一致性hash；
-        RedisFlexihashHelper，用来对redis进行调用，
+        RedisFlexihashHelper，用来对redis进行调用，在redis中使用hash算法，缓存数据
+        最后在redis中调用getRedis();--------------根据redis的配置，来获取redis的主机、端口、dbIndex：进而找到redis缓存数据的存储地方
+     2、实例化RedisUtil.php，之后连接connect($host,$port),判断：有没有密码权限auth(pwd),
+        
