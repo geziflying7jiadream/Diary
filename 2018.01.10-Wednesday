@@ -59,8 +59,82 @@
        _-----------------------------------------------------------------------------------------------------------------------------
        接下来，开始分析的是SwooleWebSocketProxyServer.php
        SwooleWebSocketProxyServer.php:
+            继承自SwooleProxyServer.php:这个类中将Swoole代理服务器的一些设置，初始化，连接服务器的接口已经准备好了
             
-                    
+            SwooleWebSocketProxyServer:
+                $server:swoole_websocket_server 其实这就是：异步非阻塞的websocket服务器进程 通过几行php代码实现
+                
+                __construct($business):$this->business = $business; business相当于业务模型
+                
+                start():这是swoole服务器代理开始的接口
+                            在ExtGameService.php中，实例化swoole代理服务器之后，调用这个方法开始进行游戏逻辑；
+                    a、register_shutdown_function("SwooleProxyServer::handleFatal"):当我们的脚本执行完成或意外死掉导致PHP执行即将关闭时,我们的这个函数将会 被调用
+                    b、$this->setProcessTitle():关于游戏服务器的一些设置 ？？？？？？？？？？？_______$this:这个是很有深意的，来自继承
+                    c、new swoole_websocket_server(SwooleSetting::$host,SwooleSetting::$port):实例化swoole服务器
+                            $server->set(SwooleSetting::$setting); 用于swoole_server运行时的一些参数设置
+                                                包括：线程数，启动worker运行数，Task进程的数量（server必须注册onTask、onFinish两个回调函数，
+                                                如果没有注册，server将不会启动）heartbeat_check_interval：每隔x秒，便利所有连接，如果在x秒内没有
+                                                向服务器发送任何数据，此链接关闭。
+                                                $server->on('xx',array(类名,回调函数)): 注册事件的回调函数
+                            
+                            $server->on("start",array($this,"onStart")); 
+                            $server->on("workerStart",array($this,"onWorkerStart"));
+                            $server->on("open",array($this,"onOpen"));
+                            $server->on("message",array($this,"onMessage"));
+                            $server->on("close",array($this,"onClose2"));
+                            $server->on("task",array($this,"onTask"));
+                            $server->on("finish",array($this,"onFinish"));
+                            $server->on("pipeMessage",array($this,"onPipeMessage"));
+
+                            $server->start();启动服务器
+                    d、上面的所有的调用函数：处理的逻辑都是在SwooleProxyServer.php中进行调用的
+                            ForwardClientPool：转发连接池，开始心跳
+                            SwooleTimerManager::初始化时间管理者
+                                        ->tick(时间，调用函数)：swoole进行时的服务器的定时器
+                            SwooleTaskManager::initManager():初始化task进程服务器
+                            $this->business->init($this,$work_id)：启动服务器 初始化服务器
+                            onConnect(swoole_server $server,$fd,$from_id):有新的进程进入时，在worker中回调(不是主进程中)
+                            onReceive(swoole_server $server,$fd,$from_id,$data):服务器接收新的数据时，将数据解包unpack(),处理业务index()
+                            onClose(swoole_server $server, $fd, $from_id):关闭进程，结束模型业务
+                            onTask($server,$task_id,$from_id,$data)：task进程 $data->excute($this)？？？？？
+                            onFinish($server,$task_id,$data)：同样跟上面的onTask是一样的，都在task进程触发的时候使用
+                            onPipeMessage($server, $src_worker_id, $data)：当工作进程收到senMessage发送的管道消息时触发，worker/task进程都会触发
+                                    onPipeMessage:
+                                            首先将json数据解析成数组，
+                                            取出这个数组数据中的cmd：$data['cmd'],
+                                            判断$cmd == 'timer':添加一个定时器 或者 一个倒计时 （$data['ty']判断）
+                                            判断$cmd == 'retimer':清除定时器
+                            sendData($fd,$data):发送数据
+                            sendObjectData($fd,$data):发送对象数据
+                            handleFatal():swooleproxyserver这个是swoole代理服务器在进行完所有的php程序之后，进行的错误显示接口
+                            
+                            
+                            
+                   ---------------------------------------------------------------------------------         
+                   $serivceName = ApiConfig::$ExtGameRpcServiceName;：接下来开始分析ApiConfig中的事情
+                   ApiConfig:
+                        static $ExtGameRpcServiceName = "MajiangService";静态变量命名 ，游戏逻辑类名
+                        getApi($key):
+                                    $class = $this->config[$key];
+                                    return new $class();//返回配置键实例化类
+                   ---------------------------------------------------------------------------------
+                   
+                   
+                   logicPath.php:
+                   
+                   swoole/business/game/
+                        GameBusiness.php:游戏解析模型     继承自BaseBusiness.php
+                            在swoole代理服务器时，被调用init()初始化，加载很多文件，现在来一一分析一下撒
+                          init($swProxyServer,$work_id)：服务启动调用
+                                        require_once __DIR__ . "/../../../class/autoloader.php";//加载自动加载文件
+                                        require_once "LoginPath.php";//加载登录地址文件
+                                        require_once "LogicPath.php";//加载逻辑地址文件
+                                        require_once "ForwardPath.php";//加载转发地址文件
+                                        require_once "AdminPath.php";//加载后台地址文件
+                                        autoloader::init();//自动加载类，调用初始化，作用：实例化上面加载的文件类
+                                        
+                            
+                            
                                     
              
                 
