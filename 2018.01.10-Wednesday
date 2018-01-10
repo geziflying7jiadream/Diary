@@ -9,4 +9,59 @@
 ---------------------------------------------------------------------------------
 上午：fore medierm/morning
     开始：
-    1、
+    1、亲爱的朋友，没有人会为你的生命精彩与否买单。
+       爱自己，趁着有限的生命，创造不一样的精彩。
+    2、
+        ____________________________________________
+        游戏主体的关键位置：swoole文件夹
+        swoole/
+             business/
+                   extgame/
+                         ExtGameBusiness.php
+        ____________________________________________                 
+        ExtGameBusiness.php:游戏服务器接受消息的载体                      继承自BaseBusiness.php:这是一个业务解析模型
+              init($swProxyServer,$work_id):SwooleProxyServer启动服务的初始化                 
+                    引入自动加载文件：autoloader.php:            
+                                    在这个文件中，初始化autoloader::init():这是为了确定根目录，并且实例化自动加载文件对象。
+                                    date_default_timezone_set("PRC"):设置默认时区 
+              index($swProxyServer,$fd,$data):处理业务
+                    $data = json_decode($data,true);//将json数据解析成数组
+                    判断$data不是数组，直接返回；
+                    $reqData = $this->parseRequest($data);//处理一次请求数据，返回数组
+                    ——————————————————————————————————————————————————————————————————————————————
+                  a、请求的数组中，取出'c'=》值:$cStr = $reqData['c'];
+                    $serverName = ApiConfig::$ExtGameRpcServiceName;  //项目应用配置的游戏逻辑处理类
+                    ——————————————————————————————————————————————————————————————————————————————
+                  b、实例化这个类；
+                    定义这个类中发送者信息：请求数据中的$reqData['sender']?
+                    判断sender不是null,定义发送者id(senderUId): ->senderUid = ->sender[0]
+                  c、请求的数组中，$reqData['room']？
+                     实例化Room();
+                     将请求的room数据转换，$room->parse($reqData['room']);
+                     定义游戏服务器中的->room  = $room;
+                  d、请求数据中的角色信息；
+                     实例化角色类；
+                     同样转换角色数据；
+                     定义发送者角色：->senderRole = $role;
+                  e、判断$server中$cStr的方法是否存在？method_exists($server,$cStr)
+                     存在即调用这个方法：$server->$cStr($reqData);
+                      
+              parseRequest($request)：foreach循环判断，请求数据是字符串，并且字符串的组合是{ [ 开始，将json数据解析成数组，并返回数组；
+        BaseBusiness.php:
+              这个类是业务解析模型：
+                           init($swProxyServer,$work_id):启动服务器的初始化
+                           index($swProxyServer,$fd,$data):游戏中请求数据处理接口
+                           
+                           onConnect($swProxyServer, $fd, $from_id)：连接服务器的接口
+                           onClose($swProxyServer, $fd, $from_id)：关闭服务器的接口
+                           packData($data)：封包  将数据封包返回：$data = pack('N',strlen($data)) . $data; 'N':代表无符号的长字符串
+                           unPackData($data)：解包  $data = substr($data, 4,strlen($data)); 解析32位的无符号字符串数据
+       _-----------------------------------------------------------------------------------------------------------------------------
+       接下来，开始分析的是SwooleWebSocketProxyServer.php
+       SwooleWebSocketProxyServer.php:
+            
+                    
+                                    
+             
+                
+            
