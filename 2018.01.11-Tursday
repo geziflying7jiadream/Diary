@@ -1,0 +1,86 @@
+每天进步一点点，未来前进一大步：
+-------------------------------------------------------------------------------------
+经历过生活中的尝试，你就会渐渐明白，没有什么是你看不透的，有的只是思想上的成熟，
+那种小姑娘似的勾心斗角的心思，在你这里已经是一种“不穿新装的皇帝”一样，一眼就看透了。
+没有比这种经历更多的了，如果在这个已经知道是非的年纪，还在搞一些小把戏，那真是让自己惭愧。
+最后叮嘱自己一句：谁没有年轻过，曾经的你，也许比现在的那些更有过之而无不及。
+且行且珍惜。
+谁还没有青春年轻过！
+-------------------------------------------------------------------------------------
+上午：fore medierm/morning
+    开始：
+      1、放心吧，没有人会从我这里找到折磨的快感，除了我自己。任何一切外在因素都是一种可抗力的表现，在这种变量的基础上，我会产生一种质的飞跃。
+      onRecieve()、onPipeMessage()：两种接收消息的形式，处理接收消息之后的业务逻辑。
+      2、继续昨天的任务：
+      logicPath.php:
+             swoole/business/game/
+                   GameBusiness.php:游戏解析模型     继承自BaseBusiness.php
+
+      SwProxyInstance：swoole代理实例化类 
+             其中有一些方法：
+             sendObjectData(sendObjectData($uid,$data):发送对象数据
+                  判断当前代理是null ,直接返回；
+                  通过getFDbyUID($uid):在redis中找到$fd;
+                  SvrConfig::svr_id == 'jinhua_1';这是一个常量
+                  根据套接字是否为空，删除套接字所在的hash值redis清空；
+                  并且清除本服中的套接字；
+             broadcast($data,$forward = true)：广播消息
+                  判断swoole代理null,直接返回
+                  获取在本服中的所有套接字$allFD;
+                  解析json数据，并加密AES::;
+                  将加密之后的套接字使用，发送数据；
+                  转发服务器$forward == true时，向未指定目标服务器转发数据:self::forward(null,$data);
+                      forward($targets,$data):根据转发服务器配置，获取转发服务器名称、
+                                              转发数据$sendData = array('from' => SvrConfig::svr_id,'targets'=>$targets,'data'=>$data);
+                                              ForwardClientPool::forwardData($forwardConfig[0],$forwardConfig[1],$sendData);转发连接池转发数据
+             addFD($uid,$fd):给转发服务器，添加套接字
+                  这个是数据套接字在redis中的存储形式，获取套接字的方式就是这样来获取的；
+                              ————————————————————————————————————————————————————————————
+                              if(self::$swooleProxy == null) return;
+                              $svrid = SvrConfig::svr_id;
+                              BaseDao::getRedis()->hash_hSet("sw:fd:uid","$fd:$svrid",$uid);
+                              BaseDao::getRedis()->hash_hSet("sw:uid:fd",$uid,"$fd:$svrid");
+                              //本服的fd记录到一个统一的位置
+                              BaseDao::getRedis()->list_lPush("sw:fd:svr:$svrid",$fd);   
+                              ————————————————————————————————————————————————————————————
+             removeUId($uid):有添加，就有删除（根据上面给用户uid添加套接字）                 
+             removeFD($fd):同上 但是清除本服中套接字，返回的是$uid;
+             getFDbyUId($uid):通过uid 获取套接字fd
+             getFDbyUIds($uids):通过uids 获取套接字fd
+             getSvrFDs($srvId):通过svr_id服务器，获取这台服务器上所有的套接字
+             getAllFD():直接获取所有的fd ->hash_hGetAll("sw:uid:fd")
+             clearFD():通过获取所有的fd，循环遍历，每个套接字fd,":"分割成数组   取出数组中的svr_id,等于svrConfig中服务器svr_id的话：清除uid，清除fd 
+                      最后循环完成之后，找到服务器配置中的svr_id，清除服务器svrId
+             isOnlineByUId($uid):判断玩家是在线 getFDbyUId($uid):根据玩家uid获取玩家套接字是否存在
+             isOnline($fd):根据套接字，判断玩家在线 exists($fd):套接字存在
+             closeFD($fd):关闭连接
+             addTask($task,$dst_worker_id = -1)：添加一个任务（根据swoole中的task管理者addTask）   SwooleTaskManager::addTask($task,$dst_worker_id)
+             addTiemr($config,$timer):添加一个定时器
+             addTimerDown($delay,$repeatCount,$timer):添加一个倒计时器
+             removeTimer($id):删除一个定时器  sendMessage($id)
+             getClientIp($fd):根据fd套接字，获取客户端ip   
+                          swoole的代理$swooleProxy == null 返回:127.0.0.1
+                          self::$swooleProxy ->server:服务启动init的时候，已经定义server
+                          通过这个server找到fd套接字的连接信息：$fdInfo = self::$swooleProxy->server->connect_info($fd);
+                          通过判断远程地址是否存在，$fdInfo['remote_ip']？ 返回: $fdInfo['remote_ip']  否则：返回127.0.0.1
+                  
+       ----------------------------------------------------------------------------------------------------------------------------
+       GameBusiness.php
+            init($swProxyServer,$work_id):初始化，引入一些文件，自动加载是初始化autoloader::init();
+                  sw实例化的代理服务器:对其定义
+                  sw实例化的代理服务器work_id:对其定义
+                  SwooleConnectHandler:swoole的连接处理类 调用onWorkStart
+                  判断是否是战斗服务器：==1 
+                  $work_id == 0:定时器配置初始化TimerConfig::init()
+            index($swProxyServer,$fd,$data):处理游戏服务器端的业务开始
+                  将数据解析成数组；
+                  判断是否是数组，发送错误的状态信息；参数不足的状态信息
+                  判断path参数、请求数据参数reqData，不存在：发送错误信息数据（参数不足的状态信息StateConstant:: -3）
+                  $path = $reqData['path'];//请求地址
+                  $pathObject = null;//请求地址对象
+                  判断$path == 'login' 那么，定义地址对象：登录实例化                 $pathObject = new LoginPath();
+                  判断$path == 'logic' 那么，定义地址对象：应用Api，c控制器实例化      $pathObject = new LogicPath();
+                  判断$path == 'forward' 那么，定义地址对象：转发数据    实例化        $pathObject = new ForwardPath();
+                  判断$path == 'admin' 那么，定义地址对象：管理终端 实例化             $pathObject = new AdminPath();
+
+
