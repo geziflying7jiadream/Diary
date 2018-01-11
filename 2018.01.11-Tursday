@@ -83,4 +83,63 @@
                   判断$path == 'forward' 那么，定义地址对象：转发数据    实例化        $pathObject = new ForwardPath();
                   判断$path == 'admin' 那么，定义地址对象：管理终端 实例化             $pathObject = new AdminPath();
 
-
+下午：post medierm/afternoon
+     每个人都不希望别人说自己，那为什么你还要说别人。己所不欲，勿施于人。这个道理你不是不懂，就是觉得别人会把你捧在手心，必须惯着自己吗？
+     请问一句：我不是你爸爸妈妈，说的简单点，我跟你没有关系，干嘛要忍受你。你这样说别人，就要承受别人说你的代价。不然的话，就少说话。
+     首先，你要修炼，一辈子这么长，总会遇到一二傻逼，自己过不明白，还在扯。也许他们并不是真的闲扯，只是不屑于以自己真实的面目示人，因为这个社会太复杂
+     保护自己的方式又太少，可能这也是其中的一种吧。
+     
+   GameBusiness.php
+        forward 或 admin 的地址对象：那么就调用它们的index（）：处理数据的发送服务器
+        否则，将请求数据加密，之后进行index()调用：
+                LoginPath()->index():处理login时：
+                                microtime(true):获取程序开始时的时间
+                                判断'c'是否存在；
+                                $api = new UserService()：实例化 继承自 BaseService():服务的基类    包含属性：swoole代理服务、套接字、api调用c方法的数组、
+                                请求者uid、account账号、Cid渠道、请求这版本代码、请求这版本名字、initSwooleProxy($proxy,$fd)、hasC($c)是否有c方法、
+                                excute($c,$uid,$request):根据c方法执行，定义以上的属性、checkParams($request,$params):检测参数、getRequestValue():获取请求值
+        
+                        $value = $api->excute($cStr,null,$request)：表示执行了c方法，返回的值
+                        如果返回值null ：那就记录当前时间$value['st']= time();
+                        然后获取程序执行结束的时间。结束时间-开始时间 = 接口计算时间
+                        BaseDao::logPerformTime('login', $cStr, $performTime)：记录接口（调用那个方法时）计算时间
+                        此时，$value != null:服务器json数据加密，发送数据sendData($value)
+                LogicPath()->index():
+                        关键是对于session的会话控制：session用于用户信息存储在服务器端的一种会话机制
+                        $uid = SessionManager::getValue($request['sessionToken'], 'uid');//获取session会话中的uid  
+                        $api = $apiConfig->getApi($apiStr)：这是为了相应的服务类实例化
+                        判断hasC(cStr)不存在：
+                        ->excute($cStr,$uid,$request):执行接口调用，返回值
+                        有值的时候，触发事件；记录接口完成时间，以及记录最后请求信息（返回值）
+                        
+        
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+    
+     
