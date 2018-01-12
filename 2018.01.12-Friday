@@ -1,0 +1,136 @@
+每天进步一点点，未来前进一大步：
+------------------------------------------------------------------------
+“满招损，谦受益”。
+工作生活中，什么事情都会遇到，看清的看不清的，明白的装糊涂的。
+不论是在哪种状态下，都是需要自己来及时调整自己的状态，少说话，多做事。
+在工作生活中，实现自己的最大价值。没有人有义务和责任来取悦自己，同样的，
+自己也是没有义务来取悦别人的，所以，做自己就好，对得起自己的良心，问心无愧！
+------------------------------------------------------------------------
+上午：fore medierm/morning
+    开始：
+    1、在主类中，我们需要将配置，先进行实例化，之后，在实例化的类上，加上已经生命的变量，给出定义；
+    之后将定义好的变量，在数据类中存储进去，之后实例化游戏开始舞台；CGCPStarup():这样就完成了，一个新的游戏配置；
+    并且将游戏舞台已经搭建好了。
+    2、如此一来，我们就可以在游戏面板上，开始自己的游戏逻辑的开发了。
+     因为在加载数据的时候，出现的App应用，App.init()应用的初始化：就是将游戏的面板给显示出来，并且将登陆界面等的弹窗弹出来
+     ，这样之后再在面板上加载一些对象，就是轻而易举的事情了。
+    3、登录时，将BaseApi进行解析，就可以看出来，请求登录时，传递参数，回调函数，以及出现错误时的回调函数。
+    请求的逻辑接口，logic，相信自己，那些居心叵测的小喽啰，他们其实心里一样的挣扎，因为这所有的一切都是他们安排的，
+    没有事情是对自己不影响的，只要我还存在，只要他们心中还有阴暗面，这个恶性循环就不会消失。
+    战斗吧！让一切都燃烧起来吧，没有谁是对不起谁的，一切都是自己的因果循环。上天会给你惩罚的，只是时候还不到而已。
+    请求之后的接口怎么调用？
+    这个问题，就是在login之后，服务器端给出相应的响应，将数据存储在一个地方，之后还有其他登陆者登录，将信息存储在redis中
+    这样，等到服务器端判断，加入房间的接口，如果加入房间的人数达到游戏逻辑中的人数要求，并且判断这些加入房间的人都准备好的话
+    游戏就开始了。
+    游戏开始的条件是：当所有人准备好，庄家进行开始按钮，游戏开始创建房间的时候，进行洗好的麻将，并且，开始之后，将麻将安装顺时针方向，进行发牌
+    第一圈：每个人发13张，庄家14张。并且，总得麻将数量进行加加操作。已记录当前麻将已经发到第几张，还有暗杠杠牌补杠的麻将，这个是从总的麻将，最后开始计算。
+    初始化的时候，最后的杠牌补牌是第0个。之后补拍之后，就是加加个。
+    这个是为了计算剩余牌数是多少：$total -$currentMj - $currentMj2 在游戏操作中，在最后判断，是否是黄庄。
+    判断皇庄的一个依据就是：当前游戏中，是否还有麻将存在，没有麻将存在，就是黄庄。
+    在操作中，有将近五种方式的操作：过 吃 碰 杠 胡 还有自摸；
+    但是自摸是一个单独的接口进行操作的：那么我们来判断，过：oprating = [0,1,2,3,4,5];
+    前端操作中，对于过操作，就是在出现相应的操作的时候，出现一个Bitmap()对象的按钮，这个按钮，将判断是否在操作中
+    进行过或者其他操作；
+    如果在操作中，那么需要看前端的gamePanel类：这个类是处理麻将面板控制的类；
+    4、
+      GamePanel:
+          extends BasePanel 
+              AssetManager:这个是资产管理者 开始初始化的时候，RES注册异步 swf js
+              在加载配置中，AssetManager.is_local == true时，
+              AssetManager.loadConfig(cgcp.AppConfig.platform_res_config_url, cgcp.AppConfig.platform_res_url, callBack, callBackThisObj, cgcp.AccountData.getUrlData().resVer);
+              否则的话：直接定义AppConfig.platform_res_url地址，同样进行上面的加载配置
+              
+    5、egretProperties.json
+        这个是记在第三方库文件的一个文档：里面有关于native publish egret_version modules
+        egretProperties.json:
+           "native":{"path_ignore":[]},
+           "publish":{"web":0,"native":1,"path":"bin-release"},
+           "egret_version":"4.0.3",
+           "modules":[{"name":"egret"},{"name":"game"},{"name":"res"},{"name":"tween"},{"name":"socket"},
+           {"name":"starlingSwf","path":"../StarlingSwf-Egret/libsrc"},{"name":"cgc_platform_lib","path":"../cgc_platform_lib"}]
+     createPanel:创建面板中，
+          MainAsset:starlingswf.SwfSprite   这个代表加载的第三方文件中封装好的类容器
+          此类中，就是将egret中几个常用的对象进行封装在 此类中，便于使用
+                  getTextField(name: string): egret.TextField;//这是egret的文本框对象
+                  getMovie(name: string): starlingswf.SwfMovieClip; 封装好的第三方movie类
+                  getSprite(name: string): starlingswf.SwfSprite;封装好的第三方sprite容器类
+                  getImage(name: string): egret.Bitmap;这个是egret的图片位图对象Bitmap
+                  getButton(name: string): starlingswf.SwfButton;第三方封装好的button按钮对象
+        创建面板时：有消耗房卡，aa支付房卡的属性，
+                   设置局数,aa房卡，房主，（xxx）按钮：starlingswf.SwfButton 
+                   SwfButton:这个按钮 extends starlingswf.SwfSprite 这个按钮egret.DisplayObjectContainer也相当于一个容器
+                          static onClick: string; //按钮有点击事件
+                          static defSound: egret.Sound;背景声音
+                          skin: egret.DisplayObject;皮肤对象
+                          defScale: number;缩放范围
+                          private _w；宽
+                          private _h;高
+                          constructor(skin: egret.DisplayObject);构造函数，皮肤在里面
+                          mouseDown(evt: egret.TouchEvent): void;鼠标按下
+                          mouseUp(evt: egret.TouchEvent): void;鼠标弹起
+                          mouseClick(evt: egret.TouchEvent): void;鼠标点击事件
+                          setEnable(val: boolean): void;设置事件是否监听
+                          dispose(): void;销毁事件
+          创建面板，加载Sprite 容器，在  sprite容器记载在登陆之后的面板上，使用一个工具，初始化面板上的对象，对应声明的名字
+                InterfaceVariablesUtil.initVariables(this,this.mainAsset);
+                之后进行加载在这个创建房间的面板上一些对象，控制这些对象，操作创建房间
+                更新卡片内容，（根据局数、aa支付房卡）文本框的文字内容：房卡x1 
+                点击创建房间按钮，on_okBtn(e:egret.Event):this.create();
+                在创建面板上，添加其他的选项参数时：在这个类中的createData():中添加 字段
+                ————————————————————————————————————————————————————————————————————————————————————————————
+                InterfaceVariablesUtil这个类：将一整个画好的容器，上面的图形名字，对应当前对象的相同名称的声明属性
+                InterfaceVariablesUtil这个类中：有关于"on_"+按钮的解释：
+                    display = interFace.$children[i];
+                          __________________________________________________________________
+                                    var InterfaceVariablesUtil = (function () {
+                                    function InterfaceVariablesUtil() {
+                                    }
+                                    InterfaceVariablesUtil.initVariables = function (obj, interFace) {
+                                        var hasEventBtns = [];
+                                        var hasEventBtnNames = [];
+                                        var len = interFace.$children.length;
+                                        var name;
+                                        var display;
+                                        var btnClickFunName;
+                                        for (var i = 0; i < len; i++) {
+                                            display = interFace.$children[i];
+                                            name = display.name;
+                                            if (name != null && name != "") {
+                                                obj[name] = display;
+                                            }
+                                            if (display instanceof starlingswf.SwfButton) {
+                                                btnClickFunName = "on_" + name;
+                                                if (obj[btnClickFunName]) {
+                                                    display.addEventListener(starlingswf.SwfButton.onClick, obj[btnClickFunName], obj);
+                                                    hasEventBtns.push(display);
+                                                    hasEventBtnNames.push(name);
+                                                }
+                                            }
+                                        }
+                                        obj["_hasEventBtns_"] = hasEventBtns;
+                                        obj["_hasEventBtnNames_"] = hasEventBtnNames;
+                                    };
+                                    InterfaceVariablesUtil.disposeVariables = function (obj) {
+                                        var hasEventBtns = obj["_hasEventBtns_"];
+                                        var hasEventBtnNames = obj["_hasEventBtnNames_"];
+                                        if (hasEventBtns == null || hasEventBtnNames == null)
+                                            return;
+                                        var len = hasEventBtns.length;
+                                        for (var i = 0; i < len; i++) {
+                                            hasEventBtns[i].removeEventListener(starlingswf.SwfButton.onClick, obj[hasEventBtnNames[i]], obj);
+                                        }
+                                    };
+                                    return InterfaceVariablesUtil;
+                          ________________________________________________
+                
+                ————————————————————————————————————————————————————————————————————————————————————————————
+              
+
+
+              
+              
+              
+              
+              
+              
+     
