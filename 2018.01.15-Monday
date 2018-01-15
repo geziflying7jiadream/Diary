@@ -1,0 +1,28 @@
+每天进步一点点，未来前进一大步：
+-------------------------------------------------------------------------------------------
+经过了时间的慢慢洗礼，对待人事物的看法会发生转移，没有什么事情是需要争论的，只有健康的身体和心态，
+才是最重要的。人生何其短，为什么要浪费在那一点点无所谓的事情上，还有那么多美好的事情等待自己去追求。
+只要把握自己的心，没有什么事情是阻挡自己前进的障碍，拼搏吧！趁着青春的还在，努力创造自己想要的明天。
+-------------------------------------------------------------------------------------------
+上午：fore medierm/morning
+    开始：
+      1、小花麻将，最后一张补花，打不出来。
+        出牌的时候，后端没有判断是花不能出，所以前端判断最后一张花牌之后结束。
+      2、MjlistPanel.php
+        其中，关于出牌逻辑:onClickMj()
+        这个时间出现在：刷新手牌列表、点击新麻将、释放麻将点击事件
+        刷新手牌列表：
+        refreshMjList(showTween:boolean,newMjVal:number = -1):
+            MajiangGameData.getMjs():获取麻将数组：getMjs();------------------------MajiangGameData是存储RAM数据类;
+            this.disposeMjClickEvent():释放麻将点击事件
+                    释放麻将点击事件的时候，当前选择的麻将置null；
+                    获取当前麻将容器的子对象长度：var len:number = this.MjListContainer.$children.length;
+                    循环长度的清除麻将容器中的点击事件：this.mjListContainer.removeEventListener(egret.TouchEvent.TOUCH_TAP,this.onClickMj,this)
+            this.MjListContainer.removeChildren():麻将容器这个实例中的子例列表清除所有
+            
+
+
+
+
+
+
