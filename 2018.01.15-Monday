@@ -10,7 +10,7 @@
         出牌的时候，后端没有判断是花不能出，所以前端判断最后一张花牌之后结束。
       2、MjlistPanel.php
         其中，关于出牌逻辑:onClickMj()
-        这个时间出现在：刷新手牌列表、点击新麻将、释放麻将点击事件
+        这个时间出现在：刷新手牌列表、添加新麻将、释放麻将点击事件
         刷新手牌列表：
         refreshMjList(showTween:boolean,newMjVal:number = -1):
             MajiangGameData.getMjs():获取麻将数组：getMjs();------------------------MajiangGameData是存储RAM数据类;
@@ -18,7 +18,43 @@
                     释放麻将点击事件的时候，当前选择的麻将置null；
                     获取当前麻将容器的子对象长度：var len:number = this.MjListContainer.$children.length;
                     循环长度的清除麻将容器中的点击事件：this.mjListContainer.removeEventListener(egret.TouchEvent.TOUCH_TAP,this.onClickMj,this)
-            this.MjListContainer.removeChildren():麻将容器这个实例中的子例列表清除所有
+            this.MjListContainer.removeChildren():-------------------------------麻将容器这个实例中的子例列表清除所有
+            var len:number = mjList.length:-------------------------------------获取麻将手牌的长度；
+            var mjDisplay:egret.displayObject:--------------------------------定义单个麻将对象
+            var index:number:------------------------------------------------定义麻将计数，防止多麻将错误15个（出现）
+            var w:number = 77:-----------------------------------------------定义麻将之间的宽度
+            var game:MajiangGame = MajiangGameData.getCurrentGame():-----------获取存储数据中，当前的游戏信息
+            var gameNewMj:number = game.newMj:---------------------------------游戏中，最后一次的新牌
+            循环麻将手牌：
+                如果麻将手牌中的一张麻将等于传递过来的参数gameNewMj，将这个变量定可以为-1,并且继续排列
+                之前声明的麻将对象：mjDisplay,这个时候就可以根据循环中的每一个麻将进行创建麻将牌
+                mjDisplay = this.createMj(mjList[i]):创建这个麻将对象
+                                            ————————————————————————————————————————————————————————————————————————————————————
+                                            createMj(vai:number):egret.DisplayObject -----------创建麻将对象（就是绘制对象）
+                                                【绘制对象有两种方法：egret.sprite 和egret.shape sprite可以当成是容器，shape一般是绘制图形】
+                                                var container:starlingswf.SwfSprite = MjGameAsset.mjSwf.createSprite("spr_mj_1")：在资源中创建麻将容器对象
+                                                麻将上有两个子对象列表，获取最上面一个对象，直接 as 转成Bitmap对象;
+                                                var bit:egret.Bitmap = container.getChildAt(1) as egret.Bitmap;将其纹理设置为自己手牌麻将中对应的花色
+                                                bit.texture = RES.getRes("img_MJ_PX_" + val);//获取资源中对应的花色设置在麻将容器上面
+                                           返回Bitmap的对象
+                                           —————————————————————————————————————————————————————————————————————————————————————     
+                mjDisplay.addEventListener(egret.TouchEvent.TOUCH_TAP,this.onClickMj,this):-----------新麻将的图形对象创建好之后，监听点击麻将事件
+                mjDisplay.name = mjList[i].toString():-----------------------麻将对象进行命名 
+                mjDisplay.touchEnable = true：---------------------设置点击事件为true
+                【手牌中的这张牌，进行放置位置（判断是否是发过来的新麻将，不是新麻将时：判断是否是索引在14上，这是为了防止麻将牌数显示错误，多牌】
+                this.MjListContainer.addChild(MjDisplay):在没有出过牌的手牌中添加麻将对象
+                
+                ----发牌的时候，发牌的那种效果（传递不同类型0 、1：因为座位位置的不一样）
+                if(showTween) {
+                    this.showMoveMjs(0);//传递0 ：说明效果是从大到小排列 传递1：效果是从小到大排列
+                    SoundManager.playGameSound("fapai.mp3");
+                }
+       ----------         
+       添加新麻将：
+       addNewMj(mjVal:number):
+            
+                
+                
             
 
 
