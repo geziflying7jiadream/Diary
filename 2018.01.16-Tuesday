@@ -10,5 +10,17 @@
          麻将只能的容器上面的坐标显示麻将显示的位置；
          以为父级容器在游戏面板上的位置已经确定，那么在自己容器上，添加的对象，想要显示在
          游戏主面板上，就需要   相对自己的父级原点坐标，左右上下显示  +坐标 或者 -坐标；
-      2、  
+      2、在游戏中刷新手牌麻将，
+      MjListPanel.php:
+        控制着，游戏开始时，所有麻将的手牌刷新接口refreshMjList();调用的时候，是在接口refreshAll()的；
+        并且在游戏面板中gamePanel.php，调用refreshAll(),还调用了setUid(uid):这是根据游戏中玩家的排列顺序进行调用他们各自的uid以及首牌麻将列表，进行显示
+        
+        上面的一切操作都是在  更新麻将列表容器updateMjListContainer(shwoMjTween:boolean,isRefOp:boolean=true)这个接口中进行实现的调用；
+        更新UI的时候调用，游戏开始的时候调用，更新当前uid的时候调用：updateUI()、onStartGame()、onUpdateCurrentUid();
+         
+        在游戏根源中，找到了gamePanel.php被实例化调用的是在游戏的root中MjGameRoot。php中new之后的实例化，引入了游戏的主面板Main extends basePanel
+        这样就可以找到，游戏被使用的时候，一个在客户端收到服务器发送过来的消息之后，初始化login，调用上面一系列接口方法；另一个就是在收到服务器发送过来的游戏，
+        操作信息，对应着在客户端存在的接口方法进行调用相应的接口，进行主游戏面板以及不同成员之间的面板数据操作；
+     3、   
+        
       
