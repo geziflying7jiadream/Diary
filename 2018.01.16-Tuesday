@@ -21,6 +21,12 @@
         在游戏根源中，找到了gamePanel.php被实例化调用的是在游戏的root中MjGameRoot。php中new之后的实例化，引入了游戏的主面板Main extends basePanel
         这样就可以找到，游戏被使用的时候，一个在客户端收到服务器发送过来的消息之后，初始化login，调用上面一系列接口方法；另一个就是在收到服务器发送过来的游戏，
         操作信息，对应着在客户端存在的接口方法进行调用相应的接口，进行主游戏面板以及不同成员之间的面板数据操作；
-     3、   
+     3、MjListPanel在游戏中，其他成员的MjListPanel+1 2 3都是继承自MjListPanel的,，所以在其中使用的相应的声明变量都是在子类麻将继承类中都是可以重复使用，并且更新的
+       
+     
+     
+     4、在游戏中，显示文字的接口是ApiState.showText("xxxx");
+        登录游戏时。joinGamePanel中，有关于join页面的处理spr容器mainAssetName = "spr_joinGame" ------正如，在自己新的游戏中，添加主面板的名字是一样的
+        在gamePanel.php中，显示主页面的名字接口：mainAssetName():string{ return "spr_main";}
         
       
