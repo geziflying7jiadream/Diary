@@ -1,0 +1,39 @@
+每天进步一点点，未来前进一大步：
+---------------------------------------------------------------
+人生充满惊喜，挑战激发乐趣。在生命的道路上，不断的突破自己，勇往直前。
+---------------------------------------------------------------
+上午：fore medierm/morning
+    开始：
+    1、昨天阐述了，关于创建游戏房间时，游戏加入成员的类joinGamePanel，还有加入时的MainAssetNAme():这是在平台实现的；
+        在创建房间的面板上，有关于ExtGameCreatePanel的继承类，createPanel中实现的类接口，
+        都是平台上已经封装好的create()/dispose()/craeteData()返回添加在创建界面的数据；
+    接下来，在游戏的中gamePanel是游戏的主面板控制类，它继承自BasePanel平台中的类；
+    这个基础类中也有很多接口方式在gamepanel中被调用实现：
+        Basepanel中一个重要的接口原型是：
+          createLater(setCurrent,createLater):将创建房间之后的逻辑列下来：根据mainAssetName创建assetSwf找到要创建的spr_main;
+                                              将主面板上的名称分别对应主类中定义的按钮，图形，文本等对象，InterfaceVariablesUtil(this,this.mainAsset);
+                                              监听当前类的舞台（layout，监听调整舞台大小事件），监听清除来自舞台的调整大小;
+                                              this.init():初始化这个文档类；
+        mainAssetName():使用的是资源中的什么容器；
+        assetSwf():返回的是新游戏使用的存储资源mj_main_swf；
+        init():初始化时使用的一些变量图形相对应的按钮变量
+        dispose():销毁这个面板，之前使用的所有方法类
+    App:平台应用类 控制定义了平台中关于舞台，坐标，宽高，缩放，监听调整大小，定义库（布局形式(landscape景观)）
+    2、来学习一下egret官网上结构，属性
+        DisplayObject:所有现实对象的父类
+        Bitmap:位图对象
+        shape:绘图形对象
+        DisplayObjectCoantainer:显示对象容器，每个类都可能使用的显示对象容器接口
+        sprite:轻量级的显示容器
+        Stage：舞台主容器
+        TextField:文本对象
+        TextInput:文本输入对象
+    在轻量级sprite对象容器：
+        alpha:透明度 width：宽height：高 rotation：旋转角度 scaleX:X缩放大小 scaleY:Y缩放大小 skewX:横向斜切 skewY:纵向斜切 
+        visible：可视化 X:x坐标 Y：y坐标
+    自定义现实对象类，需要继承DisplayObject的子类:例如：shape textField
+        calss MyGrid extends egret.shape ....
+        
+    
+    
+    
