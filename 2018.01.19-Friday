@@ -1,1 +1,100 @@
-
+每天进步一点点，未来前进一大步：
+------------------------------------------------------------------
+生活的中心不应该是一些未知或者未发生的事情，在我们仅有的生命中，
+做好每一件当下的事情，愿所有美好与我们相随。
+生命的意义在于当你看到所有的事物，不知所措的时候，依然会选择---远方！
+这就是你的意义所在。
+------------------------------------------------------------------
+上午：fore medierm/morinig
+    开始：
+      1、深度管理：容器.numChildren 深度是有顺序的
+      2、访问容器子对象：
+                通过深度值获取子对象：容器.getChildAt();
+                通过容器的名字获取对象：getChildByName();
+             但是，两种方式中，深度之获取的方式，更快捷，因为不会将所有的对象名字列一个列表，加快查找速度；
+      渲染模式：
+          webGL渲染模式、canvas渲染模式；两种不同的渲染模式，就是图形显示的方式；
+      
+      事件机制：
+          1、事件机制的原理：生成和处理事件的方法
+                数据提供者只管发出数据对象；
+                只要保证数据对象是egret.Event类或者子类的实例即可。
+                这种数据对象称之为事件------Event;
+                数据对象的发出者，称之为事件的发送者------------Event dispatcher;
+                接收数据的对象，称之为事件侦听者----------------Event listener；
+          2、事件执行的流程：注册侦听器----发送事件----侦听事件---清除侦听器；
+          
+          3、Event类：Event类是所有事件类的基类；
+                创建一个自定义事件的时候，需要继承Event类；
+                同时，Event类也包含一些事件；这些事件通常与现实对象的状态、显示对象列表有关；！！！！！！！！！！！！！！！！！
+                ————————————————————————————————————————————————————————————
+                Event类使用时，首先在【构造函数】中注意的几个属性和方法：
+                type、bubbles、cancelable:
+                    type:Event事件的类型；------【约会-DATE  ADDED  COMPLETE】
+                    bubbles：指定事件是否参与事件流的冒泡阶段----------事件流；
+                    cancelable:表示是否要取消Event事件对象；
+                    另外，还需要关注的属性是target属性；
+                    target：事件的目标，也就是事件的发送者；
+                ------其他的一些事件和方法都与事件流有关----------！！！以后介绍
+                ————————————————————————————————————————————————————————————    
+                自定义事件：首先游戏中都会使用一些自定义事件
+                  class DateEvent extends egret.Event{
+                          public static DATE:string = "约会";
+                          public _year:number = 0;
+                          public _month:number = 0;
+                          public _date:number = 0;
+                          public _where:string = "";
+                          public _todo:string = "";
+                          public constructor(type:string, bubbles:boolean=false, cancelable:boolean=false){//构造函数的三个属性的含义和方法
+                              super(type,bubbles,cancelable);
+                          }
+                  }
+                该类继承了egret.Event事假类，但是在这个类中，定义了一个日期Date属性，并且是静态属性，类型是字符串string;
+                ----在自定义的时候，可以根据自己的需要，自定义自己的时间类型，事件属性；
+           4、事件侦听器：事件处理者，负责接收事件携带的信息，并且在接收到该事件后执行特定的代码；
+                事件的侦听器必须是一个函数。事件的发送者必须是 egret.EventDispatcher 类或者子类的实例。
+                只有事件发送者才能侦听事件，并且可以 注册侦听器；
+                侦听事件分为两部分：
+                      一部分是：建立侦听；---侦听器可以是独立的函数，也可以是一个对象的方法；
+                      另一部分：注册侦听；---使用事件发送者addListener()，将相应的时间分配给侦听器；
+                注册侦听函数的定义：  
+                public addEventListener(type:string,listener:function,thisObject:any,useCapture:boolean=false,priority:number=0);
+                capture:抓取，捕获；priority:优先
+                thisObject :this就是监听当前对象的事件；
+                -----thisObject比较特殊，一般我们填写this。因为TypeScript与JavaScript的this作用域不同，其this指向也会不同。
+                如果不填写this的话，那么编译后的代码会发生错误。 关于this的问题，大家可以学习JavaScript中的原型链。
+                
+                
+                a.一个侦听器必须是函数，或者是一个对象实例的一个方法;
+                b.侦听器必须有一个参数，并且这个参数必须是 Event 类实例或其子类的实例,同时,侦听器的返回值必须为空（void）。
+                        范例代码如下：listenerName(evt:Event):void {...}
+                c.注册侦听器：addEventListener();
+                        只有事件的发送者才可以注册侦听器，事件的发送者必须是 EventDispatcher 类或其子类的实例;
+                        ---在底层可以看出：DisplayObject extends EventDispatcher implements sys.Renderable
+                d.移除侦听器：removeEventListener();
+                e.检测侦听器(2个方法)：
+                        一个是 hasEventListener ；
+                        另外一个是 willTrigger ；
+                        两个方法执行效果相同，都是判断一个事件发送者是否注册了某一个类型的事件。
+                  ——————————————————————————事件发送者.hasEventListener(事件类型)——————————————————————————
+                f.TouchEvent的启动开关：！！！！！！
+                        touchEnable = true  ————————此对象接收触摸或者其他用户输入；
+                        ------------默认值为true;
+                        要更改显示列表上的对象的所有子集的touchEnable，可以使用DisplayObjectContainer.touchChildren;
+                        不需要侦听的子对象:对象.touchEnable = false;
+          g.事件优先级：处理事件的优先级，使用侦听器中priority（number：数字越大，优先级越高）  
+          5、触摸事件：在Egret中使用触摸事件与其他事件方式相同。
+                  移动游戏中最常用的就是触摸事件；
+                  触摸事件优先级高——>冒泡监听:小---大——>具体对象监听
+          6、取消触摸事件：              
+                  TouchEvent 是一个常用的功能，用于监听触摸事件的不同阶段。
+                  一个点击的流程一般会触发3个 touch 事件：TouchBegin 触摸开始，TouchEnd 触摸结束，TouchTap 点击。
+          
+          
+          
+          
+          
+          
+          
+          
+          
