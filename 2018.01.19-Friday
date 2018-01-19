@@ -89,12 +89,177 @@
           6、取消触摸事件：              
                   TouchEvent 是一个常用的功能，用于监听触摸事件的不同阶段。
                   一个点击的流程一般会触发3个 touch 事件：TouchBegin 触摸开始，TouchEnd 触摸结束，TouchTap 点击。
-          
-          
-          
-          
-          
-          
-          
-          
-          
+                  ——————————————————在 Egret 版本 3.0.1 中，我们新增了一个 TouchCancel 事件，顾名思义就是取消触摸；
+                  ？？？？？？
+                  取消触摸事件，这是一个较难的事情！
+    RES资源加载：
+          1、资源加载模块RES
+          2、资源加载配置：resources
+                    resources：下面是资源:加载的资源上，每个资源都会有name、type、url；还有一个关于资源的json设计文件；
+                    groups:预加载资源组的配置：两个属性name、keys
+          3、载入资源加载配置（2种方式）：
+                    RES模块对资源加载配置有两种读取方式，一种是外部文件，另一种是直接读取。
+                文件载入读取方式：
+                        这是一个json文件，通常我们取名为resource.json。载入代码如下：
+                        RES.addEventListener( RES.ResourceEvent.CONFIG_COMPLETE, this.onConfigComplete, this ); 
+                        RES.addEventListener( RES.ResourceEvent.CONFIG_LOAD_ERROR, this.onConfigLoadErr, this ); 
+                        RES.loadConfig("resources/resource.json","resources/");
+                    ————RES.loadConfig()通常写在整个游戏最开始的地方，并且只执行一次
+                    loadConfig():初始化RES资源加载块；
+                    ----该函数包含两个参数，第一个参数是resource.json文件的完整路径；
+                                          第二个参数是配置中每个资源项url相对的基址；
+                    例如：配置里的bgImage资源项填的url是assets/bg.jpg，加载时将会拼接为相对路径：resources/assets/bg.jpg
+                直接读取的方式：
+                    ————————————通过完整url获取外部资源；
+                    getResByUrl(url: string, compFunc: Function, thisObject: any, type?: string): void;
+                    直接读取的方式，不用进行CONFIG_COMPLETE监听事件;
+                    
+                直接读取方式RES.parseConfig执行完毕，相当于文件读取方式CONFIG_COMPLETE事件被调度时;
+                此时资源加载配置已经读入RES模块，则可以立即载入配置中的资源组，或者动态创建配置中存在的资源组，进行实际的资源加载了;
+
+
+下午：post medierm/afternoon
+什么人该交往，什么人该远离，这个我是看的清清楚楚的。
+每天来事儿的人，我不想跟这样的人交往很深，他们本来都没有感激之情，
+反而有一种理所应当。静坐自己，加强修炼。
+          4、加载资源组
+                a.预加载资源组：
+                        配置文件加载好之后，调用RES.loadGroup(name,priority)开始预加载配置中的一组资源；
+                        该函数需要两个参数，一个是资源组名字name，另一个就是资源组的优先级priority
+                        预加载资源，可以在游戏启动时，或者是在某一个面板被打开前，调用；
+                        调用时机，由具体项目的逻辑确定；
+                    事件对应的资源组:
+                        注意：组加载事件回调函数里的写法，需要使用event.groupName判断下这个事件是属于哪个资源组，
+                        因为可能有多个资源组同时在加载。
+                        示例代码如下：
+                        private onResourceProgress( event:RES.ResourceEvent ):void {
+                            if( event.groupName=="preload" ){————————event.groupName判断具体所属的资源组
+                                this.loadingView.setProgress( event.itemsLoaded,event.itemsTotal );
+                            }
+                        } 
+                    资源组加载失败处理:
+                        由于网络等原因，可能造成资源加载失败，这种情况下将会派发GROUPLOADERROR事件，
+                        可以在事件处理中重新加载资源：
+                        private onResourceLoadErr( event:RES.ResourceEvent ):void {
+                            RES.loadGroup( event.groupName );
+                        } 
+                        如果造成多次失败，那么，可能需要在一定的加载失败次数之后，停止加载，因为网络可能已经失去连接；
+                        ——————对于多个资源组同时加载的情况：
+                        countGroupError可以使用一个以groupName为键的哈希数组来记录每个资源组的加载失败次数。
+                    同时进行多资源组加载时的优先级控制：
+                        使用RES.loadGroup()的第二个参数，为”loading”组传入一个优先级更大的数字；
+                b.运行时动态加载资源组：
+                    若资源组无法预先加载到资源组中，需要在游戏运行时，动态添加到资源组中；
+                    那么，可以使用RES.createGroup(groupName:String,keys:Array)方法，动态创建一个资源组，再去加载它；
+                    groupName:要创建的资源组组名；
+                    keys:资源组包含的资源列表；
+                    动态创建资源组织后，调用loadGroup()一次性加载完；
+                    ————————————————————————————————————————————————————————
+                    注意：createGroup()方法是基于已存在的RES配置属性操作的；
+                         调用这个方法之前，先确定RES的配置文件已经加载完成；
+                        【就是说：在监听到ResourceEvent.CONFIG_COMPLETE之后】；
+                    ————————————————————————————————————————————————————————
+                    
+           5、获取资源的3种方式
+                a.同步获取资源的方式：RES.getRes(name:string):void
+                b.异步获取资源的方式：RES.getResAsync(name:string,compFunc:Function,thisObject:any):void;
+                c.通过url获取不在配置中的资源：RES.getResByUrl(url:string,compFunc:Function,thisObject:any,type:string=””):void;
+                
+           6、资源缓存机制
+                a、resources节点下配置的每个资源加载项，在第一次加载成功时会用name属性作为key缓存下来。
+                b、resource在第一次加载资源后，会缓存下来这个资源。
+                   使用RES.destroyRes(name:string):boolean，传入资源文件的name，即可清理对应的缓存。
+                   传入资源组名，即可清理整个资源组里所有资源对应的缓存。
+                   如果要销毁通过RES.getResByUrl(url)加载的资源，传入url作为name即可。    
+           
+           7、RES内置文件类型解析器
+                a.RES内置文件类型解析器：
+                    RES内置支持的文件类型有：
+                    RES.ResourceItem.TYPE_BIN(bin)：解析为原始的二进制文件
+                    RES.ResourceItem.TYPE_IMAGE(image)：解析为egret.Texture对象
+                    RES.ResourceItem.TYPE_TEXT(text)：解析为string变量
+                    RES.ResourceItem.TYPE_JSON(json)：解析为json对象
+                    RES.ResourceItem.TYPE_SHEET(sheet)：解析为egret.SpriteSheet对象
+                    RES.ResourceItem.TYPE_FONT(font)：解析为egret.BitmapFont对象 
+                    (egret1.5.2新更名，即为之前版本的egret.BitmapTextSpriteSheet)
+                    RES.ResourceItem.TYPE_SOUND(sound)：解析为egret.Sound对象
+                    RES.ResourceItem.TYPE_XML(xml)：解析为egret.XML对象
+                b.配置九宫格参数：
+                    图片类型的解析器是支持九宫格参数的，只要在资源项上加上scale9Grid即可：
+                    scale9Grid:有四个参数 x,y,width,height  -----------------九宫格的详细配置方式请参考 九宫格的使用。
+                c.配置声音资源
+                    
+                d.读取并解析二进制文件
+       位图纹理
+             1、创建位图：
+                    通常情况下，我们可以使用单张图片作为纹理，我们也可以使用大量图片作为纹理集；
+                    使用bitmap创建的只是一个对象，我们还没有给对象指定任何纹理；指定纹理后，我们就可以看到渲染的图片了；
+                    所有加载的资源都有一个唯一的ID，这个ID就是图片的资源名称；
+             2、九宫格的使用：
+                    对图形进行拉伸，发生变化，解决这个问题，就是使用九宫格；
+                    九宫格使用有两种办法：b.另一种在GUI系统中介绍
+                            a.
+       纹理的填充方式：
+            1、位图的填充方式有两种，第一种是拉伸图像以填充区域，第二种是重复图像以填充区域
+                第一种：通过控制宽高解决
+                第二种：重复图像填充：img.fillMode = egret.BitmapFillMode.REPEAT;
+                
+       纹理集的使用：
+            纹理集听上去高大上，但是，将一些零碎的小图，放在一张大图上；----减少网络请求，加载一次资源即可；
+            同时，在引擎渲染的时候也会较少IO读取，从而提高性能。
+            使用纹理集，需要修改resources/asset/default.res.json文件
+       截屏功能：
+            1、获取texture
+                    a.在egret中有两种获取texture的方式：
+                            第一种：纯图片的texture;
+                                    纯位图的Texture。大家可以通过 RES.getRes(“run_down_png”);
+                                   （如果有使用Res模块）直接获取，也可以通过URLLoader加载后获取，
+                                    或者是从已经创建出来的Bitmap中直接取 texture属性；
+                            第二种：将DisplayObject转成texture（RenderTexture：可以在上面绘制精灵纹理）；
+                                    RenderTexture：
+                                    var renderTexture:egret.RenderTexture = new egret.RenderTexture();
+                                    renderTexture.drawToTexture(displayObject);
+                                    这样就可以把自己想要的截图的容器放到renderTexture上了；
+                    b.转成base64位数据：toDataURL
+                            直接调用：texture.toDataURL("image/png",new egret.Rectangle());
+                                     其中，”image/png” 为所需要转成的格式，目前只支持 “image/png” 和 “image/jpeg”。
+                            第二个参数就是你所希望截取的区域了，默认为texture整个大小。
+                        注意：
+                        因为是对texture本身进行的截取转换，所以即便Bitmap本身有缩放等变形操作，都是不会影响texture截取的区域大小的。
+                        base64的数据是以 “data:image/png;base64,” 开头的数据。
+                    c.保存截屏视图：saveToFile。
+                            直接调用:texture.saveToFile("image/png", "a/down.png", new egret.Rectangle(20, 20, 100, 100));
+                            第一、三2个参数同上面是一样的，
+                            第二个参数是希望保存的文件名称（路径）了.
+                        注意：
+                        浏览器只支持保存名称，所以像 “a/down.png” 这种写法，浏览器会自动将其改成”a-down.png”。图片会保存在浏览器下载的位置。
+                        Native下是可以保存路径的。图片会保存在游戏的私有空间，路径中不能有 “../“。
+                        这里为了兼容所有的平台，建议大家不要使用路径。
+                
+        矢量绘图：
+                1、使用矢量绘图
+                        绘制矩形、圆形、直线、曲线、圆弧；
+                        对矩形添加一个描边：spr.graphics.lineStyle(10, 0x00ff00 ):第一个参数是描边的线条宽度，第二个参数为描边的颜色
+                        绘制直线：moveTo(坐标值)，lineTo(结束坐标值);这之间就是线的长度
+                        绘制曲线：
+                                Egret中提供的曲线绘制是一个二次贝塞尔曲线，绘图方法为graphics中的curveTo；
+                                绘制时：先使用moveTo():指定起始点位置， curveTo():指定控制点和终点坐标位置；
+                        绘制圆弧：drawArc()圆心、半径、起始位置、结束位置、顺时针（逆时针）
+                2、graphics Arc高级使用
+                        ？？？？？？？？？？？？？？
+                
+        文本绘制：        
+                1、创建文本
+                        普通文本：一般性（合适的宽高，决定文本显示横向、纵向）
+                        输入文本：text.type = TextFieldType.INPUT;
+                        位图文本：text.type = textFieldType.DYNANIC;
+                        文本字段的类型。
+                        TextFieldType 常量中的任一个：TextFieldType.DYNAMIC（指定用户无法编辑的动态文本字段），
+                        或 TextFieldType.INPUT（指定用户可以编辑的输入文本字段）。
+                2、文本描边
+                        描边的颜色需要设置 strokeColor 属性；
+                        描边的宽度（也可以理解为描边的粗细）需要设置 stroke 属性；
+                        文字加粗与斜体：blod、italic
+                        文本的加粗和斜体适用整体TextField对象中，你不能单独设置一个TextField中某一个文字或一段文字。
+                3、文本超链接事件
+                        
