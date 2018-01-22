@@ -126,7 +126,7 @@
                 public httpReq(){
                     var request = new egret.HttpRequest();//首先创建一个HttpRequest请求对象
                     request.responseType = egret.HttpResponseType.TEXT;//给http请求加上响应的类型
-                    request.setRequestHeader("Content-Type:", "application/x-www-form-urlencoded");//设置请求头文件
+                    request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");//设置请求头文件,注意：Content-Type没有“:”号
                     request.open("http://httpbin.org/get",egret.HttpMethod.GET);//get请求类型//打开请求的ip,列举的方法
                     request.send({"aa":1});//发送数据data
                     request.addEventListener(egret.Event.COMPLETE,this.onComplete,this);
@@ -136,10 +136,42 @@
                     console.log(e.currentTarget);
                     var responseHttp = <egret.HttpRequest>e.currentTarget;
                     //创建一个文本，显示response对象
+                    var responseText:egret.TextField = new egret.TextField();
+                    responseText.text = "get response: \n" + responseHttp.response;
+                    responseText.size = 30;
+                    responseText.textColor = 0xf0ff00;
+                    this.addChild(responseText);
                 }
         
+        发送带有参数的http请求：与HTMLhttp请求相似 &连接参数；
+    
+    
+    加载位图文件：
+        egret专门为加载位图文件，准备了类：ImageLoader：
+                ImageLoader.once(egret.Event.COMPLETE,this.xxx,this);加载一次
+                ImageLoader.load(图片资源);
+                接收时：imgLoad = e.currentTarget:加载的图片目标 
+                       var bitData:egret.BitmapData = imgLoad.data;
+                       var bit:egret.Bitmap = new egret.Bitmap(bitData);
+                       this.addChild(bit);
+   
+   
+   加载文本和二进制文件：
+        egret加载资源主要是用的是：egret.HttpRequest类；
+        egret.HttpRequest:该类封装了在异步加载资源和通讯方面作为H5标准的XMLHttpRequest对象；
         
-            
+        加载文本：request.response = egret.HttpResponseType.TEXT;默认TEXT
+        与加载二进制文件的区别：request.response = egret.HttpResponseType.ARRAY_BUFFER;
+        数据加载完成后，获取数据时，使用的是：response.ArrayBuffer
+        
+ 2、构建通信请求
+    Egret对网络部分进行了封装，将网络访问请求     与     网络通信数据分离；
+    在net文件夹中定义了与网络相关的5个类：URLRequest URLLoader  URLLoaderDataFormat  URLRequestMethod  URLVariables
+    
+    首先，创建一个网络连接，需要创建一个URLLoader对象：该对象负责网络连接状态的操作，同时负责接收网络回传的数据。
+    其次，网络通讯时，需要的网络数据通过URLRequest对象负责管理；
+    
+    
             
             
             
