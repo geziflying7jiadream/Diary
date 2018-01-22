@@ -1,0 +1,110 @@
+每天进步一点点，未来前进一大步：
+-------------------------------------------------
+生活总在继续，没有什么事情过不去。只要做好自己，
+让自己成为更好的人，成为有力量左右自己的人，才有资格，
+在任何时候都无畏无惧。
+-------------------------------------------------
+上午：fore medierm/morning
+    补充知识：
+    创建多样式的文本：实用文本中的textFlow属性
+                    txt.TextFlow = <Array<egret.ITextElement>>[
+                      {text: "内容", style: {"文本样式属性名": "文本样式对应属性值"}},
+                      ......
+                    ];
+    文本超链接事件：
+                  textField本身可以响应TouchEvent事件，但是，TouchEvent事件是针对整个TextField文本而言的；
+                  所以，要针对一部分的文本事件，需要使用textFlow属性，响应touch事件；
+                  tx.textFlow = new Array<egret.ITextElement>(
+                    {text:"文本内容",style:{"href":"文本链接或链接内容事件",...}},
+                    ...
+                  );
+                  //监听文本链接事件
+                  tx.addEventListener(egret.TextEvent.LINK,function(){},this);
+                  
+                  ——————————————————————————————————————————————————————————
+                  egret.TextEvent.LINK事件：LINK事件中，event对应的字符串
+                  dispatchTextEvent:抛出的对象会缓存在对象池上，供下次循环使用
+                  ——————————————————————————————————————————————————————————
+                  或者写成：
+                  tx.textFlow = <Array<egret.ITextElement>>[];//这个[]是以数组的形式，将文本的json数据写入
+                  
+    1、模块化配置和第三方库的扩展
+        模块化配置：首先，可以在egret上建立一个空的项目。之后会出现，egretProperties.json文件
+                   其次，在这个文件中，出现一个modules：[‘name’：‘egret’];
+                   最后，这个就是配置项目中的模块信息，和第三方扩展信息的文件字段；
+        egret核心库8种：
+                  egret 必备的核心库
+                  game 制作游戏会用到的类库，比如 MovieClip，URLLoader 等
+                  res 资源加载库，所有涉及资源载入的工作，都可以通过这个模块来完成
+                  tween 动画缓动类
+                  dragonbones 龙骨动画库，用来制作一些复杂的动画效果
+                  socket 用来通讯的 WebSocket 库
+                  gui 老版本的 UI 库
+                  eui 新增的 UI 库，使用起来更加的方便
+            在已经创建好的项目中，如果想使用新增的库文件，只要将和核心库的name ： game形式添加到modules配置模块的egretProperties.json文件中即可；
+            另外，如果是第三方库，不要modules/文件夹下,添加到外部文件夹中，这是egret规定的，并且在modules配置项中，使用相对路径来设置；
+            之后，重新编译执行项目文件，所有添加的库文件都会加载到项目中；
+        创建第三方库：
+            我们已经有了一场第三方库，需要将它转换成egret需要的模块结构；
+                    比如现在有一个名为 jszip 的 js 库，它包含3个文件：
+                          FileSaver.js
+                          jszip.d.ts
+                          jszip.min.js
+            第 1 步 要创建一个egret第三方库文件，在命令行输入
+                    egret create_lib jszip ---jszip这个第三方文件库就在项目中建成了
+                    ------------------------------第三方库项目与egret项目不能嵌套，不要再egret项目文件夹下创建第三方库。
+                    
+                    发现：刚刚创建的第三方库项目包含三个文件夹：bin 、libs 、src,还有一个package.json文件
+            第 2 步 把准备好的3个文件夹，拷贝到src文件夹下面
+            第 3 步 如果要引用其他第三库的代码，请把引用到的库文件（主要是.d.ts文件）放在libs文件夹下，libs下不要放除了.d.ts之外的其他.ts文件；
+            第 4 步 打开package.json文件，将3个文件写入到files文件下面。如果3个文件有先后顺序，一定要按顺序写入。
+            第 5 步 在命令行中输入编译命令：egret build jszip
+                    ——————————————————————————————————————————————————————————————————————————————
+                    编译完成后，你会发现，在bin文件夹下，生成了一个jszip文件夹，里面有3个文件
+                    jszip.d.ts：描述文件
+                    jszip.js：在Egret项目中，debug模式时使用的js库
+                    jszip.min.js：在Egret项目中，发布后的正式版使用的JS库，经过压缩，体积比jszip.js小
+                    ——————————————————————————————————————————————————————————————————————————————
+            第三方库库创建好之后，将它放置在Egret项目文件夹的外面，方便接下来使用第三方文件库：
+            ------------这里需要注意的是：jszip需要放置在Egret项目文件夹的外面------------
+        使用第三方模块：
+            和官方的扩展模块相似，主要是在modules中写：模块名字和相对路径
+            modules:
+                 { 
+                   "name": "jszip" 第三方库的名称
+                   "path": "C:/Users/Administrator/Desktop/jszip" 刚才我们创建的第三方库的路径，绝对路径或者相对路径
+                 }
+            -------------------------------这里需要注意的是：jszip需要放置在Egret项目文件夹的外面-------------------------
+            编译--执行：jszip文件已经在index.html文件的modules_files下面了
+                <!--modules_files_start-->
+                  <script egret="lib" src="libs/modules/egret/egret.js" src-release="libs/modules/egret/egret.min.js"></script>
+                  <script egret="lib" src="libs/modules/egret/egret.web.js" src-release="libs/modules/egret/egret.web.min.js"></script>
+                  <script egret="lib" src="libs/modules/jszip/jszip.js" src-release="libs/modules/jszip/jszip.min.js"></script>
+                <!--modules_files_end-->                  
+            ————————————————————————————————————————————————————
+            所有对.d.ts的文件放在src下面，并且在package.json下面配置；
+            其他的.ts文件放在libs下面；
+            ————————————————————————————————————————————————————
+       其他第三方库：
+            在index.html来直接配置第三方库的方式：代码放在libs目录下面，但是不要放在libs/modules下面
+            
+            在 index.html 中的 other_libs_files 块中，配置自定义的第三方库。需要填写 egret=”lib” 以及 src-release。
+            
+            所有放在 libs 目录下面的文件，以 ts 作为扩展名的文件只能是 .d.ts（如 a.d.ts）文件，不能有纯 ts 文件（如 a.ts）
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
