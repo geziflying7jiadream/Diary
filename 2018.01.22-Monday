@@ -170,17 +170,73 @@
     
     首先，创建一个网络连接，需要创建一个URLLoader对象：该对象负责网络连接状态的操作，同时负责接收网络回传的数据。
     其次，网络通讯时，需要的网络数据通过URLRequest对象负责管理；
+    public URLLoader:egret.URLLoader;
+    this.URLLoader = new egret.URLLoader();
+    在urlloader中你可以对网络通信进行操作，例如开始加载数据，检测数据加载进度或者数据加载是否完成;
+    在加载数据的时候，需要传入通信的地址，这个时候需要使用egret.URLRequest;
+    var urlReq:egret.URLRequest = new egret.URLRequest();
+    urlReq.url = "";
+    接下来可以传入请求地址的url数据了：使用load()加载数据；
+    this.URLLoader.load(urlReq);
+    //
+    //
+    这个时候，我们不会看到任何的效果，因为没有对通信状态进行监听或者任何响应的效果；
+    对网络的通信状态COMPLETE进行监听，当网络加载完成，调用对应函数；
+    this.URLLoader.addEventListener(egret.Event.COMPLETE,this.onComplete,this);
+    public onComplete(e:egret.Event):void{
+        console.log(this.URLLoader.data);
+    }
     
     
+    
+    
+ 读取不同的数据格式：
+        在网络通信中，我们不仅仅加载一个简单的文本数据，还需要加载一些图片和音频数据；
+        egret中提供了5中不同的数据格式：
+            二进制格式
+            文本格式
+            URL编码格式
+            位图纹理格式
+            音频格式。
+        ---------------------以上五种数据格式的设置：均需要 URLLOaderDataFormat 类。
+        ---------------------如果想更改默认的文本格式，可以修改 URLLoader 中的 dataFormat 属性。
+        egret.URLLoader().dataFormat = egret.URLLoaderDataFormat.VARIABLES;//将数据设置为--URL编码--格式
+   
+   
+ POST与GET请求：
+        修改请求的方式，使用method方法：
+        var urlReq:egret.URLRequest = new egret.URLRequest();
+        urlReq.method = egret.URLRequestMethod.POST;
+   
+   
+ 发送带参数的请求：   
+        request.method = egret.URLRequestMethod.POST;//post请求
+        request.data = new egret.URLVariables("test=ok");//实例化添加变量数据的类
+        加载完成响应获取数据：
+        var loader：egret.URLLoader = <egret.URLLoader>e.target;
+        var data:egret.URLVariables = loader.data;
+ 
+ 
+ 
+ ScrollView 滚动视图:
+        ScrollView即为滚动视图，开启一个滚动窗口，可以在里面添加内容，添加的内容可以在固定窗口大小内左右、上下移动；
+        ScrollView实例化之后，设置内容(setContent）、宽、高，并且添加在舞台上显示:容器.addChild(ScrollView实例化对象);
+            
+        监听事件，滚动ScrollView对象，会触发egret.Event.CHANGE事件    
             
             
-            
-            
-            
-            
-            
-            
-            
-            
-            
+ 超市触发器：
+    启动超时触发器：
+        有一种场景，那就是在运行一定时间后，需要触发一个事件。比如某个对话框提示呈现后，需要在几秒钟之后自动消失。
+        这种情况可以使用Egret提供的egret.setTimeout来实现。该函数原型为：
+        function setTimeout(listener: Function, thisObject: any, delay: number, ...args: any[]): number;
+        其中delay设定超时等待的毫秒数，...args为随意个数的参数，也可以没有任何参数。
+    
+    停止超时触发器：
+        超时等待阶段，可能会有需求，停止超时触发器，接着开始说的例子，如果在超时结束前用户触摸对话框的关闭或确定按钮，就需要取消超时触发器了。
+        可以使用egret.clearTimeout来取消超时触发器。
+        在egret.setTimeout执行时返回一个id：idTimeout，
+        这个id就是用来取消超时触发器的：
+                egret.clearTimeout( idTimeout );
+        在超时等待结束前，执行该语句，将会停止超时触发器，回调函数将不再会执行。
             
