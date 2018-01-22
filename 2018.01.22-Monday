@@ -92,9 +92,53 @@
             
             所有放在 libs 目录下面的文件，以 ts 作为扩展名的文件只能是 .d.ts（如 a.d.ts）文件，不能有纯 ts 文件（如 a.ts）
             
-            
-            
-            
+下午：post medierm/afternoon
+     1、如何生成.d.ts文件？
+        什么是".d.ts"文件？简单点来说就是你可以在.ts中调用的.js的声明文件；
+        它只是一个声明文件，没有任何实现代码。
+        
+        .ts的每一个段落中，出了最外层的interface外，其他都需要declare关键词，并且只在最外层出现。
+     2、特殊变量
+            特殊变量的生成方式跟class、declare相似。
+            declare module xx{
+                var ss:{
+                    (id:Object):any;
+                    c1:...;
+                    c2:...;
+                    c3:...;
+                }
+            }
+网络：
+     1、发送http请求：
+        egret中会遇到与服务器进行数据交互的情况，egret中封装了XMLHttpRequest与服务器进行异步交互数据的情况；
+        
+        首先，建立tcp连接；
+        http中的get post，通过监听加载事件来检测服务器端的响应；
+        ——————————————————————————————————————————————————————————
+        使用 HttpRequest 来发送请求的过程如下:
+            实例化一个 HttpRequest 对象。obj = new HttpRequest(ip);
+            设置它的响应类型responseType。obj.responseType get/post;
+            通过open方法初始化请求一个对象，初始化请求地址和请求类型。open(ip:port,get/post)
+            通过setRequestHeader设置请求头信息。如果是POST带参数的请求这一步很重要,需要告诉服务端请求的参数格式，而且这一步需要在open之后执行。
+            通过send方法发送请求，如果是post方法可以传入参数。
+        ----添加监听，监听服务器端的响应，包括进度事件和请求成功和失败事件。        
+        ——————————————————————————————————————————————————————————
+                public httpReq(){
+                    var request = new egret.HttpRequest();//首先创建一个HttpRequest请求对象
+                    request.responseType = egret.HttpResponseType.TEXT;//给http请求加上响应的类型
+                    request.setRequestHeader("Content-Type:", "application/x-www-form-urlencoded");//设置请求头文件
+                    request.open("http://httpbin.org/get",egret.HttpMethod.GET);//get请求类型//打开请求的ip,列举的方法
+                    request.send({"aa":1});//发送数据data
+                    request.addEventListener(egret.Event.COMPLETE,this.onComplete,this);
+                }
+                //监听http请求响应完成
+                public onComplete(e:egret.Event){
+                    console.log(e.currentTarget);
+                    var responseHttp = <egret.HttpRequest>e.currentTarget;
+                    //创建一个文本，显示response对象
+                }
+        
+        
             
             
             
