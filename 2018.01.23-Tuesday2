@@ -1,0 +1,121 @@
+下午：post medierm/afternoon
+    1、未解决？
+        客户端与服务器端进行通讯之后，传递的数据，需要通过一个容器，进行数据存储之后；
+        在更新的数据中取出，服务器传递过来的数据信息，进行解析；
+        之后，在游戏面板中实现数据的显示；
+    2、微信小程序示例演示：
+        晚上研究一下下。
+        
+    3、构建通信请求
+        URLLoader
+        URLRequest、请求的地址，
+        URLLoader.load()加载请求；
+        URLLoader加载后，侦听加载完成；
+        
+    4、调试功能区：
+      Sources Panel 的右边是调试功能区：
+      最上面的一排按钮分别是：  暂停/继续、    单步执行、   单步跳入、   单步跳出、   禁用/启用所有断点。   
+      下面介绍一下使用情况：
+            a.Breakpoints:
+                添加的每个断点都会出现在右侧调试区的 Breakpoints 列表中，点击  列表中断点  就会  定位  到内容区的断点上;
+                如果你有多个文件、多个断点的话，利用 Breakpoints 列表中的  断点快速定位   非常方便;
+            b.条件断点：
+                在断点位置的  右键菜单中  选择“Edit Breakpoint...”可以设置触发断点的条件,
+                就是写一个表达式，表达式为 true 时才触发断点; 
+            c.断点调用栈：callStack
+                (1)在断点的位置上，我们可以使用call Stack来找到对应调用的位置；
+                (2)还可以在 frame 上用右键菜单重新开始执行当前 frame，也就是从该 frame 的开始处执行。
+                   比如在函数 f() 的 frame 上 Restart Frame， 断点就会跳到 f() 的开头重新执行，context 中的变量值也会还原;
+                   这样结合变量修改和编辑代码等功能，就可以在当前 frame 中反复进行调试，而不用刷新页面重新触发断点了;
+                (3)Call Stack 列表的下方是 Scrope Variables变量列表，在这里可以查看此时   局部变量 和   全局变量 的值。
+                (4)在断点调试时，可以用鼠标点击想要查看的表达式或者变量的值，然后右键执行“Evaluate in console”就可以查看当前变量的值了；
+            d.临时修改代码：
+                通常的习惯：修改代码---刷新页面----重新检查；
+                ------但是Chrome中提供了临时修改功能，Ctrl+s就可以执行，但是是临时修改数据，刷新页面就没有了。
+            e.在DOM元素上设置断点：
+                在DOM上设置断点，主要是不知道在哪行代码上做出的修改；在DOM代码行上，右键点击，出现3种情况：
+                    子节点修改；
+                    自身属性修改；
+                    自身节点被修改；
+                    选中之后，Sources Panel右键的面板中，DOM BreakPoints列表中就会出现该DOM断点。
+                在Sources Panel 中，邮件出现的断点，结合DOM  BreakPoints断点列表，就会出现该DOM断点。
+            f.XHR 断点：
+                    右侧调试区，有一个XHR BreakPoints,点击+ 并且输入URL包含的字符串；
+                    即可侦听该URL的Ajax请求，输入内容就相当于URL的过滤器；
+                    如果什么都不添，那么就监听所有的XHR请求；
+                    一旦XHR调用触发时，就会在request.send()的地方中断；
+            g.按事件类型触发断点:
+                    右侧调试区的 Event Listener 列表，这里列出了各种可能的事件类型;
+                    勾选对应的事件类型，当触发了该类型的事件的 JavaScript 代码时就会自动中断。       
+            ——————————————————————————————————————————————————————————————————————————
+            调试面板：Debugger(调试面板)
+                    F8  or  Ctrl + \: 暂停/继续
+                    F10  or  Ctrl + ': 单步执行
+                    F11  or Ctrl +;: 单步进入
+                    Shift + F11  or Ctrl + Shift+;: 单步退出
+                    Ctrl +./Ctrl+, : 上一帧/下一帧(译为框架怪怪的)
+                    Ctrl +Shift+E: 被选中代码在控制台中打印出console信息(非常实用)
+                    Ctrl + Shift + A: 添加到debugger的watch里面,可以关注你选中内容的变化
+                    Ctrl + B: 打断点/取消断点(很实用)    
+            ——————————————————————————————————————————————————————————————————————————
+            h.//@ sourceURL 给 eval 出来的代码命名：
+            
+        
+Windows中的Android移动App打包：？？？------------其实就是手机端的封装项目
+        现在的技术，还不能实现移动App打包功能，所以，还是先学习一下：
+        游戏中，前后端数据结合，存取数据，更新数据，以及将数据显示在相应的面板上；
+        
+还需要学习核心库中Lark：在Lark中开发UI页面，功能很强大。？？？？----UI
+
+
+A breakup should be decent and no one can say sorry.
+Why should I dare to break my heart
+The front of the camera is the former US
+In the cheers and tears at
+Leaving is very decent to live up to these years
+A picture of love and earnest
+Don't let the obsession destroy the yesterday
+I love you so much
+Goodbye and never meet
+
+-------------------------------------
+来吧！现在小美女来学一学，RES资源加载吧！
+-------------------------------------
+资源加载模块：
+      在Egret,所有的资源都存储在服务器端；
+      Egret会将预先设定好的资源下载到本地计算机中，然后转载到内存，以便使用 ；
+      RES是Egret为开发者提供的一个功能完善的资源加载机制，开发者无需考虑资源加载的细节；
+      只要指定加载的资源，并且在对应的逻辑位置中添加相应的执行代码即可；
+      
+资源加载配置：
+载入资源加载配置：
+预加载资源组：
+运行时动态创建资源组：
+获取资源的几种方式：3种
+资源的缓存机制：
+销毁缓存的资源：
+RES内置文件类型解析器：
+扩展资源加载模块文件解析器：
+配置九宫格参数：
+与GUI系统无缝桥接：
+配置声音资源：
+读取并解析二进制文件：
+
+
+Python学习模块：？？？？
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
