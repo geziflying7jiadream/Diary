@@ -5,4 +5,53 @@
 -----------------------------------------------------------
 上午： fore medierm/morning
   1、webSocket使用
+        webSocket是基于H5规范的，webSocket类用于接收和发送数据。
+        定义了客户端和服务器端通讯的WebSocket方式，在得到浏览器支持以后，会取代comet的服务端的长连接方式推送方式；
+
+        一个基于WebSocket通讯的方式，通过WebSocket全双工的方式，直接与服务器远程连接进行通讯。
+        过程：browser - Internet --websocket server or gateway--- managing service -- trading gateway/payment system
+        
+    使用websocket进行通讯的基本过程：
+        首先，在egretProperties.json文件中，在modules中添加 {"name": "socket"}这个扩展；
+        其次，在项目中，编译，socket扩展就添加到当前项目中了。（socket是egret核心库，不需要第三方扩展库方式添加）；
+             egret build -e:编译 执行
+        此时，项目中就可以使用WebSocket通讯的相关API了；--------------------（API：就是类中，封装好的接口方法，变量属性）
+        
+   WebSocket对象：
+        所有的通讯都是基于一个WebSocket实例；
+        首先，创建WebSocket对象；
+              var socket:egret.WebSocket = new egret.WebSocket();
+        其次，侦听事件；
+              WebSocket对象，主要有两个事件：一个是连接服务器成功；
+                                           一个是收到服务器数据；
+              socket.addEventListener(egret.ProgressEvent.SOCKET_DATA,onReceiveMessage,this);
+              socket.addEventListener(egret.Event.CONNECT,onSocketOpen,this);
+        之后，连接服务器：
+              添加侦听事件之后，就可以连接服务器。
+              ————————————————————————————————————————————————————————
+              注意：
+                  跟所有的通讯协议一样，服务器端需要支持WebSocket协议；
+              ————————————————————————————————————————————————————————  
+              为了便于测试，websocket官方提供了一个专门用于测试的服务器echo.websocket.org,连接其80端口即可测试；
+              socket.connect("echo.websocket.org",80);
+       然后，发送消息：
+              连接服务器成功之后，即可发送消息。
+              在前面叙述的onSocketOpen处理函数中加入发送消息的代码：
+              onSocketOpen(){
+                var cmd = '{"cmd":"uzwan_login","gameId":"0","from":"guwan","userId":"3565526"}';
+                socket.writeUTF(cmd);
+              }
+              ——————————————————————————————————————————
+              消息的具体格式由自己决定，通常是json格式
+              ——————————————————————————————————————————
+      接下来，接收消息：
+              服务器根据约定的格式返回消息，则会触发SOCKET_DATA事件，
+              在其事件处理函数onReceiveMessage中即可读取消息；
+              onReceiveNessage(){
+                var msg = socket.readUTF();
+              }
+      结束；
+      ----------------注意事项：在 Native 下 websocket 单次消息长度不能超过 128*1024 字节。
+        
+    
     
