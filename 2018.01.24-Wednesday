@@ -2,3 +2,63 @@
 ------------------------------------------------
 生活不是没有波澜的，没有动荡的生活会真实吗？
 ------------------------------------------------
+上午：fore medierm/morning
+      许多帮助快速开发的egret工具，在官方文档的目录中，使用的时候去下载就好：
+      -------------其他官方工具：
+                            Egret Feather
+                            Res Depot
+                            Texture Merger
+                            EgretVS
+                            Egret iOS Support
+                            Egret Android Support
+                            Egret Inspector
+                            TS Conversion
+
+1、资源加载模块：
+        在Egret,所有的资源都存储在服务器端；
+        Egret会将预先设定好的资源下载到本地计算机中，然后转载到内存，以便使用 ；
+        RES是Egret为开发者提供的一个功能完善的资源加载机制，开发者无需考虑资源加载的细节；
+        只要指定加载的资源，并且在对应的逻辑位置中添加相应的执行代码即可；   
+      
+  资源加载配置：
+        资源加载配置文件，是以json格式存储资源数据：
+        具体方式如下：{
+        resources: {"name": , "type": , "url": },
+        groups:{"name": , "keys": }  }
+        
+        快速搞定资源配置的工具：
+        <Res Depot可以帮您快速制作生成Egret游戏中所需要的游戏资源配置文件。通过可视化拖拽式操作，分分钟搞定资源配置文件。>
+  
+  载入资源加载配置：
+        RES模块对资源加载配置有两种读取方式：
+              一种是外部文件：文件载入读取方式 
+                            RES.loadConfig(a,b)该函数包含两个参数:
+                            第一个参数是resource.json文件的完整路径，
+                            第二个参数是配置中每个资源项url相对路径的基址
+              另一种是直接读取：
+              
+        __________________________________      
+        ResourceEvent extends egret.Event:            
+              一个加载项加载失败事件:static ITEM_LOAD_ERROR: string;
+              配置文件加载并解析完成事件:static CONFIG_COMPLETE: string;注意：若有配置文件加载失败，将不会抛出此事件，若要处理配置加载失败，请同时监听 CONFIG_LOAD_ERROR 事件;
+              配置文件加载失败事件:static CONFIG_LOAD_ERROR: string;
+              延迟加载组资源加载进度事件:static GROUP_PROGRESS: string; 
+              延迟加载组资源加载完成事件:static GROUP_COMPLETE: string;注意：若组内有资源项加载失败，将不会抛出此事件，若要处理组加载失败，请同时监听 GROUP_LOAD_ERROR 事件;
+              延迟加载组资源加载失败事件:static GROUP_LOAD_ERROR: string;
+              已经加载的文件数:itemsLoaded: number;
+              要加载的总文件数:itemsTotal: number;
+              资源组名:groupName: string;
+               一次加载项加载结束的项信息对象:resItem: ResourceItem;
+          
+  
+  预加载资源组：
+  运行时动态创建资源组：
+  获取资源的几种方式：3种
+  资源的缓存机制：
+  销毁缓存的资源：
+  RES内置文件类型解析器：
+  扩展资源加载模块文件解析器：
+  配置九宫格参数：
+  与GUI系统无缝桥接：
+  配置声音资源：   
+  读取并解析二进制文件：
