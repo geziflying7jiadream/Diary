@@ -21,4 +21,115 @@
 生活中懂点心理学，你会在工作生活中，坚持自己，无碍他人。
 -----------------------------------------------------------------------------
 上午：
-1、
+昨天的回顾:
+----
+预加载资源组：
+    在资源配置加载完成(资源加载事件ResourceEvent)之后，就可以进行预加载资源组：RES.loadGroup("preload");
+    事件对应的资源组：
+          注意：组加载事件回调函数中的写法，需要event.GroupName判断属于哪个资源组，因为可能有多个资源组。
+    加载资源组失败：由于网络的原因，也可能会出现多次加载资源组失败，这是可以记录加载失败的次数：
+                  判断失败次数小于多少，继续加载资源组，
+                  否则的话，弹出网络出现问题的原因；
+          如果遇到多个资源组加载失败的情况，那么，可以使用groupName来作为键记录加载次数；
+          
+运行时动态创建资源组：
+    如果资源组，无法实现加载到资源中，那么，我们可以在程序运行时，使用RES.createGroup(groupName:string,keys:Array)动态加载资源组；
+    动态资源组创建之后，使用loadGroup()将资源一次加载完；
+    注意：createGroup()是基于已经创建完成的资源配置操作的，调用这个方法前，请先确认RES资源配置加载完成ReourceEvent.CONFIG_COMPLETE;
+    
+获取资源的几种方式：3种
+    getRes():同步获取资源，获取之前已经缓存过的资源；
+    getResAsync():异步获取资源，获取配置中含有的所有资源，如果缓存中存在：直接获取，不存在：调用网络加载文件并解析后加载；
+    getResUrl():获取不在一个服务器上资源使用；
+    
+    前两种获取方式的name参数都对应配置文件里资源项的name属性。
+    如果name对应的文件是SpriteSheet等含有多个子资源的类型，可以使用"."语法直接获取到子资源。
+    var texture:egret.Texture = RES.getRes("icons.activity_10");
+    
+资源的缓存机制：
+销毁缓存的资源：
+
+RES内置文件类型解析器：
+    RES内置的支持文件类型：
+            RES.ResourceItem.TYPE_BIN:解析为原始的二进制文件
+            RES.ResourceItem.TYPE_IMAGE:解析为egret.texture对象
+            RES.ResourceItem.TYPE_TEXT:解析为string变量
+            RES.ResourceItem.TYPE_JSON(json)：解析为json对象
+            RES.ResourceItem.TYPE_SHEET(sheet)：解析为egret.SpriteSheet对象
+            RES.ResourceItem.TYPE_FONT(font)：解析为egret.BitmapFont对象 
+            RES.ResourceItem.TYPE_SOUND(sound)：解析为egret.Sound对象
+            RES.ResourceItem.TYPE_XML(xml)：解析为egret.XML对象
+            
+扩展资源加载模块文件解析器：
+
+配置九宫格参数：
+    图片类的解析器是支持九宫格的，只要在资源项里面加入scale9grid属性即可；
+    
+与GUI系统无缝桥接：
+    
+配置声音资源：
+    声音资源需要配置soundType属性；
+    
+读取并解析二进制文件：
+    使用二进制格式时，需要在资源清单中，设置type为bin;
+    
+下午：
+---说大道理的时候，虽然你是苦口婆心，但是也要时刻注意身边听的人情绪变化，是否不耐烦，适可而止。
+---换位思考，不要看一个人说了什么，要看那人做了什么，推出那人在想什么。
+---坏话制造者容易信任值破产： 不要在背后说别人坏话，因为听的人可能会觉得你也会在背后说他的坏话。
+---地下不仅埋有尸骨，还买有野心：当你还没有实力支撑起你的野心的时候，必须先把野心藏起来，不要被发现。
+---镇住别人之前要先骗过自己：抬头挺胸，看人时双目有神，不要畏畏缩缩。假装自己很强大很自信，坚持下去你会发现，自己真的很强大很自信。
+---人通常只挑弱者欺负，对强者保持畏惧。
+
+
+我希望你 是我独家的记忆
+var baImage:egret.ByteArray = new egret.ByteArray( RES.getRes("bg") );
+console.log( "JPEG SOI:", baImage.readUnsignedShort().toString(16) );
+对于bin方式读取，RES.getRes得到的数据其实是ArrayBuffer格式，需要作为ByteArray构造函数的参数来创建一个ByteArray;
+接着用无符号短整型方式读取ByteArray数据，即可得到我们需要的SOI标记;
+
+添加第三方库：必须
+  egret create_lib xxx；
+  创建之后：xxx在src文件夹下添加文件，修改xxx的json文件file :["src下文件名（有顺序）"]；
+  之后使用:egret build xxx，在xxx的bin下出现编译好的文件；
+  最后:xxx文件放在项目文件外面，修改项目文件egretProperties.json中modules下面扩展库的{name:xxx path: ../xxx}
+  命令行：egret build -e 或者 `egret build -e -clean
+  ok!
+  
+  
+微信小程序：
+    微信平台接入
+      1、配置JSSDK第三方库：weixinapi
+      2、在项目中设置微信第三方库：就是上面添加第三方库
+           验证引入文件是否成功：           
+              在 egret 项目中添加如下代码：
+              var bodyConfig: BodyConfig = new BodyConfig();
+              bodyConfig.appId = "此处填写公共平台appID，未认证的ID将不能使用自定义分享等接口，请联系微信官方获取";
+              bodyConfig.debug = true;
+              /// ... 其他的配置属性赋值
+              /// 通过config接口注入权限验证配置
+              if(wx) {
+                    wx.config(bodyConfig);
+                    wx.ready(function() {
+                    /// 在这里调用微信相关功能的 API
+                     });
+              }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
