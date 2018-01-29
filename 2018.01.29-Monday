@@ -3,4 +3,86 @@
 生活中总会被一些琐碎的事无牵绊，从而导致忘记一些重要的东西，
 也许有时候这种东西，你是不可能再找回来的-信任、尊重、支持、
 ......
+English study zone（time：Noon）
+性能测试：performance testing
+快速入门：QuickStart
+API(应用程序接口)：Application Program Interface
+touristappid：旅行者AppID（没有appid的情况下）
+the code is a mock one：代码是模拟的
+synchronization：sync同步
+navigationbarbackgroundcolor:导航栏背景颜色
+navigationbartextstyle:导航栏标题颜色（仅支持black/white）
+navigationBarTitleText:导航栏标题内容
+navigationStyle：导航栏样式（default/custom）
+backgroundColor:窗口的背景色
+backgroundtextstyle:下拉背景字体、loading图的样式（仅支持dark/light）
+enablepulldownrefresh:是否开启下拉刷新
+onreachbuttomdistance:页面上拉触底事件触发时距页面底部距离
+selectedColor:tab上文字选中时的颜色
+
+onload is invoke:加载页面已经援引
+invoke:援引
 -----------------------------------------------------
+上午：
+1、微信小程序
+  学习微信小程序官方5大类：
+  
+  简易教程：
+      1.开发小程序第一步，需要有一个小程序账号，通过小程序账号，可以管理这个小程序；
+        申请账号:
+              点击 https://mp.weixin.qq.com/wxopen/waregister?action=step1 ；
+        AppID:
+              登录https://mp.weixin.qq.com 可以在设置--开发设置中看到小程序的AppID;
+              注意： AppID (注意这里要区别于 服务号或订阅号 的 AppID)
+        开发者工具：
+                  根据操作系统下载相应的开发者工具；
+                 
+      2.打开开发者工具，用微信扫码登录，开始进行微信小程序的开发； 
+      3.创建小程序项目（在小程序平台创建项目---在自己的编辑工具wing中打开）
+        新建项目选择小程序项目---选择代码存放的硬盘路径---填入刚刚申请到的小程序的 AppID---勾选 "创建 QuickStart 项目"---点击确定；
+         (创建 QuickStart 项目----注意: 你要选择一个空的目录才会有这个选项)
+      4.小程序开放平台---创建小程序项目---项目路径--配置AppID---在自己的开发工具中打开项目---【官方开发者工具中调试小程序】          
+      
+  框架：
+      1.
+  组件：
+  API：
+  工具：
+  Q&A：
+  
+  
+  官方小程序开发工具--熟悉：
+  代码构成：
+        .json 后缀的 JSON 配置文件
+        .wxml 后缀的 WXML 模板文件
+        .wxss 后缀的 WXSS 样式文件
+        .js 后缀的 JS 脚本逻辑文件
+        
+     app.json：它是对当前小程序的全局配置，包括了小程序的所有页面路径、界面表现、网络超时、底部tab等   
+          pages:pages字段用于描述当前所有页面的路径，这是为了让微信客户端更好的了解当前的页面在哪个目录中； 
+                -------------------------------------小程序中新增/减少页面，都需要对pages数组进行操作；
+                -------------------------------------文件名不需要写后缀，因为框架会自动去寻找路径下.json、.js、.wxml、.wxss四个文件进行整合；
+          
+          window:小程序所有页面的顶部背景颜色，文字颜色定义在这里；
+                -------------------------------------用于设置小程序的状态栏、导航栏、标题、窗口背景色；
+               
+          tabBar：如果小程序是一个多tab应用(客户端窗口的底部或者顶部有tab栏可切换界面),可以通过tabBar配置项指定tab栏的表现，以及tab切换时显示的页面      
+                  ----positon:"top"设置为top时，将不会显示icon；
+                  ----tabBar中的list是一个数组，只能配置至少2个，最多5个tab,tab按照数组的顺序排序；
+                  list:list属性
+                  position:bottom/top
+                  
+                  list接受一个数组，数组中的每个项都是一个对象，其属性值如下：
+                                                                pagePath：页面路径---必须先在pages中设置；
+                                                                    text：tab上按钮文字；
+                                                                iconPath：图片路径，icon大小限制为40kb,建议尺寸81px*81px;
+                                                        selectedIconPath：选中时图片路径；
+                                                        
+          networkTimeout:可以设置各种网络请求超时的时间；
+                  request:wx.request的超时时间，默认60000毫秒
+                  connectSocket:wx.connectSocket的超时时间，默认同上
+                  uploadFile:wx.uploadFile的超时时间，...
+                  downloadFile:wx.downloadFile的超时时间,...
+                
+                
+  wing: snippets提供了自己定制代码模板的可能性，通过关键字快速补全     
