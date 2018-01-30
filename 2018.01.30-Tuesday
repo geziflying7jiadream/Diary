@@ -1,1 +1,66 @@
 每天进步一点点，未来前进一大步：
+----------------------------------------------------------
+每天的生活都是在重复中度过，这样子真的不好，所以在有限的时间中创造出
+能够跟这种价值相匹配的思想和成果，哪怕只是一种思路，也是一种与众不同的进步。
+所以，抓紧自己的每一分每一秒，时间从来都是只给那些有准备的人，打开幸福美好的大门。
+----
+miniprogramRoot：指定小程序源码的目录（相对路径）
+qcloudRoot：指定腾讯云项目的目录（相对路径）
+
+----------------------------------------------------------
+上午：
+1、微信小程序
+debug：
+      在开发者工具中，开启debug模式，然后再开发者工具控制台调试程序，以info形式输出信息：
+      其信息有page的注册：Register Page、
+      页面路由：On app route、
+      数据更新：Update view with init data、
+      事件触发：Invoke event onReady in page/onReady have been invoked
+page.json：就是给每一个面配置自己的json。xxx.json
+      覆盖掉app.json中window的配置，也就是说，每一个页面的json只能配置window属性；
+      disableScroll：设置为 true 则页面整体不能上下滚动；只在 page.json 中有效，无法在 app.json 中设置该项
+      onReachBottomDistance：页面上拉触底事件触发时距页面底部距离，单位为px
+2、工具配置 project.config.json
+      方便在其他电脑时候，一样的界面效果；
+      miniprogramRoot：指定小程序源码的目录（相对路径）
+      qcloudRoot：指定腾讯云项目的目录（相对路径）
+      setting：项目设置
+          es6：是否启用 es5 转 es6
+          postcss：上传代码时样式是否自动补全
+          minified：上传代码时是否自动压缩
+          urlCheck：是否检查安全域名和 TLS 版本
+      
+3、WXML模板
+小程序的 WXML 用的标签是 view, button, text 等等，
+这些标签就是小程序给开发者包装好的基本能力，
+还提供了地图map、视频video、音频sound等等组件能力      
+
+App.js中配置的onLaunch/onShow参数：
+path:打开小程序的路径
+query：打开小程序的query
+scene:打开小程序的场景值
+shareTicket:shareTicket转发信息
+referrerInfo:当场景为由从另一个小程序或者公众号或者App打开时，返回此字段
+referrerInfo.appId：来源小程序或公众号或App的 appId，详见下方说明
+referrerInfo.extraData：来源小程序传过来的数据，scene=1037或1038时支持
+
+
+
+getApp():全局的getApp()函数可以用来获取到小程序实例：
+//other.js
+var appInstance = getApp();
+console.log(appInstance.globalData);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
