@@ -1,0 +1,163 @@
+index.php项目的入口文件：
+date_default_timezone_set();//设置时区
+
+define('ENVIRONMENT', isset($_SERVER['CI_ENV']) ? $_SERVER['CI_ENV'] : 'development');//设置application环境
+
+error_reporting();//判断ENVIRONMENT：进行ERROR REPORTING：'deveploment' 'testing' 'production'
+
+$system_path = 'system';//这个就是使用框架的目录
+
+$application_folder = 'application';//当前开发时，控制器等所在的应用目录
+
+$view_folder = '';//VIEW所在的目录（使用绝对地址）
+
+//Set the current directory correctly for CLI requests :设置当前cli request客户端请求的正确的当前目录
+
+defined('STDIN'):判断'STDIN'是否已经定义过，存在，----这些定义的常量，需要在common.php中查看
+
+
+$system_path =   ;//判断当前系统的核心目录地址
+
+从上面已经知道path地址目录，下面就开始设置主要的path常量；
+
+define():定义一些常用的constant常量
+
+'SELF' ：当前文件路径
+'BASEPATH'：系统路径
+'SYSDIR':'system'路径名
+'FCPATH':控制器路径
+
+
+判断应用所在目录是否正确：就是为了确定这个目录路径；
+'APPPATH':定义App路径；
+
+根据APP路径定义view视图，
+'VIEWPATH'：视图路径；
+
+
+require_once './install_qcloud_sdk.php';//下载以及安装‘QCLOUD SDK CONFIGURATION’在这个入口文件中引入
+
+require_once BASEPATH.'core/CodeIgniter.php';加载bootstrap文件
+
+------------------------------------------------------------------
+
+
+
+
+
+下面看一下在core/CodeIgniter.php，都引用了什么文件：
+CodeIgniter.php:
+----------------------
+defined('BASEPATH') OR exit('No direct script access allowed');//首先判断根目录是否定义过，没有定义过就需要退出
+
+define('CI_VERSION', '3.1.0');//定义CI框架的版本
+
+
+——————看是引入文件了：重点
+require_once(APPPATH.'config/constants.php');//定义的一些常量Load the framework constants
+
+require_once(BASEPATH.'core/Common.php');//定义一些全局的函数Load the global functions
+
+在这个函数中，只需要使用load_class()函数就可以加载相应的类文件；
+结合is_loaded()函数判断自己是否已经加载；
+
+get_config()：null 和 not null 两种情况；
+不存在时，require $file_path = APPPATH.'config/config.php';//用于加载config/config.php配置文件
+$config存在时，返回$config数组;
+
+config_item():还有一些配置返回特殊的元素;
+
+get_mimes()://返回的是一些MIME类型 ：Returns the MIME types array from config/mimes.php
+
+include(APPPATH.'config/mimes.php');//引入类型文件
+
+is_https()://是否是https协议
+
+is_cli()://测试一个请求是否来自命令行；
+
+show_error()://错误处理函数 in application/views/errors/error_general.php
+
+log_message()//日志记录函数
+
+set_status_header()//设置http status header协议的头文件状态吗
+
+_shutdown_handler()//关机处理函数，error_get_last(),判断错误的类型$last_error['type']
+
+preg_replace()//正则表达式替换字符串；
+
+一个人捧你就够了，还需要别人吗？如果你是一个这样的人，那你只会对自己好，别人只不过是你利用的工具而已，世事难料，我不会诅咒你，就是奉劝你，做人要真诚，不要耍小心思，不然就是：司马昭之心，路人皆知。
+
+
+_stringify_attributes()//将字符串给简化输出
+
+function_usable()//函数使用的方法调用
+
+-----------------------------------------------------------------------------------
+
+
+
+
+config/config.php：ci中核心的配置文件
+------------
+
+defined('BASEPATH') OR exit('No direct script access allowed');//首先第一句话，这是一句进入ci的必经之话
+
+这里面定义数组$config = array();
+
+$config['base_url'] = '';空的，一般也没用
+
+$config['index_page'] = 'index.php';//index.php
+
+$config['uri_protocol']	= 'REQUEST_URI';
+
+$config['url_suffix'] = '';
+
+$config['language']	= 'english';
+
+$config['charset'] = 'UTF-8';
+
+$config['enable_hooks'] = FALSE;//设置钩子
+
+$config['subclass_prefix'] = 'MY_';//在扩展本地的libraries的时候，设置文件名filename/类名classname的前缀
+
+$config['composer_autoload'] = FALSE;//composer的镜像是否加载
+
+$config['permitted_uri_chars'] = 'a-z 0-9~%.:_\-';//允许 Allowed URL Characters
+
+$config['allow_get_array'] = TRUE;
+
+$config['enable_query_strings'] = FALSE;
+
+$config['controller_trigger'] = 'c';
+
+$config['function_trigger'] = 'm';
+
+$config['directory_trigger'] = 'd';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
