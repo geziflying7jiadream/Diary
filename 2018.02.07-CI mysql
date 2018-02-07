@@ -1,0 +1,189 @@
+CI中的数据库操作
+复制代码
+转载于：http://blog.sina.com.cn/s/blog_76e7bdba01016p2p.html
+
+CI中第一次连接数据库,在控制器或模型的构造函数里输入以下语句
+
+1
+$this->load->database();
+ 就不需要重复连接, 在那个控制器或模型就可以做任意多次的查询。 查询操作(等同select) 方法一:
+
+1
+$query = $this->db->get('sites'); //sites为表名
+　
+ 这是一个“select *”查询，目标是site表。换句话说，它取回所有的行 也可用下面这种方式写:
+
+1
+2
+$this->db->from('sites');
+$query = $this->db->get();
+ 如果想要得到特定的列，而不是全部列，这样做：
+
+1
+2
+$this->db->select('url','name','clientid');//'url','name','clientid'为列名
+$query = $this->db->get('sites');
+　
+ 如果排序:
+1
+2
+3
+$this->db->select('url','name','clientid');//'url','name','clientid'为列名
+$this->db->orderby("name", "desc");
+$query = $this->db->get('sites');
+　　
+
+ 如果想要限制返回的行数，比如想要最初五个结果
+
+1
+2
+3
+4
+$this->db->select('url','name','clientid');//'url','name','clientid'为列名
+$this->db->orderby("name", "desc");
+$this->db->limit(5);
+$query = $this->db->get('sites');
+ 写where语句 ==的情况 
+
+1
+$this->db->where('clientid', '1');  //clientid属性  "1"为属性值
+　　
+
+!=的情况
+1
+2
+$this->db->where('url !=', 'www.mysite.com');
+$this->db->where('id >', '3');
+　　
+
+ where后几个条件的可以写几个where 如 
+
+1
+2
+$this->db->where('url !=','www.mysite.com');
+$this->db->where('id >', '3');
+WHERE…OR的情况 
+
+1
+2
+$this->db->where('url !=','www.mysite.com' );
+$this->db->orwhere('url !=','www.anothersite.com' );
+连接表
+1
+2
+$this->db->from('sites');
+$this->db->join('people', 'sites.peopleid = people.id');
+ 写个完整的查询
+
+1
+2
+3
+4
+5
+6
+7
+$this->db->select('url','name','clientid','people.surname AS client');
+$this->db->where('clientid', '3');
+$this->db->limit(5);
+$this->db->from('sites');
+$this->db->join('people', 'sites.clientid = people.id');
+$this->db->orderby("name", "desc");
+$query = $this->db->get();
+　　
+
+ 方法二:
+1
+2
+3
+4
+$this->db->query("SELECT id, name, url FROM sites WHERE 'type' = 'dynamic'");
+可以像下面的语句一样写查询放条件
+$condition = "client ='3' AND (type ='dynamic' OR type='static')";
+$this->db->where($condition);
+　　
+
+ 注意:双引号是定义变量的.不要混淆单引号和双引号. 显示查询结果 在查询语句后加上下面这句话
+
+1
+$query = $this->db->get();
+　
+ 如果有多个结果，他们被保存在$row对象中，可以用一个 foreach 循环:
+
+1
+2
+3
+4
+5
+6
+foreach ($query->result() as $row)
+{
+   print $row->url;
+   print $row->name;
+   print $row->client;
+}
+如果我们只想要一个结果，它可以作为一个对象被返回, 或在这里当做一个$row数组
+
+1
+2
+3
+4
+5
+6
+7
+8
+if ($query->num_rows() > 0)
+{
+   $row = $query->row_array();
+  
+   print $row['url'];
+   print $row['name'];
+   print $row['client'];
+}
+ 增加数据(等同insert) 方法一:先建个数组,把要insert的值放在数组里.如下:其中url/name/clientid/type均为数据表属性值
+
+1
+2
+3
+4
+5
+6
+7
+$data = array(
+                'url' => 'www.mynewclient.com',
+                'name' => 'BigCo Inc',
+                'clientid' => '33',
+                'type' => 'dynamic'
+            );
+然后使用$this->db->insert('sites', $data); 把数据增加到sites表中.
+ 方法二:使用$this->db->set() 设置每一个值
+
+1
+2
+3
+4
+5
+$this->db->set('url', 'www.mynewclinet.com');
+$this->db->set('name', 'BigCo Inc');
+$this->db->set('clientid', '33');
+$this->db->set('type', 'dynamic');
+$this->db->insert('sites');
+ 更新(等同update) 先定位要更新的记录,再update
+1
+2
+3
+$this->db->where('id', '1');
+$this->db->update('sites', $data);
+$this->db->set()方式也可以,和新增数据应该是一样的.
+　
+ CI 提供几个函数检查数据库是否成功执行了相关操作。 最有用的：
+1
+$this->db->affected_rows();
+ 在执行insert或update后应该返回 '1'-但是如果我正在update一批记录的话，可能返回更大的一个整数。 如果我正在insert一笔新的记录, 在实际产生它之前，
+ 我们并不知道ID具体的值。如果我需要引用新的记录的ID, 使用下列语句： 
+1
+$new_id_number = $this->db->insert_id();
+删除(等同delete)
+1
+2
+$this->db->where('id', '2');
+$this->db->delete('sites');
