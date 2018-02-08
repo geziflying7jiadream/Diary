@@ -1,0 +1,132 @@
+每天进步一点点，未来前进一大步：
+-----------------------------------------------
+没有生活是不需要经过淬炼的，自己思考达到的明白事理的
+心情才是真实的，记住自己的方向，朝着目标前进，你就不
+会失去自己的本心。相信自己，决战未来.
+adapter：适配器
+weapp-adapter：weapp-adpter适配器
+symbol:符号、象征、标记
+portrait：肖像，模型，标本
+-----------------------------------------------
+上午：
+
+微信小程序学习：
+
+微信小游戏 wxml 中include 与 import的区别：
+首先，import需要先引入template，再去使用template；
+include就不需要，可直接引入文件，直接使用文件就可以了；
+include是简单的代码替换，不需要作用域，直接使用就可以；
+也不能像import一样使用data传递变量；
+import有作用域的概念：只会import自己目标的template，而不会import自己目标的import的template;
+
+微信小游戏平台增加了动态执行代码的限制，eval(console.log(0):
+    措施1：引擎定制裁剪去掉不必要的模块减少引擎体积，这块通过设置引擎模块即可;
+    措施2：图片压缩;
+    措施3：资源动态下载;
+        Drawcall、mask、碰撞检测、对象池、避免场景节点更新、裁剪、机型适配、
+微信小游戏不允许超过4M,
+
+深入浅出的认识到ES6 symbol标记：
+http://www.infoq.com/cn/articles/es6-in-depth-symbols
+它可以说是javascript的第7中类型，但是它不是一个值，它只是一种标记；
+为了解决一大部分字符串垃圾的代码，我们在使用的时候symbol是最终的解决方案；
+symbol可以使一大部分代码进行简化，这样避免在使用的过程出现很多代码垃圾；
+即：var mySymbol = symbol();
+调用symbol创建一个新的symbol,可以使这个symbol与其他的属性值成为不一样的symbol属性对象；
+它的值和其他任何值都不相等，字符串或者数字可以作为属性值，这个symbol也可以作为属性值；
+它不等同于任何字符串，因此这个以symbol为键的属性可以保证不与其他任何属性产生冲突；
+
+
+symbol.iterator = Symbol('Symbol.iterator')这是一个接口；
+———————————————————————————————————————————————————————————————————————————————————————
+获取symbol的三种方法
+有三种获取symbol的方法。
+
+调用Symbol()。正如我们上文中所讨论的，这种方式每次调用都会返回一个新的唯一symbol。
+
+调用Symbol.for(string)。这种方式会访问symbol注册表，其中存储了已经存在的一系列symbol。
+这种方式与通过Symbol()定义的独立symbol不同，symbol注册表中的symbol是共享的。
+如果你连续三十次调用Symbol.for("cat")，每次都会返回相同的symbol。
+注册表非常有用，在多个web页面或同一个web页面的多个模块中经常需要共享一个symbol。
+
+使用标准定义的symbol，例如：Symbol.iterator。标准根据一些特殊用途定义了少许的几个symbol。
+————————————————————————————————————————————————————————————————————————————————————————
+
+
+
+
+
+微信小游戏只有以下两个必要条件：
+game.js 小游戏的入口文件
+game.json 小游戏的配置文件
+
+game.json中:{
+'deviceOrientation':'portrait' 支持的屏幕方向：portrait:竖屏 landscape:横屏
+}
+
+多线程works,在主线程game.js中添加线程代码：var worker = wx.createWorker('worker中request文件的index.js的绝对地址');
+接下来主线程向worker发送消息：
+worker.postMessage({
+  'msg':'hello worker'
+})
+__________________________________________________
+Worker.postMessage(Object message)
+向主线程/Worker 线程发送的消息。
+
+Worker.terminate()
+结束当前 worker 线程，仅限在主线程 worker 对象上调用。
+
+Worker.onMessage(function callback)
+监听接收主线程/Worker 线程向当前线程发送的消息
+___________________________________________________
+
+
+wx API:我们只能使用javascript来编写小游戏，小游戏的运行环境是一个绑定了一些方法的javascript VM虚拟机；
+       javascript VM运行环境没有浏览其中使用的BOM DOM API，只有wx API;
+下面就来开始wx API来创建画布、绘制图形、显示图片以及响应用户交互的基础功能；
+创建Canvas
+
+'use strict':进入标志 这是一种javascript的严格模式：
+5.1 全局变量显式声明：
+在正常模式中，如果一个变量没有声明就赋值，默认是全局变量。严格模式禁止这种用法，全局变量必须显式声明。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
