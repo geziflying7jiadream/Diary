@@ -13,23 +13,56 @@
 
 
 分析微信小游戏中自带的打飞机游戏：
-
+——————————————————————————————————————————————————————————————————————————————————————————————
 https://segmentfault.com/a/1190000012646888：这是一个相对完整的解释连接
 
 https://github.com/PengJiyuan/FlappyBird：这是一个简单的素鸟的小程序游戏代码
 
 https://segmentfault.com/a/1190000013190964：基于官方的打弹游戏，许多库都是使用的官方的适配器库
-
+——————————————————————————————————————————————————————————————————————————————————————————————
 画图主要是使用canvas的drawImage()方法，
 
+微信小游戏中：canvas、wx.createImage()、多个canvas相结合、
+动画：
+setInterval()
+setTimeout()
+requestAnimationFrame()
+clearInterval()
+clearTimeout()
+cancelAnimationFrame()
+
+微信中的触摸事件：
+onTouchStart()
+onTouchMove()
+onTouchEnd()
+onTouchCancel()
 
 
+全局对象：
+window是浏览器条件下的全局对象。
+微信小游戏中没有BOM API所以没有window全局对象。
+但是提供了全局对象GameGlobal,所以有全局定义的变量都有GameGlobal属性。
 
 
+这些封装之后的东西称之为Adapter：
+但是我们可以使用 wx.createCanvas 和 wx.createImage 来封装一个 document。
+var document = {
+    createElement: function (tagName) {
+        tagName = tagName.toLowerCase()
+        if (tagName === 'canvas') {
+            return wx.createCanvas()
+        }
+        else if (tagName === 'image') {
+            return wx.createImage()
+        }
+    }
+}
+也可以根据自己的需要，做出相应的封装适配
 
-
-
-
+——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
+Egret官方给出的人微信小游戏开发指南：http://developer.egret.com/cn/github/egret-docs/Engine2D/minigame/minigameFAQ/index.html
+——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
+只有自己足够的努力，才能配得上更好的人生。
 
 
 
