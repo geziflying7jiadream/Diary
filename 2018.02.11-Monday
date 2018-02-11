@@ -1,0 +1,199 @@
+每天进步一点点，未来前进一大步：
+-----------------------------------------------------------
+生活中没有人，有责任去忍受某些不尊重的目光、行为和情绪，所以，
+在不触碰自己底线的边缘线上，那都是那些人在自寻烦恼，没有人看不
+出针对和心思这种东西的，自以为是，自以为聪明的人最终是会为自己的
+行为付出代价的。
+己所不欲，勿施于人。
+
+cilicon valley:硅谷
+-----------------------------------------------------------
+上午：
+微信小程序学习：
+Adapter:希望创建全局的适配对象,就是当你希望使用DOM API创建canvas和image对象的时候;
+var document = {
+  createElement:function(tagName){
+    tagName = tagName.toLowerCase();
+    if(tagName == 'canvas'){
+      return wx.createCanvas();
+    }
+    if(tagName == 'image'){
+      return wx.createImage();
+    }
+  }
+}
+这个时候创建代码就可以像window中DOM一样创建对象了；
+
+小游戏是一个不同于浏览器的开发环境，所以要在小游戏中建立比较好的适配器才能发挥更大的作用；
+小游戏开发的语言是javascript，那么在小游戏开发引擎的底层也应该是使用javascript调用
+绘制API和音频API。
+一段javascript代码调用一个API是依赖于-----宿主环境---，我们经常使用的console.log()甚至不是
+javascript的核心代码，而是由浏览器window这个宿主环境提供实现的。
+因为node.js这个宿主环境根本没有提供document这个内置的全局变量，
+通过 wx API，开发者可以调用 Native 提供的绘制、音视频、网络、文件等能力。
+
+
+如果你想创建画布：
+var canvas = wx.createCanvas();
+var context = canvas.getContext('2d');
+
+如果你想创建音频：
+var audio = wx.createInnerAudioContext();
+audio.src = "bgm.mp3";
+audio.play();
+设置自动播放和循环播放：
+audio.autoPlay = true;
+audio.loop = true;
+
+如果你想获取屏幕的宽高：
+var {screenWidth,screenHeight} = wx.getSystemInfoSync();
+
+Adapter是用户代码，并不是小游戏的一部分；
+
+模块化：
+小游戏提供了commonJS的模块化API，可以通过modules.exports和exports导出模块，通过require导入模块；
+src/Util是小游戏经常会使用到的一些方法；
+res/image是经常会用到的一些图片；
+util/drawLogo.js模块封装的是一个用来把logo画到指定位置的一个方法：
+modules.exports = function(canvas,x,y){
+  var image = new Image();
+  image.onload = function(){
+    var context = canvas.getContext('2d');
+    context.drawImage(image,x,y);
+  }
+  image.src = "res/image/logo.png";
+}
+
+
+CMD：cmd是通用模块的定义，这个是国内发展过来的；
+require 是一个方法，接受 模块标识 作为唯一参数，用来获取其他模块提供的接口
+
+exports 是一个对象，用来向外提供模块接口
+
+module 是一个对象，上面存储了与当前模块相关联的一些属性和方法
+
+CMD模块规范 https://github.com/cmdjs/spec...
+
+
+
+
+小游戏被隐藏在后台之后，音频就会停止播放，再从回到前台之后，需要继续播放音频，这个时候就需要监听前台的页面显示：
+wx.onShow{function(){
+  bgm.play();监听前台显示页面后，继续播放音频
+}
+}
+
+处理音频中断事件：音频中断事件是指音频在游戏中，被系统打断时触发的事件。中断事件分为中断开始，中断结束；
+wx.onAudioInnerruptionBegin();中断开始
+wx.onAudioInnerruptionEnd();中段结束
+
+
+目前两个平台支持MP3、aac、wav格式的音频；其他格式存在系统差异；
+
+如果一个音频不需要了，应该尽早的销毁这个音频InnerAudioContext.destroy();接口提前销毁这个实例；
+
+文件类系统有两个类：代码包和本地文件；
+wx.getFileSystemManager();可以获得全局唯一的文件系统管理器；
+
+代码包文件：指的是在项目文件夹下添加的文件；
+由于代码包文件大小限制，那么比较大的文件并不提倡在代码包文件的时候加载，当游戏启动之后提供一个下载接口下载到本地；
+
+访问代码包文件的方式：就是从文件根目录开始写文件的路径（不是相对路径）；
+
+本地文件的访问方式：是指当小程序被用户添加到手机后，会有一块独立的文件存储区域，用于用户维度隔离；
+就是指同一台手机，不同的微信用户不能访问到另一用户的文件，同一个用户的不同appID之间不能访问同一个文件；
+
+本地文件的文件格式如下：
+{{协议名}}:文件路径
+
+注意：其中，协议名在 iOS/Android 客户端为 "wxfile"，在开发者工具上为 "http"，开发者无需关注这个差异，也不应在代码中去硬编码完整文件路径。
+{{wxfile}}:xxx 或者是 {{http}}:xxx
+
+本地临时文件:
+本地临时文件只能通过调用特定接口产生，不能直接写入内容。
+本地临时文件产生后，仅在当前生命周期内有效，重启之后即不可用。
+因此，不可把本地临时文件路径存储起来下次使用。
+如果需要下次在使用，可通过 
+                      FileSystemManager.saveFile() 
+                      或 
+                      FileSystemManager.copyFile() 
+接口把本地临时文件转换成本地存储文件或本地用户文件。
+
+本地缓存文件:
+本地存储文件只能通过调用特定接口产生，不能直接写入内容。
+本地缓存文件产生后，重启之后仍可用。
+本地缓存文件只能通过 FileSystemManager.saveFile() 接口将本地临时文件保存获得。
+
+
+本地用户文件：
+本地用户文件是从 1.7.0 版本开始新增的概念。
+我们提供了一个用户文件目录给开发者，开发者对这个目录有完全自由的读写权限。通过 wx.env.USER_DATA_PATH 可以获取到这个目录的路径。
+
+调试：
+在真机上进行调试的时候，需要进行的是console.log() console.error()的API出现的显示问题，
+在微信的右上角有一个小圆圈，点击这个小圆圈，你就可以在自己的微信上调试vConfig的问题了；
+点击vConifg按钮，可以打开日志面板
+
+注意：在真机上，vConfig无法输出console.log()有循环引用的对象；
+
+性能：
+小游戏中的垃圾处理机制：小游戏中的canvas或者Image都会有一个客户端实际纹理存储，
+实际纹理存储的是canvas或者Iamge的真实纹理，通常会占用一部分内存；
+每个客户端的实际纹理存储有一定的回收机制，这种机制就是canvas或者Image的回收机制；
+
+注意：
+通过调用 wx.triggerGC() 方法，可以加快触发 JavaScriptCore Garbage Collection（垃圾回收），
+从而触发 JavaScript 中没有引用的 Canvas、Image 回收，释放对应的实际纹理储存。 
+但 GC 具体触发时机还要取决于 JavaScriptCore 自身机制，并不能保证调用 wx.triggerGC() 能马上触发回收，
+建议在每局游戏开始或结束触发一下。
+
+
+
+多线程worker：
+对于小游戏来说，每一帧16ms是极其珍贵的，如果有一些进程是可以异步处理的，
+那么可以放到worker中运行，当运行结束后，可以将结果反馈到主线程上；
+---异步---worker----worker结束，返回数据----主进程
+
+worker运行于一个单独的上下文与线程中，不能直接调用主线程方法，worker也不具备渲染的能力；
+worker与主线程之间的数据传输，使用worker.postMessage()发送数据，使用worker.onMessage()接收数据，
+worker传输的数据不是直接共享的，而是一种被复制的数据；
+
+步骤：
+1.配置worker信息：
+{
+  "workers": "workers"
+}
+2.添加worker代码文件
+workers/request/index.js
+workers/request/util.js
+workers/response/idnex.js
+注意：request和response文件夹是两个入口文件的文件夹，其中，util.js是一个方法的文件
+
+3.接下来就是编写worker的代码：
+首先要引入worker,编写worker的响应代码；
+var utils = require('./utils');
+//在Worker线程执行上下文会全局暴露一个`worker`对象，直接调用worker.onMessage/postMessage()即可；
+worker.onMessage(res){
+  console.log(res);
+}
+4.在主线程中，初始化worker
+在主线程的代码game.js中初始化worker
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
