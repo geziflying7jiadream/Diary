@@ -4,6 +4,10 @@
 未来中，你做下的每一步努力，都将成为你成功的基石，没有人会给你什么不
 可动摇的事物，所有的东西，都是源自于自我的蜕变和提升，相信自己，打造一
 个更好的人生。
+缧绁：léi xiè 捆绑犯人的黑绳索
+骖：cān 古代驾在车前两侧的马，引申义是驾三匹马
+寤：wù .睡醒。 2.古同“悟”，理解，明白。3.古同“牾”，逆
+忻：xīn 同“欣”。2.开导，启发。 3.姓。
 ----------------------------------------------------------------
 上午：
 微信小游戏学习：
@@ -104,6 +108,91 @@ hmac_sha256('{"foo":"bar"}', 'o0q0otL8aEzpcZL/FT9WsQ==') = 654571f79995b2ce1e149
 curl -d '{"foo":"bar"}' 'https://api.weixin.qq.com/some_api?access_token=xxx&openid=xxx&signature=654571f79995b2ce1e149e53c0a33dc39c0a74090db514261454e8dbe432aa0b&sig_method=hmac_sha256'
 
 session_key合法性校验：
+我们提供接口给开发者校验session_key是否合法；为了保持session_key的合法性，并不是直接检验session_key的明文校验，而是根据session_key的登录态签名来校验；
+登录态签名：signature
+
+
+获取二维码：
+小程序的二维码和小游戏的二维码有着相同的获取方式。通过后台方式可以获取二维码，
+
+获取小程序码：
+我们推荐生成和获取小程序码，因为他有更好的辨识度。目前有两种可以生成二维码的方式接口：
+      1、接口A：适用于需要的码数量较少的业务场景
+         接口地址：https://api.weixin.qq.com/wxa/getwxacode?access_token=ACCESS_TOKEN
+         
+         通过该接口生成的小程序码永久有效，所以要谨慎使用。用户扫描该码之后，将直接进入path所在的页面
+         
+      2、接口B：适用于需要的码数量极多，或仅临时使用的业务场景
+         接口地址：https://api.weixin.qq.com/wxa/getwxacodeunlimit?access_token=ACCESS_TOKEN   
+      
+            //这是首页的js
+            page({
+               onload:function(options){
+               //options中的scene需要使用的decodeURIComponet才能获取到生成的二维码时传入的scene
+               var scene = decodeURIComponent(options.scene);
+               }
+            })
+      3、接口 C：适用于需要的码数量较少的业务场景
+         接口地址：https://api.weixin.qq.com/cgi-bin/wxaapp/createwxaqrcode?access_token=ACCESS_TOKEN 
+         
+         注意：通过该接口生成的小程序二维码，永久有效，数量限制见文末说明，请谨慎使用。
+
+
+转发：
+用户在使用小游戏过程中，可转发消息给其他用户或群聊。
+
+1、转发菜单：
+点击右上角按钮，会弹出菜单，菜单中的“转发”选项默认不展示。
+通过 wx.showShareMenu() 和 wx.hideShareMenu() 可动态显示、隐藏这个选项。
+
+
+
+2、被动转发：
+用户点击右上角菜单中的“转发”选项后，会触发转发事件，
+如果小游戏通过 wx.onShareAppMessage() 监听了这个事件，可通过返回自定义转发参数来修改转发卡片的内容，否则使用默认内容。
+
+3、主动转发：
+游戏内可通过 wx.shareAppMessage()接口直接调起转发界面，与被动转发类似，可以自定义转发卡片内容。
+wx.shareAppMessage({
+      title:"xxx"
+})
+4、使用 Canvas 内容作为转发图片
+如果不指定转发图片，默认会显示一个小程序的 logo。
+如果希望转发的时候显示 Canvas 的内容，可以使用 Canvas.toTempFilePath() 或 Canvas.toTempFilePathSync() 来生成一张本地图片，然后把图片路径传给 imageUrl 参数。
+转发出来的图片的最佳尺寸是5:4；
+wx.onShareAppMessage(function(){
+      return {
+            title:'转发标题',
+            imageUrl:canvas.toTempFilePathSync({
+                  destWidth:500,
+                  destHeight:400
+            })
+      }
+})
+
+5、withShareTicket模式
+通过wx.updateShareMenu接口可修改转发接口属性。
+如果设置withShareTicket属性为true,那么会出现以下效果：
+      选择联系人的时候只能选择一个目标，不能多选
+      消息被转发出去之后，在会话窗口中无法被长按二次转发
+      消息转发的目标如果是一个群聊，则
+      会在转发成功的时候获得一个 shareTicket
+      每次用户从这个消息卡片进入的时候，也会获得一个 shareTicket，通过调用 wx.getShareInfo() 接口传入 shareTicket 可以获取群相关信息
+      修改这个属性后，同时对主动转发和被动转发生效。
+
+      // 设置 withShareTicket: true
+      wx.updateShareMenu({
+        withShareTicket: true
+      })
+
+
+
+用户数据的签名验证和加解密：
+
+1、数据的签名验证
+      
+
+
 
 
 
