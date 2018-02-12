@@ -1,0 +1,123 @@
+每天进步一点点，未来前进一大步：
+----------------------------------------------------------------
+生活中，你来我往的事情，这是人性使然；工作中，踏实努力，这是态度端正；
+未来中，你做下的每一步努力，都将成为你成功的基石，没有人会给你什么不
+可动摇的事物，所有的东西，都是源自于自我的蜕变和提升，相信自己，打造一
+个更好的人生。
+----------------------------------------------------------------
+上午：
+微信小游戏学习：
+
+egret中使用的typescript是一种严格意义上的javascript,这最终语言的脚本是基本上不做什么实质性的事情，就是相当于把javascript的核心给封装了一遍；
+egret中的typescript 相当于 ES6；
+
+想只能去认真的了解typescript，就需要了解typescript的文档了：http://www.typescriptlang.org/
+
+
+
+微信小游戏开发：
+用户授权：
+部分接口需要经过用户授权才能使用，我们把这些接口按照使用范围分成多个scope;
+用户选择对scope进行授权，当授权给一个scope之后，这个scope中的所有接口都可
+以使用；
+
+调用接口发起授权：
+第一次使用某个借口下面的scope时，会弹出一个弹框，xxx获取你的权限，
+如果用户点击允许，那么这个scope就会获取这个接口的权限,否则，返回失败消息；
+------获取微信的登录信息login:
+      wx.login({
+        success:function(){
+          wx.getUserInfo()
+        }
+      })
+
+提前发起授权：
+如果需要提前发起授权获得用户同意，可以使用wx.authorize()来发起授权；
+      wx.authorize({
+        scope:"scope.record"
+      })
+
+处理用户拒绝授权：
+用户有可能拒绝小程序发起的授权申请，需要处理这种情况：
+wx.login({
+  success:function(){
+    wx.getUserInfo();
+  },
+  fail:function(res){
+      if(res.errMsg.indexOf('auth deny') > -1 || res.errMsg.indexOf('auth denied') > -1){
+          //处理用户拒绝授权的情况
+      }
+  }
+})
+
+wx.authorize({
+  scope:"scope.record",
+  fail:function(res){
+    if(res.errMsg.indexOf('auth deny') > -1 || res.errMsg.indexOf('auuth denied') > -1){
+        //处理用户提前发起授权的情况
+    }
+  }
+})
+
+获取用户授权设置：
+通过调用wx.getSetting()可以获得用户当前的授权处理信息；
+wx.getSetting({
+    success:function(res){
+        var authSetting = res.authSeting;
+        if(authSetting['scope.userInfo'] == true){
+          //处理用户授权信息
+        }else if(authSetting['scope.userInfo'] == false){
+          //用户授权信息处理失败，之后的处理
+        }else{
+          //未询问过用户授权，调用相关 API 或者 wx.authorize 会弹窗询问用户
+        }
+    }
+})
+
+引导用户重新授权：
+如果用户拒绝过某个scope的授权申请，则后续这个scope下的相关API调用都会直接失败，
+用wx.authorize()申请此scope也会直接失败，而不会弹窗询问用户。
+如果用户拒绝过某个 scope 的授权申请，则后续这个 scope 下的相关 API 调用都会直接失败，
+用 wx.authorize() 申请此 scope 也会直接失败，而不会弹窗询问用户。
+这种情况下，需要引导用户主动到设置页面打开相应的 scope 权限。
+
+
+用户登录态签名：
+小程序的一部分后台(HTTP)接口要求验证用户登录态。开发者在调用时需提供以session_key为密钥生成的签名。
+其中session_key是指通过wx.login获得的登录态。
+
+签名算法：
+目前支持的签名算法，就是hmac_sha256()。对于POST请求，开发者生成签名的算法是：
+siagnature = hmac_sha256(post_data,session_key);
+其中post_data是本次请求的数据包；
+对于GET请求，post_data等于长度为的数据包：
+signature = hmac_sha256("",session_key);
+
+签名示例：
+例如开发者需要请求的http(post)，请求包是一个json字符串；
+curl -d '{"foo":"bar"}' 'https://api.weixin.qq.com/some_api?access_token=xxx&openid=xxx&signature=???&sig_method=hamc_sha256'
+开发者需要计算出signature的参数；
+假设当前用户的session_key是：'o0q0otL8aEzpcZL/FT9WsQ=='，
+那么，开发者生成的签名应该是：
+hmac_sha256('{"foo":"bar"}', 'o0q0otL8aEzpcZL/FT9WsQ==') = 654571f79995b2ce1e149e53c0a33dc39c0a74090db514261454e8dbe432aa0b
+开发者服务器发起的请求是：
+curl -d '{"foo":"bar"}' 'https://api.weixin.qq.com/some_api?access_token=xxx&openid=xxx&signature=654571f79995b2ce1e149e53c0a33dc39c0a74090db514261454e8dbe432aa0b&sig_method=hmac_sha256'
+
+session_key合法性校验：
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
