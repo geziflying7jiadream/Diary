@@ -182,16 +182,15 @@ worker.onMessage(res){
 var worker = wx.createWorker('workers/request/index.js') // 文件名指定 worker 的入口文件路径，绝对路径
 5. 主线程向 Worker 发送消息
 worker.postMessage({
-  msg: 'hello worker'
+  msg:'hello worker'
 })
-worker 对象的其它接口请看 worker接口说明
-
-Tips
-Worker 最大并发数量限制为 1 个，创建下一个前请用 Worker.terminate() 结束当前 Worker
-Worker 内代码只能 require 指定 Worker 路径内的文件，无法引用其它路径
-Worker 的入口文件由 wx.createWorker() 时指定，开发者可动态指定 Worker 入口文件
-Worker 内不支持 wx 系列的 API
-Workers 之间不支持发送消息
+worker对象的其他接口，请看worker的接口：
+tips
+Worker 最大并发数量限制为1个，在创建下一个前请使用worker.terminate()结束当前worker；
+Worker 内代码只能require指定worker路径内的文件，无法引用其他路径；
+worker 的入口文件由wx.createWorker()时指定，开发者可以动态指定worker入口文件；
+worker 内不支持wx系列的API；
+worker 之间不支持发送消息；
 
 
 
