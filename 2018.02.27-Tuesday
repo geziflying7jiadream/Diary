@@ -5,3 +5,81 @@
 要学什么，做什么，自己把握，努力拼搏。
 --------------------------------------------
 微信小游戏学习：
+
+
+
+
+
+
+
+
+在前端语言（javascript）和后端语言（如：java）中，JSON.parse(data)都是将json字符串转换成json对象；
+例如：javascript中：
+    var jsonStr = '{"name":"小明","sex"："男"}';//JSON字符串
+    var jsonObj = {"name":"小明","sex"："男"};//JOSN对象
+    (1)
+    var obj = JSON.parse(jsonStr);//json字符串转换成json对象
+    弹框：alert(obj.name);
+    (2)
+    var str = JSON.stringify(jsonObj);//json对象转换成json字符串
+    弹框：alert(str);
+    
+  Java后端语言中也会使用，这里就不再赘述了。。。。。
+  
+JS中的解释：   
+call(),apply(),bind()方法：
+  call 方法 ：调用一个对象的一个方法，以另一个对象替换当前对象。
+            说明：如果没有提供 thisObj 参数，那么 Global 对象被用作 thisObj。
+                 说明白一点其实就是更改对象的内部指针，即改变对象的this指向的内容。
+                 这在面向对象的js编程过程中有时是很有用的。
+  其实，两个函数在不指定参数的情况下，没有什么本质的区别；只有在传递参数的时候才会有一些不同---数组，参数argument       
+  
+call、apply、bind：
+三者都是用来改变函数的this对象的指向的
+
+fun.call(this,a,b);   //相当于 this.fun(a,b)
+
+fun.apply(this,[a,b]); //相当于 this.fun(a,b);
+
+fun.bind(this); // 返回 this.fun，   fun.bind(this)(); 相当于 this.fun();
+
+--------------------------------------------------------------------------------
+Egret资源管理解决方案：https://www.cnblogs.com/gamedaybyday/p/6079694.html
+--------------------------------------------------------------------------------
+Egret资源管理解决方案
+关于egret开发H5页游，资源管理和加载的一点看法。
+一 多json文件管理
+二 资源归类和命名
+三 exml文件编写规范
+四 资源预加载、分步加载、偷载
+五 资源文件group分组
+六 ResUtils，多json文件管理类
+七 ResUtils，资源组加载管理类
+八 开发中遇到的一点问题 
+
+其中讲到的关于class和modules的写出来编译后的结果，出现了不同的解释；
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
