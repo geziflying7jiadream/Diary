@@ -1,0 +1,42 @@
+关于TypeScript中的module和export关键词
+2014-8-24 22:43666714
+本帖最后由 f111fei 于 2014-8-24 22:47 编辑
+
+
+   我们在使用egret的时候，调用egret中的类都是要加上egret.XXX或者egret.gui.XXX的。 这是为何呢？仔细看一下egret的源码会发现， egret中的定义的所有类都是这样的格式
+module egret {
+    export class XXX {
+    }
+}
+复制代码
+假如是gui模块,那么源码中的类module后面的就是egret.gui。 RES模块中的类module是RES。那么这里的关键词module到底是干嘛的?
+
+
+module大致的意思就是模块， 一个模块中有若干类，假如我写了两个类都叫 A 。那怎么区分呢，那么就使用这个module关键词将这两个类定义在不同模块就行了。module还有一个作用也是主要作用就是将一些不同特征的的类区分开。 比如 egret里面有几大模块，核心模块叫 egret ， gui模块叫 egret.gui，RES模块就叫RES ， dragonBones模块叫dragonBones。 这些模块就是按功能划分的，一个模块负责一些特定的功能。
+
+再比较一下as3中package关键词与module的不同。as3中一般一个类在哪个文件夹下，那这个类的package就是这个相对于src文件夹的名字，这样就不用担心不同文件夹下有名称相同的类而无法区分了。ts中module与类所在的文件夹无关，可能不同文件夹下的类都是一个module，一个文件夹下的类是不同module(这种情况最好不要出现)。 从某种角度来说，module的概念包括了package。你完全可以把某一个文件夹下的类定义的module定义成相对于src文件夹的名字就和as3的package是一样的。不过不推荐这种做法，这样会书写不便，引用每一个类都要加上module名前缀。
+
+
+回过来解释为什么我们要加上egret.XXX来调用egret里面的类。 因为通常情况下，我们定义类都是这样写的
+class XXX {
+}
+复制代码
+我们不会为自己的游戏所写的类加上module这个关键词，所以我们通常使用的是默认模块，这样就和egret不在一个模块了，所以要调用egret中类就要加上egret.XXX。
+
+在一个module下的不同类之间的相互调用不需要加模块名。比如 egret这个模块中有很多类但是在egret的源码中你几乎看不到egret.XXX这样的调用，因为他们都是在一个模块下。 同理假如你写了个类module是egret，那这个类调用egret里面的类也不需要加egret前缀了。但是不建议这样做，因为模块的核心用法就是定义一组相同特征的类。
+
+子模块定义。我们可以查看egret中GUI的源码，发现GUI中的类module名都是egret.gui。这个gui就是egret的子模块了。 在子模块中调用父模块的类也是不需要加前缀的。比如egret.gui中的类调用egret中的类是不需要加egret前缀的。 在父模块中调用子模块只需要加上相对于父模块的模块名就行了。比如egret中的类调用egret.gui中的类使用gui.XXX。
+
+关于export的用法。 在使用module时定义一个类需要在前面加上export关键词。表示在这个模块中导入了这个类(在默认模块下不需要加export)。也可以不加但是不加的话这个类是无法在这个文件外部访问的，相当与内部类。另外export还可以用于function。这些用法的一个典型的例子就是RES模块中， 我们通常会使用RES.getRes(XXX)来获取资源，好像这是一个叫RES类的静态方法，其实不然。搜索下发现根本就没有RES这个类，RES是模块名，getRes是RES模块下的一个方法。代码在Resource.ts文件中，如下：
+    export function getRes(key:string):any{
+        return instance.getRes(key);
+    }
+复制代码
+所以export也可以用于导入方法。同理 egret.setTimeout这类的方法都是使用export导入的方法 。再来看上述例子中的 instance 实际上是Resource这个类的一个实例，只不过这个类是一个内部类。可以看到在Resource.ts是这样定义的
+class Resource extends egret.EventDispatcher{
+}
+复制代码
+这里没用使用export关键词，这样外界就无法访问这个类，这个类只在内部使用很好的封装起来了。这是一个很好的用法。
+
+
+总之module就是定义了一组相同特征的类。在官方Egret的1.0.3版本中将GUI中的类全部改为egret.gui.XXX，这个改变看似很无理，本来一个按钮是egret.Button这样写，但是要改成egret.gui.Button，书写不便了。但是这样是合理的，就是因为这是一个单独的模块。需要从egret模块中隔离出来。 以上就是module的主要用法了。
