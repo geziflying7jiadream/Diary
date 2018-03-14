@@ -4,3 +4,191 @@
 03.14估计这个日子，在我的一生中，都会成为一个美好的一天。
 加油啊，成为更好的自己。
 -----------------------------------------------------------
+
+开始自己的学习:
+微信Api：
+分成大的模块有：
+渲染
+系统
+设备
+文件
+位置
+网络 ★☀☆√
+开放接口
+转发
+调试
+数据缓存
+界面
+Worker
+媒体
+性能
+定时器
+数据上报
+-----16大块的接口Api
+
+网络 ★☀☆√
+网络：下载、发起请求、上传
+其实这种东西还是很好理解的，比如在一件事情上，你要获取什么样的信息，首先你要知道向谁索取信息。这个时候就需要：发起请求；
+下载：也是一种请求，只不过这个请求，直接返回结果；
+上传：同样是一种请求，想把东西传递给谁谁谁，发送传点东西的请求；
+
+DownloadTask:
+wx.downloadFile(Object object):下载资源到本地，客户端直接发起一个HTTP GET请求，return 文件的本地文件路径；
+属性：url/header(不能有referer)/filePath/success/fail/complete
+success回调函数：
+    temFilePath:临时问Jain路径。如果没有传入filePath指定文件存储路径，则下载后的文件会存储到一个临时文件
+    statusCode:开发者服务器返回的HTTP状态码
+DownloadTask:
+DownloadTask.abort()方法：中断下载任务
+DownloadTask.onProgressUpdate(function callback):监听下载进度变化事件
+参数：function callback监听事件的回调函数
+progress:下载进度百分比
+totalBytsWritten:已经下载的数据长度 单位：bytes
+totalbytesExpectedTpWrite:预期需要下载的数据总长度 单位：bytes
+
+发起请求：
+requestTask: 
+wx.request(Object object)
+          发起网络请求:url（开发者服务器接口地址）/data(请求的参数)/header/
+                      method(HTTP请求方法GET)/dataType(json返回的数据格式)/
+                      success/fail/complete（接口调用结束后的回调函数（调用成功、失败都会执行））
+          object.method的合法值：GET/HEAD/POST/PUT/DELETE/TRACE/CONNECT
+          object.dataType的合法值：json(返回的数据为json，返回后会对返回的数据进行一次JSON.parse)
+                                  arrayBuffer(返回的数据为ArrayBuffer)
+          success回调函数：data(开发者服务器返回的数据)：string/object/ArrayBuffer
+                          statusCode(开发者服务器返回的HTTP状态码):number
+                          header(开发者服务器返回的HTTP Response Header):object
+          RequestTask:网络请求任务对象
+                      requestTask.abort()方法:中断请求任务
+
+WebSocket：
+SocketTask 
+wx.connectSocket(Object object):创建一个WebSocket连接。最多同时存在2个WebSocket连接
+                参数：Object object
+                url:开发者服务器接口地址，必须是wss协议，且域名必须是后台配置的合法域名
+                header:HTTP Header,Header中不能设置Referer
+                method:(GET)有效值：OPTIONS，GET,HEAD,POST,PUT,DELETE,TRACE,CONNECT
+                protocols:Array<string> 子协议数组
+                success:接口调用成功的回调函数
+                fail:接口调用失败的回调函数
+                complete:接口调用结束的回调函数（调用成功、失败都会执行）
+wx.closeSocket(Object object):关闭WebSocket连接
+                参数：Object object
+                code:(默认值1000表示正常关闭连接)：一个数字值表示关闭连接的状态号，表示连接被关闭的原因
+                reason:一个可读的字符串，表示连接被关闭的原因。这个字符串必须是不长于123字节的UTF-8文本。
+                success:接口调用成功函数
+                fail:接口调用失败函数
+                complete:接口调用结束的回调函数（调用成功、失败都会执行）
+wx.onSocketOpen(function callback):监听WebSocket连接打开事件
+                参数：function callback监听事件的回调函数
+wx.onSocketClose(function callback):监听WebSocket连接关闭事件
+                参数：function callback监听事件的回调函数
+wx.onSocketMessage(function callback):监听WebSocket接收到的服务器消息
+                参数：function callback监听事件的回调函数
+wx.onSocketError(function callback):监听WebSocket错误事件
+                参数：function callback监听事件的回调函数
+wx.sendSocketMessage(Object object):通过WebSocket连接发送数据，
+                                     --需要先wx.connectSocket，
+                                     --并在wx.onSocketOpen回调之后，
+                                     --才能发送消息；
+                参数：Object object
+                data:(string/ArrayBuffer)需要发送的内容
+                success:接口调用成功的回调函数
+                fail:接口调用失败的回调函数
+                complete:接口调用结束的回调函数（调用成功、失败都会执行）
+（1）SocketTask:WebSocket任务，可通过wx.connectSocket()接口创建返回
+（2）SocketTask.send(Object object):通过WebSocket连接发送数据
+（3）SocketTask.close(Object object):通过WebSocket连接关闭发送数据
+（4）SocketTask.onOpen(functon callback):监听WebSocket连接打开事件
+（5）SocketTask.onClose(function callback):监听WebSocket连接关闭事件
+（6）SocketTask.onError(function callback):监听websocket错误事件
+（7）SocketTask.onMessgae(function callback):监听WebSocket接收到的服务器的消息事件
+
+      （2）参数Object object
+      data:string/ArrayBuffer需要发送的内容
+      success:接口调用成功的回调函数
+      fail:接口调用失败的回调函数
+      complete:接口调用结束的回调函数
+      
+      
+      （3）参数Object object
+      code:一个数字值，表示关闭连接的状态号，表示连接被关闭的原因。如果这个参数没有被指定，默认值是1000（表示正常连接关闭）
+      reason:一个可读的字符串，表示连接被关闭的原因。这个字符串必须是不长于123字节的UTF-8文本
+      success:接口调用成功的回调函数
+      fail:接口调用失败的回调函数
+      complete:接口调用结束的回调函数（调用成功、失败都会执行）
+      
+      
+      （6）参数object res
+      errMsg：string错误信息
+      
+      
+      （7）参数Object res
+      data:string/ArrayBuffer 服务器返回的消息
+
+
+上传：
+UploadTask:
+wx.uploadFile(Object object):将本地资源上传到开发者服务器，客户端发起一个HTTPS POST请求，其中content-type为multipart/form-data;
+                              content-type: multipart/form-data
+              参数：Object object
+              url:服务器端的接口地址
+              filePath:要上传文件资源的路径
+              name:文件对应的key,开发者在服务端可以通过这个key获取文件的二进制内容
+              header:HTTP请求header
+              formData:HTTP请求中其他额外的form data
+              success:接口调用成功的回调函数
+              fail:接口调用失败的回调函数
+              complete:接口调用结束的回调函数（调用成功、失败都会执行）
+UploadTask:一个可以监听上传进度变化的事件，以及取消上传任务的对象
+  UploadTask.abort():中断上传任务
+  UploadTask.onProgressUpdate(function callback):监听上传进度变化事件
+                              callback回调函数
+                              参数object res
+                              progress:上传进度百分比
+                              totalBytesSent:已经上传的数据长度，单位Bytes
+                              totalBytesExpectedToSend:预期需要上传的数据长度，单位Bytes
+
+--------------------
+开放接口：
+微信小游戏的开放接口，也就是说，已经给了我们基本的一些信息：
+接口方法：
+        登录
+        授权
+        用户信息
+        设置
+        微信运动
+        开放数据
+登录：
+wx.checkSession(Object object):通过wx.login接口获得的用户登录态，有一定的时效性。
+                                用户越久没有使用小程序，用户登录态越有可能失效。反之，如果
+                                用户一直在使用小程序，则用户登录态一直保持有效。
+                                具体时效逻辑由微信维护，对开发者透明。
+                                开发者只需要调用wx.checkSession接口检测当前用户登录态是否有效。
+                                登录态过期后开发者可以调用wx.login获取新的用户登录态。
+                参数Object object
+                success:接口调用成功的回调函数
+                fail:接口调用失败的回调函数
+                complete:接口调用结束的回调函数（成功、失败都调用）
+wx.login(object object):调用接口，获取登录凭证（code）,进而换取用户登录态信息：
+                        包括用户的唯一标识(openid),以及本次登录的会话秘钥(session_key)等。
+                        用户数据的--加解密--通讯，需要依赖--会话秘钥--完成。
+        参数Object object
+        success/fail/complete
+        
+        success回调函数：
+        参数：Object res
+        code:用户登录凭证（有效期5分钟）。
+        开发者需要在开发者服务器后台调用api,使用code换取openid和session_key等信息。
+
+
+
+
+
+
+
+
+
+
+
+
