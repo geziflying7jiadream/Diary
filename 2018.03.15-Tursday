@@ -1,0 +1,80 @@
+每天进步一点点，未来前进一大步：
+--------------------------------------------------------------------
+时代总是在不断发展，在前进的历史潮流脏哦能，没有自己的一个目标是很迷茫的。
+每个人来到世上一次，不容易，为了自己也好，家人朋友也好，成为更好的自己是很
+有必要的。生命是很脆弱的，爱护好自己，让自己在仅有的人生中散发出耀眼的光芒，
+成就更好的自己，创建美好的家庭生活工作。
+加油，你可以的！
+--------------------------------------------------------------------
+微信小游戏API：
+继续昨天的-----
+
+开放接口：
+登录：wx.checkSession(Object object) wx.login(Object object)
+
+授权：
+wx.authorize(Object oject):提出向用户发起授权请求。
+                          调用后，会立刻弹窗询问用户是否同意授权小程序使用某项功能或获取用户的某些数据，但是不会实际调用对应接口。
+                          吐过用户之前已经同意授权，则不会出现弹窗，直接返回成功。
+            参数：Object object
+            scope:需要获取权限的scope
+            success/fail/complete
+用户信息：
+wx.getUserInfo(Object object):获取用户信息。
+                              withCredentials为true时，需要先调用wx.login接口。
+                              然后授权用户scope.userInfo.
+                参数Object object
+                withCredentials:是否带上登录态信息。
+                                当withcredentials为true时，需要关注以前调用获得wx.loin且登录态尚未过期，此时
+                                返回的数据，会包含encryptedData,iv等敏感信息；
+                                当withCredentials为false时，不要有登录态，返回的数据不包含encryptedData,iv等敏感信息；
+                lang:显示用户信息的语言（默认en）
+                success/fail/complete
+
+                object.lang的合法值：en/zh_CN/zh_TW
+                success回调函数：
+                参数Object res
+                userInfo:（UserInfo）用户信息对象，不包含openid等敏感信息；
+                rawData:(string)不包括敏感信息的原始数据字符串，用于计算签名；
+                signature:(string)使用啥(rawData +sessionKey)得到的字符串，用于校验用户信息。
+                encryptedData:(string)包括敏感数据在内的完整用户信息的加密数据，详见加密数据解密算法；
+                iv:(string)加密算法的初始向量，详见加密数据解密算法；
+
+UserInfo:
+属性：
+language:显示country province city所用的语言
+nickName:用户昵称
+avatarUrl:用户头像url。最后一个数值：代表正方形头像的大小（0、46、64/96/132数值可选，0代表640*640正方形头像），用户没有头像时该项为null.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
