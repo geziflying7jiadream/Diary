@@ -4,3 +4,85 @@
 获得对自己有利的东西，能够提升自己的修养才是值得自己坚持的东西。
 加油，看好你呦！努力做更好的自己。
 ----------------------------------------------------------------
+微信小游戏学习，继续---
+
+UserInfo:属性中avatarUrl的合法值，分别代表的是头像不同的大小；
+gender:性别的数字分别是0 1 2 未知、男性、女性
+country:用户所在国家
+province:用户所在省份
+city:用户所在城市
+
+
+设置：
+wx.getSetting(Object object):获取用户的当前设置。
+                             返回值中只会出现小程序已经向用户请求过的权限；
+              参数：Object object
+              success、fail、complete
+
+              success回调函数：
+              参数 Object res
+              authSetting:(AuthSetting)用户授权结果
+
+wx.openSetting(Object object):调起客户端小程序设置界面，返回用户设置的操作结果。
+                              设置界面只会出现小程序已经向用户请求过的权限。
+                参数Object object
+                success/fail/complete
+
+                success回调函数：
+                参数Object res
+                authSetting:(AuthSetting)用户授权结果
+
+AuthSetting:
+属性：
+scope.userInfo:(boolean)用户信息，对应接口wx.getUserInfo()
+scope.userLocation:(boolean)地理位置，对应接口wx,getLocation /wx.chooseLocation
+scope.address:(boolean)通讯地址，对应接口wx.chooseAddress
+scope.invoiceTitle:(boolean)发票抬头，对应接口wx.chooseInvoiceTitle
+scope.werun:(boolean)微信运动步数，对应接口wx.getWeRunData
+scope.record:(boolean)录音功能，对应接口wx.startRecord
+scope.writePhotosAlbum:(boolean)保存到相册wx.saveImageToPhototsAlbum/wx.saveVideoToPhotosAlbum
+scope.camera:(boolean)摄像头
+
+
+微信运动：
+wx,getWeRunData(Object object):获取用户过去30天微信运动步数，需要先调用wx.login()接口。
+                                需要用户授权scope.werun.
+                参数：object object 
+                success/fail/complete
+
+                success回调函数：
+                参数Object res:
+                encryptedData:敏感数据在内的完整用户信息的加密数据，详见加密数据解密算法
+                iv:加密算法的初始向量，详见加密数据解密算法
+
+开放数据：
+wx.getFriendCloudStorage(Object object):拉取当前用户所有同玩好友的托管数据。
+                                        该接口，只可在开放数据域下使用。
+                        参数:Object object
+                        success/fail/complete:
+                        keyList:(Array.<string>)要拉取的key列表
+
+                        success回调函数：
+                        参数Object res
+                        data:(Array.<UserGameData>)同城好友的托管数据
+
+wx.getGroupCloudStorage(Object object):在小游戏是通过群分享卡片打开的情况下，可以通过调用该接口获取群同玩成员的游戏数据。
+                                        该接口只可在开放数据域下使用。                                        
+
+wx.getUserCloudStorage():
+wx.removeUserCloudStorage():
+wx.setUserCloudStorage():
+KVData:
+UserGameData:
+
+
+
+
+
+
+
+
+
+
+
+
