@@ -77,24 +77,103 @@ CURLOPT_PUT:设置这个选项为一个非零值取用HTTP上传一个文件
 
 
 --------------------------------------------------------------------------------------------------------------
+继续干：
+
+微信运动：
+wx.getWeRunData(Object object):获取用户过去三十天的微信运动步数。
+                                需要调用wx.login接口，需要用户授权scope.werun.
+                参数Object object
+                success/fail/complete
+
+                success回调函数：
+                参数Object res
+                encryptedData:string包括敏感数据在内的完整用户信息的加密数据，详见加密数据揭秘数据算法。
+                iv:string加密算法的初始向量，详见加密数据解密算法。
+
+开放数据：
+wx.getFriendCloudStorage(Object object):拉取当前用户所有同玩好友的托管数据。
+                                        该接口只可在开放数据下使用。
+                         参数：Object object
+                         keyList:Array.<string>要拉取的key列表
+                         success/fail/complete
+                         success回调函数：参数Object res
+                         data:Array.<UserGameData>同城好友的托管数据
+
+-------
+-------
+-------
+-------
+removeUserStorage:小游戏可以通过本接口删除已经上报到微信的key-value数据
+请求地址：POST https://api.weixin.qq.com/wxa/remove_user_storage?access_token=ACCESS_TOKEN&signature=SIGNATURE&openid=OPENID&sig_method=SIG_METHOD
+
+access_token:接口调用凭证
+openid:用户唯一标识符
+appid:小程序appId
+signature:用户登录态签名，签名算法：参考用户登录态签名算法
+sig_method:用户登录态签名的哈希方法，如hmac_sha256等，请参考用户登录态签名算法
+key:要删除的数据key列表
+
+返回值：
+errcode:错误码             errcode的合法值：0（请求成功）
+errmsg:错误信息                            -1（系统繁忙，此时请开发者稍后再试）
+
+示例代码：
+curl -d '{"key":["gold","score"]}'\'https://api.weixin.qq.com/wxa/remove_user_storage?access_token=ACCESS_TOKEN&signature=SIGNATURE&openid=OPENID&sig_method=SIG_METHOD'
 
 
+setUserStorage:上报用户数据后台接口。
+小游戏可以通过本接口上报key-value数据到用户的CloudStorage.
+注意：用户的存储数量不超过1M，单个key-value对数据不能超过1k.
+
+参数：access_token/openid/appid/signature/sig_method
+kv_list:(Object)要上报的数据
+
+返回值：errcode:错误码
+       errmsg:错误信息
+
+errcode的合法值：
+0——请求成功
+-1——系统繁忙，此时请开发者稍后再试
+87016:：由于单个key-value数据超过限制而写入失败
+87017：由于用户存储的数量超过限制而写入失败。
 
 
+开放数据域：
+OpenDataContext
 
+wx.getOpenDataContext():获取开放数据域    
+                        返回值：OpenDataContext:开放数据域对象
+                                属性：Canvas开放数据域和主域共享的sharedCanvas
+                                方法：OpenDataContext.postMessage(Object message) 向开放数据域发送消息
 
+wx.onMessage(function callback):监听主域发送的消息
+                参数：function callback
+                callback回调函数：
+                参数Object data:主域发送的消息
 
+OpenDataContext.postMessage(Object message):向开放数据域发送消息
+                            参数:Object message
+                            要发送的消息，message 中及嵌套对象中 key 的 value 只能是 primitive value。即 number、string、boolean、null、undefined。
 
+access token:
+getAccessToken:获取小程序的access_token.
+            参数：grant_type:填写client_credential
+                  appid:小程序appId
+                  secret:小程序appSecret
+            返回值：access_token:获取到的凭证
+            errcode:错误码
+            errMsg:错误信息
 
-
-
-
-
-
-
-
-
-
+转发:
+wx.getShareInfo(Object object):获取转发的详细信息
+                参数Object object
+                shareTicket:shareTicket
+                success/fail/complete
+                
+                success回调函数：
+                errMsg:错误信息
+                encryptedData	string	包括敏感数据在内的完整转发信息的加密数据，详细见加密数据解密算法	
+                iv	string	加密算法的初始向量，详细见加密数据解密算法
 
 
 
