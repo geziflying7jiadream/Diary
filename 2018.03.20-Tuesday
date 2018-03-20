@@ -18,6 +18,15 @@
 
 
 
+//egret中使用的延时器
+egret.clearInterval(intervalId);
+
+
+
+
+
+
+
 
 
 
