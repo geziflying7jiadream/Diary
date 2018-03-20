@@ -6,10 +6,19 @@
 一切都是靠自己不断思考的，相信自己，努力吧。
 加油。
 ------------------------------------------------
+//egret中使用的延时器
+egret.clearInterval(intervalId);
+---------------------------------------------
 微信小游戏继续学习：
 继续昨天的----
 
 转发：
+wx.getShareInfo()
+
+wx.hideShareMenu(Object object):隐藏转发按钮
+                 success/fail/complete
+wx.onShareAppMessage(function callback):监听用户点击右上角菜单的“转发”按钮时出发的事件
+canhu
 
 
 
@@ -18,8 +27,9 @@
 
 
 
-//egret中使用的延时器
-egret.clearInterval(intervalId);
+
+
+
 
 
 
