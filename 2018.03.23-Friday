@@ -7,10 +7,22 @@
 努力和汗水。
 加油！
 ---------------------------------------------
+reg:表示注册
+var dataStr = decodeURI(egret.getOption("data"));？？？？
+egret.getOption()????????-----------------------------------直接获取浏览器中的参数，?data="xxx"
+dataStr:表示的decodeURI(egret.getOption("data"))解码URI中的参数 
+浏览器中的参数数据，转换成json对象，对象上有属性；
+state：
+将state同样转成json对象，还有属性：
+recommend:推荐人
 
 
 
 
+包	egret
+类	public class Capabilities
+Capabilities 类提供一些属性，这些属性描述了承载应用程序的系统和运行时。
+egret.Capabilities.os:指定当前的操作系统
 
 
 
