@@ -1,0 +1,113 @@
+if(data.sender != RoleData.getRole().uid){
+                var mjListPanel:MjListPanel = this.gamePanel.mjListContainers[1];
+                if(mjListPanel != null){
+                    if(mjListPanel.currentOpting < data.operatingType){
+                        MjGameApi.operating(0);
+						mjListPanel.disposeOperatingBtn();
+                        mjListPanel.currentOpting = 0;
+					}else if(mjListPanel.currentOpting == data.operatingType && mjListPanel.currentOpting == 4){//一炮多响不需要判断
+                        var game:MajiangGame = MajiangGameData.getCurrentGame();
+                        var reUid = MajiangConstant.getClosedUid(game.currentUid,[mjListPanel.uid,data.sender],RoomData.getCurrentRoom());
+                        if(reUid == data.sender){
+                            MjGameApi.operating(0);
+							mjListPanel.disposeOperatingBtn();							
+                            mjListPanel.currentOpting = 0;
+                        }
+                    }
+                }
+            }
+            
+            
+            
+            
+            
+----------------------------------------------------------------------------------------            
+ gang ziji
+ ------------
+ public showGangSelf():boolean{
+			var game:MajiangGame = MajiangGameData.getCurrentGame();
+			var pengList:number[] = game.pengList[this.uid];
+			var isTing:boolean = game.ting[this.uid] != null;
+			var tingMjs:number[] = isTing ? MajiangConstant.clone_array(game.ting[this.uid][0]) : null;
+			var data:number[] = [];
+
+			var mjList:number[] = MajiangGameData.getMjs();
+			var countVals:any = MajiangConstant.array_values_count(mjList);
+			var len:number = mjList.length;
+			var mjVal:number;
+			for(var i:number = 0; i < len ; i++){
+				mjVal = mjList[i];
+				if(data.indexOf(mjVal) != -1) continue;
+				if(countVals[mjVal] == 4){
+					data.push(mjVal);
+				}else if(pengList != null && pengList.indexOf(mjVal) != -1){
+					if(isTing){
+						var canG:boolean = true;
+						for(var j in tingMjs){
+							if(tingMjs[j] == mjVal) canG = false;
+						}
+
+						mjList.splice(0,pengList.indexOf(mjVal));
+						var tings:any[] = MajiangConstant.findTing(mjList);
+						if(canG && (tings == tingMjs)) data.push(mjVal);
+					}else{
+						data.push(mjVal);
+					}
+				}
+			}
+
+			if(data.length > 0){
+				if(!this.showTingBtn){
+					this.opEventList = {};
+					this.opEventNo = 1;
+				}
+				this.opEventList[this.opEventNo] = [this.createOpBtn(-3,0),-3,data];
+				this.opEventNo++;
+				return true;
+			}
+			return false;
+		}
+
+		/**
+		 * 显示听牌按钮
+		 */
+		public showTingBtn:boolean = false;
+		public showTing():void{
+			this.showTingBtn = false;
+			this.opEventList = {};
+			this.opEventNo = 1;
+			var mjList:number[] = MajiangGameData.getMjs();
+			var tings:any[] = MajiangConstant.findTing(mjList);
+			if(tings.length > 0){
+				this.opEventList[this.opEventNo] = [this.createOpBtn(6,0),6,tings];
+				this.opEventNo++;
+				this.showTingBtn = true;
+			}
+		}
+    
+ ----------------------------------   
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
