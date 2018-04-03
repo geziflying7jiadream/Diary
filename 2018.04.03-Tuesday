@@ -12,6 +12,62 @@
 
 
 
+chat修改2：
+public preChatBg:eui.Image;
+	public refreshHead1(text:string,index:number){
+		if(this.preChatText) this.removeChild(this.preChatText);
+		if(this.preChatBg) this.removeChild(this.preChatBg);
+		var label1:eui.Image = new eui.Image();
+		label1.texture = RES.getRes("WX_ddz_lt_09");
+		label1.scale9Grid = new egret.Rectangle(20,18,1,1);
+		label1.width = 400;
+		label1.height = 50;
+		label1.scaleX = 0.6;
+		label1.scaleY = 0.6;
+		label1.x = this.headicon.x;
+		label1.y = this.headicon.y;
+		this.addChild(label1);
+
+		var chatLabel:eui.Label = new eui.Label();
+		chatLabel.text = text;
+		chatLabel.scaleX = 0.5;
+		chatLabel.scaleY = 0.5;
+		this.addChild(chatLabel);
+
+		var index1:number = RoomData.getPlayerIndex(this.uid);
+		console.log(index+"输出index1："+index1);
+		if(index1 == 1 && (index == 1 || index == 3)){
+			label1.x += 3;
+			label1.y += 3;
+			// if(index == 3) label1.y += 40;
+		}else if(index1 == 2 && (index == 1|| index == 3)){
+			label1.x -= 1;
+			label1.y -= 1;
+			// if(index == 3) label1.y += 40;
+		}else if(index1 == 3 && (index == 3 || index == 1)){
+			label1.x += 3;
+			label1.y += 3;
+			// if(index == 3) label1.y += 40;
+		}else{
+			label1.x -= 260;
+			label1.y += 40;
+		}
+		if(index == 3) label1.y += 40;
+		chatLabel.x = label1.x+2;
+		chatLabel.y = label1.y+5;	
+
+		this.preChatBg = label1;
+		this.preChatText = chatLabel;
+		
+		setTimeout(function(){
+			chatLabel.visible = label1.visible = false;
+		},3000);//6s隐藏
+		console.log("常用语");
+	}
+
+
+
+
 
 
 
