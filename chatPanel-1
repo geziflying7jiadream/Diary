@@ -1,0 +1,59 @@
+public preChatText:eui.Label;//上一次的文本
+	public preChatFace:eui.Image;//上一次的表情
+	public preChatBg:eui.Image;
+	public refreshHead1(text:string,index:number){
+		if(this.preChatText) this.preChatText.visible = true;
+		if(this.preChatBg) this.preChatBg.visible = true;
+		var index1:number = RoomData.getPlayerIndex(this.uid);
+		console.log(index+"输出index1："+index1);
+		if(!this.preChatBg){
+			var label1:eui.Image = new eui.Image();
+			label1.texture = RES.getRes("WX_ddz_lt_09");
+			label1.scale9Grid = new egret.Rectangle(20,18,1,1);
+			label1.width = 400;
+			label1.height = 64;
+			label1.scaleX = 1;
+			label1.scaleY = 1;
+			this.addChild(label1);
+			
+			this.preChatBg = label1;
+		}
+			this.preChatBg.x = this.headicon.x;
+			this.preChatBg.y = this.headicon.y;
+		
+		if(!this.preChatText){
+			var chatLabel:eui.Label = new eui.Label();
+			chatLabel.size = 22;
+			this.addChild(chatLabel);
+
+			this.preChatText = chatLabel;
+		}
+
+		
+		if(index1 == 1 && (index == 1 || index == 3)){
+			this.preChatBg.x += 3;
+			this.preChatBg.y += 3;
+		}else if(index1 == 2 && (index == 1|| index == 3)){
+			this.preChatBg.x -= 1;
+			this.preChatBg.y -= 1;
+		}else if(index1 == 3 && (index == 3 || index == 1)){
+			this.preChatBg.x += 3;
+			this.preChatBg.y += 3;
+		}else{
+			this.preChatBg.x -= 300;
+			this.preChatBg.y += 40;
+		}
+		if(index == 3) this.preChatBg.y += 40;
+
+		this.preChatText.text = text;
+		this.preChatText.x = this.preChatBg.x+25;
+		this.preChatText.y = this.preChatBg.y+20;
+
+		var label1Copy = this.preChatBg;
+		var chatLabelCopy = this.preChatText;
+		
+		setTimeout(function(){
+			chatLabelCopy.visible = label1Copy.visible = false;
+		},3000);//6s隐藏
+		console.log("常用语");
+	}
