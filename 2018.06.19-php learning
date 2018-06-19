@@ -1,0 +1,17 @@
+everyday go in a little,you will go in a big step in the future.
+----------------------------------------------------------------
+php:
+date():its using everywhere.
+date(format,timestamp):it is using in lonely time ,now time ,fixed time ,transform its time in you want it to be.
+Y year m month d day h hour i minitue s second a pm am(small word) A PM AM(big word).
+
+time():now time's timestamp.if you want it to be formal time form,you should take it to date() func and tranform it.
+
+microtime():micro timestamp,if its params is true,it will be a float timestamp.therefore it will be more correct.
+
+sleep():it only use in php server,wait time ,seconds time.if you want to use wait second time in the client,you should create a func by yourself.
+
+date_default_timezone_set(Asia/Shanghai):set a time zone;which country's time.
+
+strtotime(time,now):people know time form transform a new formal form.
+
