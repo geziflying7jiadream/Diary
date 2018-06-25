@@ -1,0 +1,37 @@
+	listening a frame:
+  public onFrame(e:egret.Event){
+		this.frameCount++;
+		var num:number = this.frameCount / 300;
+		// var speedY:number = 2 * (num +1);
+		var speedY:number = 10;
+		var startY = this.rectHeight*2;//startY
+		var len:number = this.gameContainer.numChildren;
+		if(this.bools.length!=0){
+			for(var i = 0;i < this.bools.length;i++){
+				var rect = this.bools.pop() as RectSkin;
+				if(rect.y + startY >= this.height){
+					rect.y = -startY;
+					// rect.type = Math.random() > 0.5 ? 1 : 0;
+					rect.type = this.jsonConifg[this.currentColums][i];
+					rect.width = this.width/4;
+					rect.height = this.rectHeight;
+					rect.createRect();
+				}
+			}
+		}
+		for(var k = 0;k < len;k++){
+			var rect:RectSkin = this.gameContainer.getChildAt(k) as RectSkin;
+			rect.y += speedY;
+			if(rect.y > this.height && rect.type == 0){
+				this.bools.push(rect);
+				this.currentColums++;
+				if(this.currentColums > 1) this.currentColums = 0;
+			}else{
+				if(rect.y + startY >= this.height && rect.type == 1){
+					var over:GameOverPanel = new GameOverPanel(this);
+					this.parent.addChild(over);
+					return;
+				}
+			}
+		}
+	}
