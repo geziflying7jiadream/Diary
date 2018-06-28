@@ -1,0 +1,11 @@
+BloodMatch interface:
+1.client code:
+create a api name as: BloodMatchApi
+var pars = {"api":"bloodMatch","c":"bloodMatch"};
+BaseApi.requestLogic(pars,callback,failCallback);
+
+2.server code:
+server apiConfig add a config: "bloodMatch" => "BloodMatchServer",
+create a class name as: BloodMatchServer extends GameLogicServer :
+        public function bloodMatch($request){return array(......)},
+
