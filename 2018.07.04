@@ -1,0 +1,82 @@
+        foreach($room->players as $index=>$uid){
+            if(RobortDao::isRobort($uid))continue;
+            /** @var vo_Role $role */
+            $role = RoleDao::getRole($uid);
+            if($winUid == $dizhuUid){
+                if($uid == $dizhuUid){
+                    //地主赢
+                    $role->bloodmatchPoint++;
+                    if($role->bloodmatchPoint == 7){
+                        //结束本次挑战
+                        $role->bloodpassCount++;
+                        //更新今天挑战次数
+                        BloodMatchDao::updatePassCountOneDay($uid);
+                        //奖励本次挑战
+                        $money = BloodMatchConstant::randomReward($uid,$role->bloodmatchPoint);
+                        $result['money'] = $money;
+                        if($money > 1.5){
+                            PaoMaDengDao::updateRewardPMD($role->name,$money);
+                        }
+                        //每次挑战有一个分享次数，此时重置
+                        BloodMatchDao::delBloodMatchShareCount($uid);
+                    }
+                    $role->bloodmatchFail = false;
+                }else{
+                    //其他人输
+                    $isShared = BloodMatchDao::getBloodMatchShareCount($uid);
+                    if($isShared > 0){//分享过,挑战结束
+                        BloodMatchDao::updatePassCountOneDay($uid);
+                        //奖励本次挑战
+                        $money = BloodMatchConstant::randomReward($uid,$role->bloodmatchPoint);
+                        $result['money'] = $money;
+                        if($money > 1.5){
+                            PaoMaDengDao::updateRewardPMD($role->name,$money);
+                        }
+                        //每次挑战有一个分享次数，此时重置
+                        BloodMatchDao::delBloodMatchShareCount($uid);
+                        $role->bloodmatchFail = false;
+                        $role->bloodmatchPoint = 0;
+                    }else{
+                        $role->bloodmatchFail = true;
+                    }
+                }
+            }else{
+                if($uid != $dizhuUid){
+                    //平民赢
+                    $role->bloodmatchPoint++;
+                    if($role->bloodmatchPoint == 7){
+                        //结束本次挑战
+                        $role->bloodpassCount++;
+                        //更新今天挑战次数
+                        BloodMatchDao::updatePassCountOneDay($uid);
+                        //奖励本次挑战
+                        $money = BloodMatchConstant::randomReward($uid,$role->bloodmatchPoint);
+                        $result['money'] = $money;
+                        if($money > 1.5){
+                            PaoMaDengDao::updateRewardPMD($role->name,$money);
+                        }
+                        //每次挑战有一个分享次数，此时重置
+                        BloodMatchDao::delBloodMatchShareCount($uid);
+                    }
+                    $role->bloodmatchFail = false;
+                }else{
+                    //地主输
+                    $isShared = BloodMatchDao::getBloodMatchShareCount($uid);
+                    if($isShared > 0){//分享过,挑战结束
+                        BloodMatchDao::updatePassCountOneDay($uid);
+                        //奖励本次挑战
+                        $money = BloodMatchConstant::randomReward($uid,$role->bloodmatchPoint);
+                        $result['money'] = $money;
+                        if($money > 1.5){
+                            PaoMaDengDao::updateRewardPMD($role->name,$money);
+                        }
+                        //每次挑战有一个分享次数，此时重置
+                        BloodMatchDao::delBloodMatchShareCount($uid);
+                        $role->bloodmatchFail = false;
+                        $role->bloodmatchPoint = 0;
+                    }else{
+                        $role->bloodmatchFail = true;
+                    }
+                }
+            }
+        }
