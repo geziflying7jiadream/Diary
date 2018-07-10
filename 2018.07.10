@@ -1,0 +1,70 @@
+    public static function refreshBloodPoint($winUid,$room,$dizhuUid){
+        $roles = array();
+        $result = array();
+        foreach($room->players as $index => $uid){
+            if(RobortDao::isRobort($uid))continue;
+            /** @var vo_Role $role */
+            $role = RoleDao::getRole($uid);
+            if($winUid == $dizhuUid){
+                if($uid == $dizhuUid){
+                    $role->bloodmatchPoint++;
+                    if($role->bloodmatchPoint == 7){
+                        BloodMatchDao::updatePassCountOneDay($uid);
+                        $money = BloodMatchConstant::randomReward($uid,$role->bloodmatchPoint);
+                        $result['money'] = $money;
+                        if($money > 1.5){
+                            PaoMaDengDao::updateRewardPMD($role->name,$money);
+                        }
+                        BloodMatchDao::delPassCountOneDay($uid);
+                    }
+                    $role->bloodmatchFail = false;
+                }else{
+                    if(BloodMatchDao::getBloodMatchShareCount($uid) > 0){//分享过
+                        BloodMatchDao::updatePassCountOneDay($uid);
+                        if($role->bloodmatchPoint > 1) $money = BloodMatchConstant::randomReward($uid,$role->bloodmatchPoint);
+                        else $money = 0;
+                        $result['money'] = $money;
+                        if($money > 1.5){
+                            PaoMaDengDao::updateRewardPMD($role->name,$money);
+                        }
+                        BloodMatchDao::delPassCountOneDay($uid);
+                        if($role->bloodmatchPoint > 1) $role->bloodmatchFail = false;
+                        else $role->bloodmatchFail = true;
+                        $role->bloodmatchPoint = 0;
+                    }else{
+                        $role->bloodmatchFail = true;
+                    }
+                }
+            }else{
+                if($uid != $dizhuUid){
+                    $role->bloodmatchPoint++;
+                    if($role->bloodmatchPoint == 7){
+                        BloodMatchDao::updatePassCountOneDay($uid);
+                        $money = BloodMatchConstant::randomReward($uid,$role->bloodmatchPoint);
+                        $result['money'] = $money;
+                        if($money > 1.5){
+                            PaoMaDengDao::updateRewardPMD($role->name,$money);
+                        }
+                        BloodMatchDao::delPassCountOneDay($uid);
+                    }
+                    $role->bloodmatchFail = false;
+                }else{
+                    if(BloodMatchDao::getBloodMatchShareCount($uid) > 0){//分享过
+                        BloodMatchDao::updatePassCountOneDay($uid);
+                        if($role->bloodmatchPoint > 1) $money = BloodMatchConstant::randomReward($uid,$role->bloodmatchPoint);
+                        else $money = 0;
+                        $result['money'] = $money;
+                        if($money > 1.5){
+                            PaoMaDengDao::updateRewardPMD($role->name,$money);
+                        }
+                        BloodMatchDao::delPassCountOneDay($uid);
+                        if($role->bloodmatchPoint > 1) $role->bloodmatchFail = false;
+                        else $role->bloodmatchFail = true;
+                        $role->bloodmatchPoint = 0;
+                    }else{
+                        $role->bloodmatchFail = true;
+                    }
+                }
+            }
+        }
+    }
