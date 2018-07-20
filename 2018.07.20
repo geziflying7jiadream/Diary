@@ -1,0 +1,17 @@
+// var curNum = DateTool.currentTime();
+		// if(!TimeData.getWatchAdLimitTime() || TimeData.getWatchAdLimitTime() <= curNum){
+		// 	console.log("-----1------");
+		// 	// TimeData.putWatchAdLimitTime(0);
+		// 	egret.setTimeout(()=>{
+		// 		//下次点击，缓存
+		// 		var nextNum = DateTool.toNextHoursTime(0.25);
+		// 		var trueTimeNum = nextNum + curNum;
+		// 		TimeData.putWatchAdLimitTime(trueTimeNum);
+		// 		console.log(curNum + "-------" + nextNum + "======"+trueTimeNum);
+		// 	},this,3000);
+		// }else{
+		// 	//倒计时完成
+		// 	var cha = TimeData.getWatchAdLimitTime() - curNum;
+		// 	console.log("倒计时完成"+cha);
+		// 	console.log("差事件"+DateTool.formatMinuteTime(cha));
+		// }
