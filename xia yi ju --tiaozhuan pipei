@@ -1,0 +1,61 @@
+public onNextBtn(){
+		if(this.round==1){
+			if(this.role.gold>=MatchConstant.goldLimit[0][0]&&this.role.gold<=MatchConstant.goldLimit[0][1]){
+				this.enterField(1);
+			}
+			else{
+				this.returnField();
+			}
+		}
+		if(this.round==2){
+			if(this.role.gold>=MatchConstant.goldLimit[1][0]&&this.role.gold<=MatchConstant.goldLimit[1][1]){
+				this.enterField(2);
+			}
+			else{
+				this.returnField();
+			}
+		}		
+		if(this.round==3){
+			if(this.role.gold>=MatchConstant.goldLimit[2][0]){
+				this.enterField(3);
+			}
+			else{
+				this.returnField();
+			}
+		}
+	}
+
+	public bianliRound(){
+		if(this.role.gold<MatchConstant.goldLimit[0][0]){
+			//金币不足，弹出每日领取金币界面
+			console.log("弹出兑换界面");
+		}else{
+			switch(this.round){
+				case 1:
+					if(this.role.gold>=MatchConstant.goldLimit[0][0]&&this.role.gold<=MatchConstant.goldLimit[0][1]){
+						this.enterField(1);
+					}else{
+						this.round = 2;
+						this.onNextBtn();
+					}
+					break;
+				case 2:
+					if(this.role.gold>=MatchConstant.goldLimit[1][0]&&this.role.gold<=MatchConstant.goldLimit[1][1]){
+						this.enterField(2);
+					}else{
+						this.round = 3;
+						this.onNextBtn();
+					}
+					break;
+				case 3:
+					if(this.role.gold>=MatchConstant.goldLimit[2][0]){
+						this.enterField(3);
+					}else{
+						this.round = 1;
+						this.onNextBtn();
+					}
+					break;
+				default:break;
+			}
+		}
+	}
