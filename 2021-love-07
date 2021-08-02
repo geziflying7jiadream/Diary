@@ -1,0 +1,80 @@
+07.12
+熟悉go环境；✓
+go语言结构、语法；✓
+熟悉各个业务模块独立结构及联系；
+熟悉FGUI的处理方式，创建个人分支；✓
+
+配置说明表；✓
+策划/系统策划；
+
+熟悉数据库结构；
+redis数据库、 mysql数据库（开始）
+
+07.13
+go项目 redis及mysql环境，✓ 
+kingdom-config 链接地址 账号密码；✓
+
+熟悉数据库结构；
+redis数据库、 mysql数据库（进行中）
+
+07.14
+书院的配置表（配置数据）；✓
+书院的数据表（游戏）；
+t_senate_item 表名：元老院坑位表
+id 序号
+senate_item_id 坑位序号
+role_id string 用户标识
+senate_item_lockstatus 坑位解锁状态0， 1，2
+senate_item_heroid 坑位英雄id
+senate_item_addherotime 坑位添加英雄时间
+senate_item_addlevel 坑位添加时元老院等级
+
+元老院表
+senate_current_level string 书院当前最大等级
+
+07.15
+go框架语法；
+元老院接口开发及数据调试：查询、升级
+
+07.16
+periphery.senate.getsenatesync  //--查询角色的元老院数据接口
+periphery.senate.unlockonesenateitem  //--解锁一个坑位接口 
+periphry.senate.addonehero //--派遣单个英雄的接口
+
+07.17
+periphry.senate.oneclickaddheros//--一键派遣英雄的接口
+
+//--领取单个奖励接口
+//--一键领取奖励的接口
+periphery.senate.getallrewards //--一个坑位或一键领取奖励的接口 one Or all
+
+
+07.19
+奖励接口修改；
+
+07.20
+英雄接口接入；调试；
+
+07.21
+整理接口文档；
+
+07.27
+阿里云部署业务模块上传；
+邮件系统整理；
+
+07.28
+common创建邮件
+mailPO数据结构；
+邮件发送接口；
+
+07.29
+元老院解锁钻石；
+删除邮件？
+邮件log
+
+07.30
+邮件操作表；
+
+07.31
+部署元老院；
+邮件添加成功下发接口；
