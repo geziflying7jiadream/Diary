@@ -4,9 +4,16 @@
 
 
 
+podMan:
+a container ,liking docker ，as a container;
+OCI:在podman中用到的接口例子
+oci:提供了oracle存取的接口例子
+
+
 
 
 未处理：
+【等待新的区服框架的设计成熟】
 //下一活动开启时间 通知前端有新活动开启【（下发？？？）-----定时请求活动配置，检测？？？】
 
 	//1 活动排行如何存储
