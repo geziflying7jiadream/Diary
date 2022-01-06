@@ -26,3 +26,7 @@ oci:提供了oracle存取的接口例子
 2)	//排行奖励邮件发放：在线用户 离线用户
 	//1.在线用户   活动结束1小时后发送用户本身
 	//2.离线用户   同一时间发送很多邮件，给数据库造成很大的压力（当然可以分时段，但如果在没有全部分发完成，服务器会出现问题，难以解决！！！）
+
+
+
+找到一个发放奖励的案例：https://blog.csdn.net/shujianhenu/article/details/46594341?ops_request_misc=&request_id=&biz_id=102&utm_term=%E6%B8%B8%E6%88%8F%E6%8E%92%E8%A1%8C%EF%BC%9A%E5%B7%B2%E8%BF%87%E6%9C%9F%E7%9A%84%E6%8E%92%E8%A1%8C%E5%A5%96%E5%8A%B1%EF%BC%8C%E5%A6%82%E4%BD%95%E5%AD%98%E5%82%A8%EF%BC%9F&utm_medium=distribute.pc_search_result.none-task-blog-2~all~sobaiduweb~default-1-46594341.pc_search_es_clickV2&spm=1018.2226.3001.4187
