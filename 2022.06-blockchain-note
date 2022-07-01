@@ -49,7 +49,27 @@
 
 
 
+06.14
+Live & hot (Reloading)
 
+GOPROXY=https://proxy.golang.org,direct
+GOPROXY=https://goproxy.cn
+http://192.168.2.68/svn/LYProject1
+
+
+
+root@localhost: l&)DzAwkj6ul
+
+open pitaya server http:addr/route:
+Gorm :db(mysql)
+iris: route(/dir)
+pitaya: servers arr(recover)
+
+网络通信的几种协议
+
+websocke连接
+
+go-game-login(auth验证)
 
 
 
